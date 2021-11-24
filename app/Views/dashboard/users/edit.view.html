@@ -1,0 +1,79 @@
+@include("dashboard/header")
+
+<form id="form"  class="container">
+ <!--Inico do código para exibir a imagem do perfil do usuário-->
+	 
+	 @php
+	   $image = strlen($find->image) > 10 ? '<img src="'.url($find->image).'">' : '<i class="icon">person</i>'; 
+	 @endphp
+	 
+     
+	 
+	 <!--Fim do código para exibir a imagem do perfil do usuário-->
+<input type="hidden" name="id" value="{{$find->id}}">
+<h3>#user.edit#</h3>
+<div class="col m12 border padding margin-bottom">
+<div class="floating blue">{!$image!}</div>
+<b>{{$find->email}}</b>
+</div>
+<div class="col m6">
+    <div class="rest">#full.name#
+      <input class="input border" value="{{$find->name}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	<div class="rest col m6">#lang#
+      <select name="lang" class="select border">
+	     {!$langOptions!}
+	   </select>
+    </div>
+	<div class="rest col m6">#situation#
+       <select name="status" class="select border">
+	     {!$statusOptions!}
+	   </select>
+    </div>
+</div>
+
+<div class="col m6">
+    <div class="rest">#email#
+      <input class="input border" value="{{$find->email}}" required name="email" type="email">
+    </div>
+	<div class="rest">#role#
+      <select name="role" class="select border">
+	     {!$roleOptions!}
+	  </select>
+    </div>
+</div>
+
+<div class="col m12 margin-top">
+    <div class="msg"></div>
+   <button type="submit" class="right button teal hover-green">#user.update#</button>
+   <a class="button orange text-white hover-red right" onclick="window.history.go(-1);">#cancel#</a>
+</div>
+
+</form>
+<script>
+$(function(){
+
+  $("#form").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/users')}}",
+     type : 'put',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+});
+</script>
+
+@include("dashboard/footer")

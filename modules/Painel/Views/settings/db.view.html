@@ -1,0 +1,40 @@
+
+@painel_header()
+
+{{form.header(['title'=>'Configurações do banco de dados'])}}
+
+@grid('container-fluid mt-5')
+  @grid('row')
+    @grid('col-4')
+      <label>#host#</label>
+      {{form.text(['disabled'=>true, 'value'=>NP_DB_HOST ])}}
+    @endgrid
+
+    @grid('col-4')
+      <label>#database#</label>
+      {{form.text(['disabled'=>true, 'value'=>NP_DB_NAME ])}}
+    @endgrid
+
+    @grid('col-4')
+      <label>#user#</label>
+      {{form.text(['disabled'=>true, 'value'=>NP_DB_USER ])}}
+    @endgrid
+
+    @grid('col-4')
+      <label>#password#</label>
+      {{form.password(['disabled'=>true, 'value'=>'Senha123@!'])}}
+    @endgrid      
+
+    @grid('col-4')
+      <label>#sgbd#</label>
+      {{form.text(['disabled'=>true, 'value'=>NP_DB_SGBD ])}}
+    @endgrid
+
+    @grid('col-4')
+      <label>#pref#</label>
+      {{form.text(['disabled'=>true, 'value'=>NP_DB_PREF ])}}
+    @endgrid    
+  @endgrid
+@endgrid
+{{form.close()}}
+  @painel_footer()

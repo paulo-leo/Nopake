@@ -1,0 +1,230 @@
+@include("@Painel/Views/header")
+
+<form>
+  <div class="form-row">
+    <h4 class="col-md-12"><i class="icon">settings</i>#general_platform_settings#</h4>
+    <div class="form-group col-md-4">
+      <label for="inputName">#name#</label>
+      <input type="text" class="form-control" id="inputName" value="{{NP_NAME}}">
+     </div>
+     <div class="form-group col-md-8">
+      <label for="inputDescription">#description#</label>
+      <input type="text" class="form-control" id="inputDescription"  value="{{NP_DESCRIPTION}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputVersion">#version#</label>
+      <input type="text" class="form-control" id="inputVersion"  value="{{NP_VERSION}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputAuthor">#author#</label>
+      <input type="text" class="form-control" id="inputAuthor"  value="{{NP_AUTHOR}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputLang">#lang#</label>
+    <select class="custom-select" id="inputLang">
+    <option value="1">Um</option>
+    <option value="2">Dois</option>
+    <option value="3">Três</option>
+     </select>
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputStatus">#status#</label>
+      <select class="custom-select" id="inputStatus">
+        {!options($status,NP_STATUS)!}
+     </select>
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputTimezone">#timezone#</label>
+      <input type="text" class="form-control" id="inputTimezone"  value="{{NP_TIMEZONE}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputMode">#mode#</label>
+	  <select class="custom-select" id="inputMode">
+       {!options([
+	   'dev'=>'Desenvolvimento',
+	   'test'=>'Teste',
+	   'deploy'=>'Implantar'
+	   ],NP_MODE)!}
+	  </select>
+    </div>
+		
+	<div class="form-group col-md-3">
+      <label for="inputLogs">#logs#</label>
+	  <select class="custom-select" id="inputLogs">
+       {!options(['off'=>'Desligado','on'=>'Ligado'],NP_LOGS)!}
+	  </select>
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputCharset">#charset#</label>
+	  <select class="custom-select" id="inputCharset">
+       {!options(['utf-8'=>'UTF-8','ansi'=>'ANSI'],NP_CHARSET)!}
+	  </select>
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputMax">#max_execution#</label>
+      <input type="number" min="0" class="form-control" id="inputMax"  value="{{NP_MAX_EXECUTION}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label>#datetime#</label>
+      <input type="text" disabled class="form-control" value="{{NP_DATETIME}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label>#date#</label>
+      <input type="text" disabled class="form-control" value="{{NP_DATE}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label>#time#</label>
+      <input type="text" disabled class="form-control" value="{{NP_TIME}}">
+    </div>
+  
+  <div class="form-group col-md-3">
+	<label for="inputCharset">Membros</label>
+	<select class="custom-select" id="inputCharset">
+       {!options(['off'=>'Não','on'=>'Sim'],'off')!}
+	  </select>
+	<p>Ao ativar essa opção, você permitirá que qualquer visitante do seu site crie uma conta (login e senha) em seu sistema.</p>
+  </div>
+
+  <div class="form-group col-md-3">
+      <label for="inputCharset">Função padrão</label>
+	  <select class="custom-select" id="inputCharset">
+       {!options(['utf-8'=>'UTF-8','ansi'=>'ANSI'],NP_CHARSET)!}
+	  </select>
+	  <p>Este campo deve ser usado em conjunto com o campo anterior. Com ele você define qual função as pessoas terão ao criar uma conta em seu sistema. </p>
+   </div>
+  
+  <div class="form-group col-md-6">
+      <label for="inputMax">Classe a ser executada</label>
+      <input type="text" min="0" class="form-control">
+  </div>
+  
+  <button type="submit" class="btn btn-outline-primary">#save#</button>
+  </div>
+  
+  
+</form>
+
+
+
+<form>
+  <div class="form-row">
+    <h4 class="col-md-12"><i class="icon">storage</i>#database_server_settings#</h4>
+    
+	<div class="form-group col-md-8">
+      <label for="inputVersion">#host#</label>
+      <input type="text" class="form-control" id="inputVersion"  value="{{NP_DB_HOST}}">
+    </div>
+	
+	<div class="form-group col-md-4">
+      <label for="inputAuthor">#database#</label>
+      <input type="text" class="form-control" id="inputAuthor"  value="{{NP_DB_NAME}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputAuthor">#user#</label>
+      <input type="text" class="form-control" id="inputAuthor"  value="{{NP_DB_USER}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputAuthor">#password#</label>
+      <input type="password" class="form-control" id="inputAuthor"  value="{{NP_DB_PASS}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputAuthor">#sgbd#</label>
+      <input type="text" class="form-control" id="inputAuthor"  value="{{NP_DB_SGBD}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputAuthor">#pref#</label>
+      <input type="text" class="form-control" id="inputAuthor"  value="{{NP_DB_PREF}}">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-outline-primary">#save#</button>
+</form>
+
+<form>
+  <div class="form-row">
+    <h4 class="col-md-12"><i class="icon">email</i>#SMTP_server_settings#</h4>
+ 
+	
+	<div class="form-group col-md-4">
+      <label for="inputEmailhost">#host#</label>
+      <input type="text" class="form-control" id="inputEmailhost"  value="{{NP_EMAIL_HOST}}">
+    </div>
+	
+	<div class="form-group col-md-4">
+      <label for="inputEmail">#email#</label>
+      <input type="text" class="form-control" id="inputEmail"  value="{{NP_EMAIL}}">
+    </div>
+	
+	<div class="form-group col-md-4">
+      <label for="inputEmailname">#name#</label>
+      <input type="text" class="form-control" id="inputEmailname"  value="{{NP_EMAIL_NAME}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputEmailport">#port#</label>
+      <input type="text" class="form-control" id="inputEmailport"  value="{{NP_EMAIL_PORT}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputEmailauth">#auth#</label>
+      <input type="text" class="form-control" id="inputEmailauth"  value="{{NP_EMAIL_AUTH}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputEmailuser">#user#</label>
+      <input type="text" class="form-control" id="inputEmailuser"  value="{{NP_EMAIL_USER}}">
+    </div>
+	
+	<div class="form-group col-md-3">
+      <label for="inputEmailpass">#password#</label>
+      <input type="password" class="form-control" id="inputEmailpass"  value="{{NP_EMAIL_PASS}}">
+    </div>
+  </div>
+  <button type="submit" class="btn btn-outline-primary">#save#</button>
+</form>
+
+
+<!-- Botão para acionar modal -->
+<a href="#" data-toggle="modal" data-target="#modalExemplo">
+  Chave da aplicação
+</a>
+<br><br>
+<!-- Modal -->
+<div class="modal fade" id="modalExemplo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Chave da aplicação</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+	      <p>As chaves API geralmente não são consideradas seguras. Normalmente, elas são acessíveis aos clientes, facilitando o roubo de uma delas. Se a chave for roubada, ela não tem expiração, assim pode ser usada indefinidamente, a menos que o dono do projeto a revogue ou gere a chave novamente. Ainda que as restrições que você pode definir em uma chave de API atenuem isso, há abordagens melhores para a autorização.</p>
+          <label for="inputEmailpass">Chave da aplicação</label>
+          <input type="text" class="form-control" value="5565reg6df657566gdfbf6dfb4">
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+		<button type="button" class="btn btn-primary">Gerar nova chave</button>
+        <button type="button" class="btn btn-success">#save#</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@include("@Painel/Views/footer")

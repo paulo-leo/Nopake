@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="{{NP_LANG}}">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="{{NP_CHARSET}}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Nopadi CSS -->
+    <link rel="stylesheet" href="{{asset('css/nopadi/nopadi.css')}}">
+	<link rel="stylesheet" href="{{asset('css/nopadi/progress.css')}}">
+	<script src="{{asset('js/jquery.min.js')}}"></script>
+  
+    <title>#login_account#</title>
+  </head>
+<body class="light-gray bg-1">
+<div class="container padding">
+<form id="login">
+
+  <!--Token para evitar ataque CSRF-->
+  {{csrf_field()}}
+  
+  <div class="content card padding white display-container round animate-top" style="max-width:450px">
+    <div class="content center"><a href="{{url('/')}}" class="link">
+      <img src="{{asset('img/np-logo-text.png')}}" style="width:200px;">
+    </a></div>
+   <span class="center big col m12">#login_account#</span>
+	<div style="padding-left:30px;padding-right:30px">
+	 @if($logout)
+       <div class="msg-logout col m12 panel pale-blue leftbar border-blue padding animate-left">
+	         #session_closed_success#
+	  </div>
+	@endif
+	<div class="msg col m12"></div>
+	<div class="focus-email">
+    <label class="big"><i class="icon xbig" style="position:relative;top:5px">email</i>#email#</label>
+    <input type="email" required name="email" class="input border">
+	</div>
+	<div class="focus-password">
+    <label class="big"><i class="icon xbig" style="position:relative;top:5px">vpn_key</i>#password#</label>
+    <input type="password" required name="password" class="input border margin-bottom">
+	</div>
+	<label class="checkbox big">#remember_login#
+       <input  type="checkbox" name="remember">
+       <span class="checkbox-mark border"></span>
+   </label>
+	
+	<button type="submit" class="button round block margin-top border border-teal hover-teal">#enter#</button>
+	<span class="center col m12">#or#</span>
+	<a href="{{url('recover-password')}}" class="button block">#forgot_password#</a>
+	</div>
+  </div>
+</form>
+   </div> 
+ <script>
+$(function(){
+
+  $("#login").submit(function(){
+	 $('.msg-logout').hide();
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+     
+     $.ajax({
+     url : "{{url('login')}}",
+     type : 'post',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+	      if(data == 'success'){
+		     window.location.href = "{{url('dashboard')}}";
+		  }else{
+		    if(data == 'user_not_found')
+		        msg.html('<div class="animate-opacity panel pale-red leftbar border-red"><p class="animate-right">#user_not_found#</p></div>');
+			else if(data == 'invalid_email')
+		            msg.html('<div class="animate-opacity panel pale-red leftbar border-red"><p class="animate-right">#invalid_email#</p></div>');
+			else if(data == 'invalid_password')
+		            msg.html('<div class="animate-opacity panel pale-red leftbar border-red"><p class="animate-right">#invalid_password#</p></div>');
+			else msg.html('<div class="animate-opacity panel pale-red leftbar border-red"><p class="animate-right"><b>Erro de servidor.</b> Tente novamente mais tarde!</p></div>');
+		  }
+     }
+    }); 
+  
+     return false;
+  });
+
+});
+</script>
+     </body>
+	     </html>

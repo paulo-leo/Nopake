@@ -1,0 +1,67 @@
+@include("dashboard/header")
+<form id="form" class="container">
+<input name="id" type="hidden" value="{{$find->id}}">
+<h3>#cat.update#</h3>
+<div class="col m6">
+    <div class="rest">#name#
+      <input class="input border" required name="name" type="text" value="{{$find->name}}">
+    </div>
+	<div class="rest">#description#
+      <textarea class="input border" required name="description" style="height:103" type="text">{{$find->description}}</textarea>
+    </div>
+</div>
+
+<div class="col m6">
+    <div class="rest">#type#
+      <input class="input border white" disabled  type="text" value="{{text(':'.$cat_type)}}">
+	  <input name="type" type="hidden" value="{{$cat_type}}">
+    </div>
+	<div class="rest">#higher#
+      <select name="cat_id" class="select border">
+	     <option value="0">#not.category#</option>
+	     {!$catOptions!}
+	  </select>
+	  <input class="input border card white" name="uri" value="{{$find->uri}}">
+    </div>
+</div>
+
+<div class="col m12 margin-top">
+    <div class="msg"></div>
+   <button type="submit" class="right button teal hover-green">#update#</button>
+   <a class="button orange text-white hover-red right" onclick="window.history.go(-1);">#cancel#</a>
+</div>
+</form>
+<script>
+$(function(){
+
+  $("#form").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/cats')}}",
+     type : 'put',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+
+//Confirma se o usuário quer sair da página ao clicar em cancelar
+function confirmExit()
+  {
+    return '#confirm_exit#';
+  }
+  window.onbeforeunload = confirmExit;
+//Fim do código para confirmar saída da página
+});
+</script>
+@include("dashboard/footer")

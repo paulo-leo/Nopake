@@ -1,0 +1,34 @@
+﻿{
+    "Painel": {
+        "name": "Painel de Controle",
+        "description": "Painel de Controle ou simplesmente painel, e um modio nativo do Onpaulo. Esse módulo permiti gerenciar usurios e sessões, alem de poder gerenciar outros mdulos de forma intuitiva e simples. ",
+        "author": "Paulo Leonardo",
+        "status": "active",
+        "version": "0.1",
+        "license": "MIT",
+        "require": [
+            "php7"
+        ],
+        "url": "www.onpaulo.com.br",
+        "route": "",
+        "parent": "",
+        "color": "",
+        "icon": ""
+    },
+    "FileManager": {
+        "name": "Gerenciador de arquivos",
+        "description": "Aplicativo para gerenciamento de arquivos.",
+        "author": "Paulo Leonardo | Onpaulo",
+        "status": "active",
+        "version": "0.1",
+        "license": "MIT",
+        "require": [
+            "php7"
+        ],
+        "url": "www.onpaulo.com.br",
+        "route": "filemanager",
+        "parent": "",
+        "color": "info",
+        "icon": "folder"
+    }
+}

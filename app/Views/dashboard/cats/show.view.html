@@ -1,0 +1,37 @@
+@include("dashboard/header")
+<form class="padding">
+<input name="id" type="hidden" value="{{$find->id}}">
+<h3>#category#</h3>
+<div class="col m6">
+    <div class="rest">#name#
+      <input class="input white border" disabled value="{{$find->name}}">
+    </div>
+	<div class="rest">#description#
+      <textarea class="input border white" style="height:103px;" disabled>{{$find->description}}</textarea>
+    </div>
+</div>
+
+<div class="col m6">
+    <div class="rest">#type#
+	  <input class="input border white" disabled value="{{text(':'.$find->type)}}">
+    </div>
+	<div class="rest">#higher#
+      <input class="input border white" disabled value="{{$find->cat_id}}">
+    </div>
+	
+	<div class="rest">#url#
+      <input class="input border white" disabled value="{{$find->uri}}">
+    </div>
+	
+	<div class="rest">
+	
+	  @if($edit)
+	  <a class="button text-white orange right margin-top" href="{{url('dashboard/cats/'.$find->id.'/edit')}}">#edit#</a>
+	  @endif
+	  
+      <a class="button teal right margin-top" onclick="window.history.go(-1);">#previous#</a>
+    </div>
+	
+</div>
+</form>
+@include("dashboard/footer")

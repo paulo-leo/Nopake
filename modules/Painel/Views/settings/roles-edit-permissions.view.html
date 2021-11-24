@@ -1,0 +1,16 @@
+@include("@Painel/Views/header")
+
+{{form.header([
+  'title'=>'Atualizar permissões para a função de <b class="text-danger">'.$name.'</b>',
+  'url'=>'dashboard/settings/roles/update/permissions'
+])}}
+
+  	@grid('container-fluid np-scroll')
+		@grid('row mt-4')
+			@grid('col-sm-12')
+              {!$form!}
+   @endgrid
+       @endgrid
+           @endgrid
+{{form.close()}}		   
+@include("@Painel/Views/footer")

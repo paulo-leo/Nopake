@@ -1,0 +1,53 @@
+@include("dashboard/header")
+<form id="form"  class="container">
+<h3>Configurações globais da aplicação</h3>
+<div class="col m12">
+
+    <div class="rest col m4">Nome da aplicação
+      <input class="input border bg-1" value="{{NP_NAME}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	
+	<div class="rest col m8">Descrição da aplicação
+      <input class="input border bg-1" value="{{NP_DESCRIPTION}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	
+	<div class="rest col m3">Idioma do sistema
+      <input class="input border bg-1" value="{{NP_LANG}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	
+	<div class="rest col m3">Versão da aplicação
+      <input class="input border bg-1" value="{{NP_VERSION}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	
+	<div class="rest col m3">Estado
+	  <select class="input border bg-1">
+	    {!options($status,NP_STATUS)!}
+	  </select>
+    </div>
+	
+	<div class="rest col m3">Log de erros
+	  <select class="input border bg-1">
+	    {!options(['off'=>'Desligado','on'=>'Ligado'],NP_LOGS)!}
+	  </select>
+    </div>
+
+</div>
+
+<div class="col m12">
+
+    <div class="rest col m4">Conjunto de caracteres
+      <input class="input border bg-1" value="{{NP_CHARSET}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	
+	<div class="rest col m4">Zona do servidor
+      <input class="input border bg-1" value="{{NP_TIMEZONE}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+	
+	<div class="rest col m4">Conjunto de caracteres
+      <input class="input border bg-1" value="{{NP_TIMEZONE}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+
+</div>
+</form>
+
+@include("dashboard/footer")

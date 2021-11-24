@@ -1,0 +1,104 @@
+@include("dashboard/header")
+<ul class="ul ul-border-none">
+ @if($list->results)
+  @in($list->results)
+    <!-- Modal para apagar registro -->
+  <div id="id{{$id}}" class="modal">
+     <div class="modal-content">
+      <div class="container center">
+	  <h2><i class="icon text-pink xxbig" style="position:relative;top:8px">delete</i>#delete#</h2>
+	  <p>#cat.delete# "<b>{{$name}}</b>"?</p>
+	  <div class="msg"></div>
+	  <button class="cancel pink hover-red button card small right" onclick="document.getElementById('id{{$id}}').style.display='none'">#no#</button>
+	  <button id="{{$id}}" class="btn-delete card button small right">#yes#</button>
+        </div>
+     </div>
+  </div>
+  
+  
+  <li class="id{{$id}} margin-left margin-right display-container card" style="margin-top:0 !important;">
+     <p>
+     <div class="floating-small blue">
+         <i class="icon">list</i>
+	 </div>
+	 <b class="big">{{text_more($name,30)}}</b><br>
+	 <span class="small">{{text_more($description)}}</span>
+	 <div>
+	 <span class="text-blue"><i class="icon">settings</i>{{text(':'.$type)}}</span>
+	 <span class="text-green"><i class="icon">link</i>{{$uri}}</span>
+	 </div></p>
+	 <div class="display-topright">
+	  <div class="bar-block">
+      <div class="dropdown-hover hover-text-blue white bg-1">
+        <div class="floating-small"><i class="icon">more_vert</i></div>
+        <div class="dropdown-content bar-block bg-1">
+	    <div class="card white round padding" style="width:150px;position:relative;right:110px">
+	
+	      <a title="#to.view#" href="{{url('dashboard/cats/'.$id)}}" class="link">
+	      <div class="floating-small blue card hover-teal"><i class="icon">visibility</i></div></a>
+	       
+		  @if($edit)
+		      <a title="#edit#" href="{{url('dashboard/cats/'.$id.'/edit')}}" class="link">
+	       <div class="floating-small teal card hover-green"><i class="icon">edit</i></div></a>
+	  
+	         <a title="#delete#" onclick="document.getElementById('id{{$id}}').style.display='block'" class="link">
+	     <div class="floating-small red card hover-teal"><i class="icon">delete</i></div></a>
+		 @endif
+	         </div>
+         </div>
+      </div>
+  </div> 
+</div>
+  </li>
+  <li>
+   @if($list->previous)
+        <a class="button border small" href="{{$list->previous}}">Anterior</a>
+      @endif
+  
+     @if($list->next)
+        <a class="button border small" href="{{$list->next}}">Próximo</a>
+     @endif
+   </li>
+  @endin
+    @else
+     <li><h3 class="text-red">Ops! Não há mais itens para mostrar.</h3></li>
+  @endif
+</ul>
+
+<script>
+$(function(){
+   $('.cancel').click(function(){
+     $(".msg").html('');
+	 $("li").removeClass('red');
+   });
+  $(".btn-delete").click(function(){
+	 
+     var id = $(this).attr('id');
+	 var msg = $(".msg");
+	 msg.html('');
+	 
+     $.ajax({
+     url : "{{url('dashboard/cats')}}",
+     type : 'delete',
+     data : {id:id},
+     beforeSend : function(){
+       msg.html('<div class="progress"><div class="indeterminate"></div></div>')   
+     },
+	 success : function(data){
+         if(data == 'ok'){
+		    $('.modal').hide('fast');
+		    $('.id'+id).hide('fast');
+			msg.html('');
+		 }else{
+		    $('.id'+id).addClass('red');
+			 msg.html(data);
+		 }
+     }
+    }); 
+  
+     return false;
+  });
+});
+</script>
+
+@include("dashboard/footer")

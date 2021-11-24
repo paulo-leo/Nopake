@@ -1,0 +1,42 @@
+@painel_header()
+
+
+{!painel_title($find->name,['dashboard/users/'.$find->id.'/edit'=>'Editar','dashboard/users/password/'.$find->id=>'Alterar senha'])!}
+ @grid('container')
+@grid('row m-auto p-3')
+	 <div class="col-6">
+      <label>#email#</label>
+	  {{form.text(['name'=>'email','value'=>$find->email,'disabled'=>true])}}
+    </div>
+	
+	<div class="col-6">
+      <label>#full.name#</label>
+	  {{form.text(['name'=>'name','value'=>$find->name,'disabled'=>true])}}
+    </div>
+	
+   
+
+      <div class="col-3">
+	  <label>#situation#</label>
+	    {{form.select(['disabled'=>true,'value'=>$find->status],$statusOptions)}}
+     </div>
+  
+      <div class="col-3">
+	  <label>#lang#</label>
+	    {{form.select(['disabled'=>true,'value'=>$find->lang],$langOptions)}}
+     </div>
+	   
+	  <div class="col-3">
+	  <label>#role#</label>
+	    {{form.select(['disabled'=>true,'value'=>$find->role],$roleOptions)}}
+     </div>
+	   
+	 <div class="col-3">
+	  <label>#sector#</label>
+	    {{form.select(['disabled'=>true,'value'=>$find->sector],$sectorOptions)}}
+     </div>
+
+@endgrid
+@endgrid
+
+@painel_footer()

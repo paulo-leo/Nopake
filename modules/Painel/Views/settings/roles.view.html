@@ -1,0 +1,44 @@
+@include("@Painel/Views/header")
+{!painel_title('Funções de usuários')!}
+
+@grid('container-fluid np-scroll')
+		@grid('row mt-4')
+			@grid('col-sm-12')
+<table class="table">
+	  
+<tr>
+<th>Nome</th> 
+<th>Descrição</th>
+<td><i class='material-icons black-text'>lock</i></td>
+</tr>
+	  
+@php
+	  $table = null;
+	  foreach($roles as $key=>$val)
+	  {
+	     $url = url('dashboard/settings/roles/edit/permissions?role='.$key.'&name='.$val['name']);
+		 $table .= "<tr>"; 
+		        $table .= "<td>{$val['name']}</td>"; 
+				$table .= "<td>{$val['description']}</td>"; 
+				if($key != 'admin'){
+				$table .= "<td>
+				 <a href='{$url}' class='text-success'><i class='material-icons grey-text'>add_moderator</i></a></td>";
+				 }else{
+				 $table .= "<td>
+				 <span class='text-danger'><i class='material-icons green-text'>lock</i></span></td>";
+				 }
+				
+				
+		 $table .= "</tr>"; 
+	  }
+	  
+@endphp
+
+{!$table!}
+
+</table>
+
+  @endgrid
+       @endgrid
+           @endgrid
+@include("@Painel/Views/footer")

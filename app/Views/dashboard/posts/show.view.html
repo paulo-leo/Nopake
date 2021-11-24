@@ -1,0 +1,63 @@
+@include("dashboard/header")
+   <div class="col m12 padding">
+      <div class="rest col m12 margin-top">
+             <h3>{{$post_title}}</h3>
+      </div>
+	  <div class="col m12">
+	   <span><i class="icon big">list</i>{{$category}}</span><br>
+	   <span class="text-gray"><i class="icon big">date_range</i>{{format($post_create,'datetime')}}</span>
+	    <span class="text-green"><i class="icon">link</i>{{$post_uri}}</span>
+	  </div>
+
+	  <div class="rest col m12">
+        <div>{!$post_content!}</div>
+      </div>
+   </div>
+
+<div class="col m12 container margin-top margin-bottom">
+    <div class="msg"></div>
+	<a class="button blue text-white hover-red right" onclick="window.history.go(-1);">#previous#</a>
+	
+	<a title="#edit#" href="{{url('dashboard/posts/'.$post_id.'/edit')}}" class="button green text-white hover-red right">#edit#</a>
+	
+</div>
+
+</form>
+@include("dashboard/posts/editor")
+<script>
+$(function(){
+
+ $("#form").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/posts')}}",
+     type : 'post',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+  
+});
+</script>
+<script>
+function openTab(tabName) {
+  var i;
+  var x = document.getElementsByClassName("tab");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  document.getElementById(tabName).style.display = "block";  
+}
+</script>
+@include("dashboard/footer")

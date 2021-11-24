@@ -1,0 +1,181 @@
+@include('dashboard/header')
+<ul class="ul ul-border-none">
+  @if($filterBtn)
+  <form action="{{url('dashboard/posts')}}" method="get" class="margin-left margin-right margin-top bg-1">
+   <input type="hidden" name="type" value="{{$type}}">
+  <div class="cell-row margin-bottom">
+   <div class="cell" style="width:35%;">
+	 <select name="category" class="input border cell bg-1">
+	   <option value="0">#not_filter_cat#</option>
+      {!$catOptions!} 
+    </select>
+	</div>
+    <div class="cell" style="width:35%">
+    <select name="post_id" class="input border cell bg-1">
+	  <option value="0">#not_filter_post#</option>
+      {!$pagesOptions!}
+    </select>
+	</div>
+	 <div class="cell" style="width:20%">
+    <select name="order" class="input border cell bg-1">
+	  <option value="0">Sem ordenação</option>
+      {!$orderOptions!}
+    </select>
+	</div>
+	<div class="cell" style="width:10%">
+    <select name="qtd" class="input border cell bg-1">
+      {!$qtdOptions!}
+    </select>
+	</div>
+	<div class="cell" style="width:5%;position:relative;top:-2px">
+	<button type="submit" style="height:38px" class="white bg-1 border border-teal block button cell" title="#filter#"><i style="position:relative;top:-2px" class="icon">search</i></button>
+	</div>
+	</div>
+  </form>
+  @else
+     <h3 class="margin-left margin-right"><i style="position:relative;top:3px" class="icon">delete</i>#trash#</h3>
+  @endif
+  
+  <div class="margin center">#total#:<b class="text-green">{{$list->count}}</b> #page#<b class="text-pink">{{$list->page}}</b><sub>{{$list->total}}</sub></div>
+  
+ @if($list->results)
+  @in($list->results)
+  
+    <!-- Modal para apagar registro -->
+  <div id="id{{$post_id}}" class="modal">
+     <div class="modal-content">
+      <div class="container center">
+	  <h2><i class="icon text-pink xxbig" style="position:relative;top:8px">delete</i>#delete#</h2>
+	  <p>#post.delete# "<b>{{$post_title}}</b>"?</p>
+	  <div class="msg"></div>
+	  <button class="cancel pink hover-red button card small right" onclick="document.getElementById('id{{$post_id}}').style.display='none'">#no#</button>
+	  <button id="{{$post_id}}" class="btn-delete card button small right">#yes#</button>
+        </div>
+     </div>
+  </div>
+  @php
+     
+	  $class_post = null;
+	  if($post_status == 'published') $class_post = 'leftbar border-green';
+	  elseif($post_status == 'draft') $class_post = 'leftbar border-yellow';
+	  else $class_post = 'leftbar border-red';
+	 
+	 $class_post = $post_id == 0 ? $class_post.' border-top rightbar animate-zoom': $class_post;
+	 
+  @endphp
+  <div class="{{$class_post}} margin-left margin-right">
+  <li class="id{{$post_id}} display-container card bg-1 white margin-bottom" style="margin-top:0 !important;">
+     <p>
+	 <span class="badge pale-green">{{$post_order}}</span>
+	 <span class="big tooltip">
+	 @if($post_privacy == 'public')
+	      <i class="icon text-indigo">public</i>
+	 @else
+	      <i class="icon text-red">lock</i>
+	@endif
+	<span class="text small tag animate-left">{{text(':'.$post_privacy)}}</span>
+    </span> <span class="big">{{text_more($post_title,50)}}</span>
+	
+	<span class="tooltip link">
+	<i class="icon big">info_outline</i>
+	<span class="text small tag padding teal animate-zoom">
+	#status#:{{text(':'.$post_status)}} | #comments#:{{text(':'.$post_comment)}}
+	</span></span>
+	<br>
+	 <div>
+	  <span><i class="icon big">list</i>{{$category}}<i class="icon big">person</i>{{$author}}</span><br>
+	 <span class="text-gray"><i class="icon big">date_range</i>{{format($post_create,'datetime')}}</span>
+	 <span class="text-green"><i class="icon">link</i>{{$post_uri}}</span>
+	 </div></p>
+	 <div class="display-topright">
+	  <div class="bar-block">
+      <div class="dropdown-hover hover-text-blue" style="background-color:transparent">
+        <div class="floating-small"><i class="icon">more_vert</i></div>
+        <div class="dropdown-content bar-block">
+	    <div class="card white round padding" style="width:150px;position:relative;right:110px">
+	
+	      @if($filterBtn)
+	      <a title="#to.view#" href="{{url('dashboard/posts/'.$post_id)}}" class="link">
+	      <div class="floating-small blue card hover-teal"><i class="icon">visibility</i></div></a>
+	       
+		   <a title="#edit#" href="{{url('dashboard/posts/'.$post_id.'/edit')}}" class="link">
+	       <div class="floating-small teal card hover-green"><i class="icon">edit</i></div></a>
+		   @endif
+	  
+	     <a title="#delete#" onclick="document.getElementById('id{{$post_id}}').style.display='block'" class="link">
+	     <div class="floating-small red card hover-teal"><i class="icon">delete</i></div></a>
+		 @if(!$filterBtn)
+		 <a title="#restore#" class="btn-restore link" id="{{$post_id}}">
+	     <div class="floating-small green card hover-teal"><i class="icon">settings_backup_restore</i></div></a>
+		 @endif
+		 
+		 
+	       </div>
+        </div>
+      </div>
+  </div> 
+</div>
+  </li></div>
+  @endin
+      <li>{!$paginate!}</li>
+   @else
+      <li><h3 class="text-red">#not.have.posts#</h3></li>
+  @endif
+</ul>
+
+<script>
+$(function(){
+   $('.cancel').click(function(){
+     $(".msg").html('');
+	 $("li").removeClass('red');
+   });
+  $(".btn-delete").click(function(){
+	 
+     var id = $(this).attr('id');
+	 var msg = $(".msg");
+	 msg.html('');
+	 
+     $.ajax({
+     url : "{{url('dashboard/posts')}}",
+     type : 'delete',
+     data : {id:id},
+     beforeSend : function(){
+       msg.html('<div class="progress"><div class="indeterminate"></div></div>')   
+     },
+	 success : function(data){
+         if(data == 'ok'){
+		    $('.modal').hide('fast');
+		    $('.id'+id).hide('fast');
+			msg.html('');
+		 }else{
+		    $('.id'+id).addClass('red');
+			 msg.html(data);
+		 }
+     }
+    }); 
+  
+     return false;
+  });
+  
+  $('.btn-restore').click(function(){
+  
+     var id = $(this).attr('id');
+	 
+    $.ajax({
+     url : "{{url('dashboard/posts')}}/"+id,
+     type : 'delete',
+	 success : function(data){
+         if(data == 'ok'){
+		    $('.modal').hide('fast');
+		    $('.id'+id).hide('fast');
+		 }else{
+		    alert(data);
+		 }
+       }
+    }); 
+  });
+
+});
+</script>
+
+@include("dashboard/footer")

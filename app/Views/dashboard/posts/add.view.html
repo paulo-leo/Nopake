@@ -1,0 +1,171 @@
+@include("dashboard/header")
+@include('@Files/Views/featured')
+@include('@Files/Views/images')
+<form id="form">
+{{csrf_field()}}
+<input type="hidden" name="type" value="{{$type}}">
+<input type="hidden" name="user_id" value="{{user_id()}}">
+
+<!--Principal-->
+<div class="bar container">
+  <h3>@if($type == 'doc') #add.doc#
+    @elseif($type == 'page') #add.page#
+     @else #add.post# @endif </h3>
+  <span class="bar-item button" onclick="openTab('main')"><i class="icon">dvr</i>#main#</span>
+
+  <span class="bar-item button" onclick="openTab('cat')"><i class="icon">list</i>#categorization#</span>
+
+  <span class="bar-item button" onclick="openTab('seo')"><i class="icon">search</i>SEO</span>
+  
+  <span class="bar-item button" onclick="openTab('image')"><i class="icon">image</i>Capa</span>
+</div>
+
+<div id="main" class="container tab">
+   <div class="col m12">
+      <div class="rest col m12 margin-top">
+              
+			  
+			  <div class="cell-row">
+			     <div class="cell" style="">
+				 <input class="input border bg-1" style="height:40px" required name="title" placeholder="#title#" type="text">
+			     </div>
+				 <div class="cell padding">
+				     <div class="floating-small blue hover-indigo link card btn-modal-content-images" style="position:relative;top:-15px">
+					     <i class="icon">image</i>
+					 </div>
+				 </div>
+			  </div>
+			  
+      </div>
+
+	  <div class="rest col m12">
+        <textarea id="editor" name="content" type="text" placeholder="#write.here#"></textarea>
+      </div>
+   </div>
+</div>
+
+<!--Sessão para categorização-->
+<div id="cat" class="container tab" style="display:none">
+
+  <div class="col m12">
+    <div class="rest col m4">#category#
+	  <select name="cat_id" class="select border bg-1">
+	     <option value="0">#not.category#</option>
+	     {!$catOptions!}
+	  </select>
+    </div>
+   <div class="rest col m4">#page.higher#
+	 <select name="post_id" class="select border bg-1">
+	     <option value="0">#not.page.higher#</option>
+	     {!$postOptions!}
+	  </select>
+    </div>
+	<div class="rest col m4">#comment.confirm#
+	  <select name="comment" class="select border bg-1">
+	     <option value="on">#yes#</option>
+		 <option value="off">#no#</option>
+	  </select>
+    </div>
+	<div class="rest col m6">#image.featured#
+	  <input class="input border bg-1" name="image_featured" type="text" placeholder="#exemple#:img/my-image.png">
+	</div>
+	<div class="rest col m3">#save.how#
+	  <select name="status" class="select border bg-1">
+	     {!$statusOptions!}
+	  </select>
+    </div>
+	<div class="rest col m3">#privacy#
+	  <select name="privacy" class="select border bg-1">
+	     <option value="public">#public#</option>
+	     {!$privacyOptions!}
+	  </select>
+    </div>
+  </div>
+</div>
+
+<!--Descrição para SEO-->
+<div id="seo" class="container tab" style="display:none">
+  
+  <div class="col m12">
+	<div class="rest col m10">#keyword#
+	  <input class="input border bg-1" name="keyword" type="text" placeholder="#keyword.tip#">
+	</div>
+	<div class="rest col m2">#number.order#
+	  <input class="input border bg-1" name="number" type="number" min="0" value="0">
+	</div>
+	<div class="rest col m12">#description#
+	  <textarea class="input border bg-1" name="description" type="text" placeholder="#description.tip#"></textarea>
+	</div>
+  </div>
+  
+</div>
+
+<!--Imagem de capa-->
+<div id="image" class="container tab" style="display:none">
+   <div class="col m12">
+   
+   <span class="button btn-modal-file-image-featured">
+    <div style="heigth:100px" class="red">
+      <input type="hidden" name="image_featured" value="0" id="file-image-featured"/>
+      <div id="file-image-featured-show"></div>
+     </div>
+   </span>
+   
+  </div>
+ 
+</div>
+
+
+<div class="col m12 container margin-top margin-bottom">
+    <div class="msg"></div>
+   <button type="submit" class="right button teal hover-green">#add#</button>
+	<a class="button orange text-white hover-red right" onclick="window.history.go(-1);">#cancel#</a>
+</div>
+
+</form>
+@include("dashboard/posts/editor")
+<script>
+$(function(){ 
+
+ $("#form").submit(function(){ alert
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/posts')}}",
+     type : 'post',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+  
+});
+</script>
+<script>
+function openTab(tabName) {
+  var i;
+  var x = document.getElementsByClassName("tab");
+  for (i = 0; i < x.length; i++) {
+    x[i].style.display = "none";  
+  }
+  document.getElementById(tabName).style.display = "block";  
+}
+//Confirma se o usuário quer sair da página ao clicar em cancelar
+function confirmExit()
+  {
+    return '#confirm_exit#';
+  }
+  window.onbeforeunload = confirmExit;
+//Fim do código para confirmar saída da página
+
+</script>
+@include("dashboard/footer")

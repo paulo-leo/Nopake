@@ -1,0 +1,6 @@
+{
+ "filemanager":{
+    "home":"text=Diretórios|route=|icon=folder",
+	"import_image|Importação de imagem|":"text=Importar imagem|route=import-image|icon="	
+  }
+}

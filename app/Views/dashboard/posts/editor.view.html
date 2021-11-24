@@ -1,0 +1,45 @@
+<link rel="stylesheet" href="{{asset('js/ui/trumbowyg.css')}}">
+<link rel="stylesheet" href="{{asset('js/plugins/colors/ui/trumbowyg.colors.min.css')}}">
+<link rel="stylesheet" href="{{asset('js/plugins/highlight/ui/trumbowyg.highlight.css')}}">
+<link rel="stylesheet" href="{{asset('js/plugins/table/ui/trumbowyg.table.min.css')}}">
+<link rel="stylesheet" href="{{asset('js/prism/prism.css')}}">
+
+<script src="{{asset('js/prism/prism.min.js')}}"></script>
+<script src="{{asset('js/trumbowyg.js')}}"></script>
+<script src="{{asset('js/plugins/colors/trumbowyg.colors.min.js')}}"></script>
+<script src="{{asset('js/plugins/highlight/trumbowyg.highlight.min.js')}}"></script>
+<script src="{{asset('js/plugins/table/trumbowyg.table.min.js')}}"></script>
+
+
+
+<script>
+//Editor de códigos
+$('#editor').trumbowyg({
+	 lang: 'pt_br',
+	 btns: [
+	    ['table'],
+        ['formatting'],
+        ['strong', 'em', 'del','pre'],
+        ['superscript', 'subscript'],
+        ['link'],
+        ['image'], // Our fresh created dropdown
+        ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'],
+        ['unorderedList', 'orderedList'],
+        ['horizontalRule'],
+        ['removeformat'],
+        ['foreColor', 'backColor'],
+		['preformatted','viewHTML'],
+		['highlight'],
+		['fullscreen']
+    ],
+	plugins: {
+        colors: {
+            foreColorList: [
+                'ffc107','00ffff','2196F3','87CEEB','795548','00bcd4','607d8b','4CAF50','8bc34a','3f51b5','b4aa50','cddc39','ff9800','ff5722','e91e63','9c27b0','673ab7','f44336','fdf5e6','009688','d2be0e','fff','000','757575','f1f1f1','3a3a3a'
+            ],
+            backColorList: [
+               'ffc107','00ffff','2196F3','87CEEB','795548','00bcd4','607d8b','4CAF50','8bc34a','3f51b5','b4aa50','cddc39','ff9800','ff5722','e91e63','9c27b0','673ab7','f44336','fdf5e6','009688','d2be0e','fff','000','757575','f1f1f1','3a3a3a'
+            ]
+        }
+ }});
+</script>

@@ -1,0 +1,175 @@
+@include("dashboard/header")
+
+<script src="{{asset('js/jquery.form.min.js')}}"></script>
+
+<form id="form"  class="container padding">
+<input type="hidden" name="id" value="{{$find->id}}">
+<div class="col m12">
+   <div class="col m2 center">
+   <!--Imagem de perfil-->
+   <div class="tooltip">
+   <div title="#change_profile_picture#" class="floating-big blue link hover-teal" onclick="document.getElementById('01-avatar').style.display='block'" style="position:relative;top:0px;">
+   @if(user_image()) 
+         <img class="avatar hover-opacity" src="{{user_image()}}">
+       @else
+         <i class="icon">person</i>
+     @endif 
+         </div>
+		 <span onclick="document.getElementById('01-avatar').style.display='block'" class="link text small round tag" style="position:absolute;left:0;bottom:18px" >#change_profile_picture#</span></div>
+    </div>
+    <div class="col m5">#full.name#
+       <input class="input border white bg-1" value="{{$find->name}}" required name="name" type="text" placeholder="Nome completo">
+    </div>
+    <div class="col m5">#email#
+       <input class="input border white bg-1" value="{{$find->email}}" disabled type="email">
+    </div>
+	
+</div>
+<div class="col m12">
+   
+	
+	<div class="rest col m6">#type#
+      <input class="input border white bg-1" value="{{text(':'.$find->role)}}" disabled type="email">
+	  <a class="button left padding" onclick="document.getElementById('id01').style.display='block'"><i class="icon">lock</i>#change_password#</a>
+    </div>
+	<div class="rest col m6">#lang#
+      <select name="lang" class="select border white bg-1">
+	     {!$langOptions!}
+	   </select>
+    </div>
+</div>
+
+
+
+<div class="col m12 margin-top">
+    <div class="msg"></div>
+   <button type="submit" class="right button teal hover-green">#update#</button>
+   <a class="button orange text-white hover-red right" onclick="window.history.go(-1);">#cancel#</a>
+</div>
+
+</form>
+
+
+<!--Formulário para alterar a imagem do perfil--->
+<div id="01-avatar" class="modal">
+  <div class="modal-content">
+    <div class="container">
+	    <h3 class="center">
+		<div class="floating blue card animate-zoom"><i class="icon">image</i></div>
+		#change_profile_picture#</h3>
+	   
+        <form id="update-image" enctype="multipart/form-data" method="POST">
+          {{csrf_field()}}
+          <div class="rest padding">
+          <input name="userfile" id="userfile" type="file" />
+          <label class="col m12 margin-top">
+          @if(user_image())
+          <input name="remove-image" type="checkbox">#remove_profile_picture#</label>
+          @endif
+        </div>
+        <div class="msg-upload col m12"></div>
+          <input type="submit" class="button blue right hover-gre" value="#load_image#" />
+          <a onclick="document.getElementById('01-avatar').style.display='none'" class="right button red hover-orange">#cancel#</a>
+        </form>
+        
+		</div>
+    </div>
+  </div>
+</div> 
+
+
+<!--Formulário para atualizar a senha--->
+<div id="id01" class="modal">
+  <div class="modal-content">
+    <div class="container">
+      <form id="update-password">
+		{{csrf_field()}}
+	    <h3 class="center"><div class="floating red card animate-zoom"><i class="icon">lock</i></div> #change_password#</h3>
+	    <div class="rest">#current_password#
+          <input required name="password" class="input border-bottom" type="password">
+        </div>
+	    <div class="rest">#new_password#
+          <input required name="password-1" class="input border-bottom" type="password">
+        </div>
+		<div class="rest">#confirm_password#
+          <input required name="password-2" class="input border-bottom" type="password">
+        </div>
+		<div class="msg-update-password col m12"></div>
+		<div class="margin-top col m12">
+		<button type="submit" class="right button green hover-blue">#change_password#</button>
+		<a onclick="document.getElementById('id01').style.display='none'" class="right button red hover-orange">#cancel#</a>
+		</div>
+	  </form>
+    </div>
+  </div>
+</div> 
+
+
+<script>
+$(function(){
+
+  $("#form").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/users')}}",
+     type : 'put',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+  
+  $("#update-password").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg-update-password");
+	 
+     $.ajax({
+     url : "{{url('profile')}}",
+     type : 'post',
+     data : vars,
+   beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+
+ // attach handler to form's submit event 
+$('#update-image').submit(function() { 
+    // prepare Options Object 
+    var options = { 
+        type:'post',
+        url:  '{{url("profile/upload")}}', 
+        beforeSend : function(){
+          $('.msg-upload').html('<div class="progress"><div class="indeterminate"></div></div>');
+     }, success: function(data) { 
+           $('.msg-upload').html(data);
+        } 
+    };
+    // submit the form 
+    $(this).ajaxSubmit(options); 
+    // return false to prevent normal browser submit and page navigation 
+    return false; 
+});
+ 
+
+});
+</script>
+
+@include("dashboard/footer")

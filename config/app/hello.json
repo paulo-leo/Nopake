@@ -1,0 +1,15 @@
+{
+   "styles":{
+	  "nopadi":"np-ui/np-ui"
+	},
+	"scripts":{
+	},
+	"hello": {
+	   "info":"alert alert-primary",
+	   "success":"alert alert-success",
+	   "danger":"alert alert-danger",
+	   "warning":"alert alert-warning"
+	}
+}
+
+

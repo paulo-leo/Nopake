@@ -1,0 +1,62 @@
+@include("dashboard/header")
+
+<form id="form" class="container">
+{{csrf_field()}}
+<h3>#user.create#</h3>
+ 
+<div class="col m6">
+    <div class="rest">#email#
+      <input class="input border" required name="email" type="email" placeholder="#email#">
+    </div>
+	<div class="rest">#full.name#
+      <input class="input border" required name="name" type="text" placeholder="#full.name#">
+    </div>
+</div>
+
+<div class="col m6">
+    <div class="restx"></span>#password#<span class="tooltip"><i class="icon text-red big">help_outline</i><span style="position:absolute;bottom:16px;width:300px" class="text padding card center border border-red round white small">#password.tip#</span></span>
+      <input class="input border" required name="password" type="password" placeholder="#password#">
+    </div>
+	<div class="rest col m6">#role#
+      <select name="role" class="select border">
+	     {!$roleOptions!}
+	  </select>
+    </div>
+	<div class="rest col m6">#lang#
+      <select name="lang" class="select border">
+	     {!$langOptions!}
+	   </select>
+    </div>
+</div>
+<div class="col m12 margin-top">
+   <div class="msg"></div>
+   <button type="submit" class="right button teal hover-green">#user.create#</button>
+   <a class="button orange text-white hover-red right" onclick="window.history.go(-1);">#cancel#</a>
+</div>
+</form>
+<script>
+$(function(){
+
+  $("#form").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/users')}}",
+     type : 'post',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+});
+</script>
+@include("dashboard/footer")

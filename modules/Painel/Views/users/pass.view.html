@@ -1,0 +1,57 @@
+@painel_header()
+
+
+@if($find->id == user_id())
+  
+  <div class="modal" tabindex="-1" style="display:block" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ops!</h5>
+        <button type="button" class="btn-close" onclick="window.history.go(-1);" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Desculpe, mas por questão de segurança você não pode alterar a sua senha por essa tela.</p>
+      </div>
+      <div class="modal-footer">
+        <a type="button" href="{{url('profile')}}" class="btn btn-primary">Editar meu perfil</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endif
+
+   
+{{form.header([
+'title'=>'Atualizar senha de '.$find->name,
+'url'=>'dashboard/users/update/password',
+'method'=>'POST'
+])}}
+
+
+ @grid('container')
+@grid('row m-auto p-3')
+{{form.token()}}
+     <input type="hidden" name="id" value="{{$find->id}}">  
+	
+	 <div class="col-4">
+      <label>Nova senha</label>
+	  {{form.password(['name'=>'pass1','required'=>true])}}
+    </div>
+	
+	 <div class="col-4">
+      <label>Confirmar senha</label>
+	  {{form.password(['name'=>'pass2','required'=>true])}}
+    </div>
+	
+	 <div class="col-4">
+      <label>Digite a sua senha de administrador.</label>
+	  {{form.password(['name'=>'password','required'=>true])}}
+    </div>
+@endgrid
+@endgrid
+{{form.close()}}
+
+
+@painel_footer()

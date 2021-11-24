@@ -1,0 +1,24 @@
+@painel_header()
+
+{!painel_title('Usuários',['dashboard/users/create'=>'Adicionar novo'])!}
+<table class="table">
+   {!painel_table(['id|!ID','name','email','status'],$list,
+   ['edit'=>false,
+   'view'=>true,
+   'delete'=>true],
+   ['status'=>function($data){
+      
+	  switch($data['status'])
+	  {
+	    case 'active' : return '<span class="green-text chip green lighten-5">'.lang('active').'</span>'; break;
+	    case 'pending' : return '<span class="orange-text chip yellow lighten-5">'.lang('pending').'</span>'; break;
+		default : return '<span class="red-text chip red lighten-5">'.lang($data['status']).'</span>'; 
+	  }
+	  
+   }])!}
+</table>
+
+
+{!paginate($list)!}
+
+@painel_footer()

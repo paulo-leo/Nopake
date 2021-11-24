@@ -1,0 +1,12 @@
+{
+        "name": "Gerenciador de arquivos",
+        "description": "Aplicativo para gerenciamento de arquivos.",
+        "version": "0.1",
+		"author": "Paulo Leonardo | Onpaulo",
+        "license": "MIT",
+        "require": ["php7"],
+        "url": "www.onpaulo.com.br",
+		"icon": "folder",
+		"color":"info",
+		"route":"filemanager"		
+}

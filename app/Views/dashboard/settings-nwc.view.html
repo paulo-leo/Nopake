@@ -1,0 +1,57 @@
+@include("dashboard/header")
+<form id="form"  class="container">
+<div class="col m12">
+    <h3><i class="icon xxbig" style="position:relative;top:9px">code</i>{{$page_title}}</h3>
+	<div id="load"></div>
+    <div class="rest col m12">
+      <input id="code" class="input bg-1 border" required name="code" placeholder="Digite um comando aqui!"/>
+    </div>
+    <div class="result col m12"></div>
+</div>
+</form>
+
+
+<script>
+$(function(){
+   var load = $('#load');
+   load.html('<div class="progress white bg-1"></div>');
+  $("#form").submit(function(){
+	 
+      var code = $('#code').val();
+	  
+	   code = code == 'show' || code == 's' ? 'show-schema' : code; 
+	   code = code == 'create' || code == 'c' ? 'create-schema' : code; 
+	   code = code == 'modify' || code == 'm' ? 'modify-schema' : code; 
+	  
+	  if(code == 'cls'){ 
+	  
+	       $('.result').html(''); 
+	  
+	  }else{
+	 
+     $.ajax({
+     url : "{{url('dashboard/settings')}}",
+     type : 'post',
+     data :{code:code,_token:'{{csrf_token()}}'},
+     beforeSend : function(){
+           load.html('<div class="progress bg-1 white"><div class="indeterminate green"></div></div>');
+     },
+	 success : function(data){
+	      if(code == 'show-schema'){ 
+		      $('.result').html(data);
+		  }else{
+		     $('.result').prepend('<div class="animate-right">'+data+'</div>');
+		  }
+		  
+	      load.html('<div class="progress white bg-1"></div>');	 
+     }
+
+    }); }
+  
+     return false;
+  });
+
+});
+</script>
+
+@include("dashboard/footer")

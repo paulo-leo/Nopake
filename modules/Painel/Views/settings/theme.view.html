@@ -1,0 +1,47 @@
+@painel_header()
+
+{{form.header(['title'=>'Tema da aplicação', 'url'=>'dashboard/settings/theme'])}}
+{{form.token()}}
+
+  @grid('row justify-content-center')
+    <?php
+	  $themes = array(
+	   'black'=>'Preto',
+	   'white'=>'Branco',
+	   'pink'=>'Rosa',
+	   'green'=>'Verde',
+	   'lime'=>'Limão',
+	   'yellow'=>'Amarelo',
+	   'orange'=>'Laranja',
+	   'blue'=>'Azul',
+	   'red'=>'Vermelho',
+	   'indigo'=>'Indigo'
+	  );
+	?>
+
+	@grid('col-3 mt-4 p-2')
+		{{form.select(['name'=>'theme', 'value'=> NP_NEW_MEMBER_DEFAULT], $themes)}}
+	@endgrid
+	
+  @endgrid
+{{form.close()}}
+
+<script>
+$(function(){
+
+  var select = $("select[name=theme] > option");
+  var themeHere = "np-"+"{{theme()}}";
+  
+  select.click(function(){
+     var value = $(this).attr('value');
+	 var style = $("#np-main-menu-top"); 
+	 var classHere = "np-"+value;
+	 style.removeClass(themeHere);
+	 style.addClass(classHere);
+	 themeHere = classHere;
+  });
+  
+});
+</script>
+
+@painel_footer()

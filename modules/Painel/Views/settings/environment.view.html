@@ -1,0 +1,137 @@
+@painel_header()
+
+{{form.header(['title'=>'Configurações gerais', 'url'=>'dashboard/settings/environment'])}}
+
+    {{form.token()}}
+    @grid('container')
+      @grid('row m-auto p-3')
+
+      <ul class="nav nav-tabs mt-3" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-black-50 active" id="description-tab" data-bs-toggle="tab" data-bs-target="#description" type="button" role="tab" aria-controls="description" aria-selected="true">#description_settings#</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-black-50" id="stage-tab" data-bs-toggle="tab" data-bs-target="#stage" type="button" role="tab" aria-controls="stage" aria-selected="false">#stage_settings#</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link text-black-50" id="record-tab" data-bs-toggle="tab" data-bs-target="#record" type="button" role="tab" aria-controls="record" aria-selected="false">#record_settings#</button>
+        </li>
+		
+		 <li class="nav-item" role="presentation">
+          <button class="nav-link text-black-50" id="date-tab" data-bs-toggle="tab" data-bs-target="#horario" type="button" role="tab" aria-controls="record" aria-selected="false">Horário do servidor</button>
+        </li>
+      </ul>
+      <div class="tab-content pt-3" id="myTabContent">
+      
+        <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
+            @grid('row')
+              @grid('col-md-6 col-sm-12 mb-3')
+                <label class="form-label" for="name">#name#</label>
+                {{form.text(['name'=>'name', 'id'=>'name' ,'value'=>NP_NAME])}}
+              @endgrid
+
+              @grid('col-md-6 col-sm-12 mb-3')
+                <label class="form-label" for="author">#author#</label>
+                {{form.text(['name'=>'author', 'id'=>'author' ,'value'=>NP_AUTHOR])}}
+              @endgrid
+
+              @grid('col-12 mb-3')
+                <label class="form-label" for="message">#description#</label>
+                {{form.textarea(['name'=>'description', 'id'=>'message' ,'value'=>NP_DESCRIPTION])}}
+              @endgrid
+            @endgrid
+        </div>
+        
+        <div class="tab-pane fade" id="stage" role="tabpanel" aria-labelledby="stage-tab">
+                
+            @grid('row')
+              @grid('col-md-4 col-sm-12 mb-3')
+                <label class="form-label" for="lang">#lang#</label>
+                {{form.select(['name'=>'lang', 'id'=>'lang', 'value'=>NP_LANG], $lang)}}
+              @endgrid
+
+              @grid('col-md-4 col-sm-12 mb-3')
+                <label class="form-label" for="status">#status#</label>
+                {{form.select(['name'=>'status', 'id'=>'status', 'value'=>NP_STATUS], $status)}}
+              @endgrid
+
+              @grid('col-md-4 col-sm-12 mb-3')
+                <label class="form-label" for="timezone">#timezone#</label>
+                {{form.select(['name'=>'timezone', 'id'=>'timezone', 'value'=>NP_TIMEZONE], $np_timezone)}}
+              @endgrid
+
+              @grid('col-md-3 col-sm-12 mb-3')
+                <label class="form-label" for="mode">#mode#</label>
+                {{form.select(['name'=>'mode', 'id'=>'mode', 'value'=>NP_MODE], $mode)}}
+              @endgrid
+
+              @grid('col-md-3 col-sm-12 mb-3')
+                <label class="form-label" for="charset">#charset#</label>
+                {{form.select(['name'=>'charset', 'id'=>'charset', 'value'=>NP_CHARSET], ['utf-8'=>'UTF-8', 'ansi'=>'ANSI'])}}
+              @endgrid
+
+              @grid('col-md-3 col-sm-12 mb-3')
+                <label class="form-label" for="max_execution">#max_execution#</label>
+                {{form.number(['name'=>'max_execution', 'id'=>'max_execution' ,'min'=>0, 'value'=>NP_MAX_EXECUTION])}}
+              @endgrid
+
+              @grid('col-md-3 col-sm-12 mb-3')
+                {{form.label(['id'=>'new_member_default', 'text'=>'Cargo do membro novo'])}}
+                {{form.select(['name'=>'new_member_default', 'id'=>'new_member_default', 'value'=>NP_NEW_MEMBER_DEFAULT], $new_member_default)}}
+              @endgrid
+            @endgrid
+
+        </div>
+
+        <div class="tab-pane fade" id="record" role="tabpanel" aria-labelledby="record-tab">
+            @grid('row')
+              @grid('col-12 mb-1')
+                {{form.switch('new_members', NP_NEW_MEMBERS, 'Permitir cadastros' )}}
+              @endgrid
+
+              @grid('col-12 mb-1')
+                {{form.switch('strong_password', NP_STRONG_PASSWORD, 'Forçar o uso de senha forte durante o registro ou atualização do usuário' )}}
+              @endgrid
+
+              @grid('col-12 mb-')
+                {{form.switch('accept_terms', NP_ACCEPT_TERMS, 'Forçar o usuário a aceitar os termos para conclusão do cadastro' )}}
+              @endgrid
+
+              @grid('col-12 mb-3')                
+                {{form.switch('logs', NP_LOGS, 'Registrar todos os erros de logs da aplicação')}}
+              @endgrid
+            @endgrid
+        </div>
+		
+		
+		<div class="tab-pane fade" id="horario" role="tabpanel" aria-labelledby="record-tab">
+		 @grid('row')
+        @grid('col-md-3 col-sm-3')
+          <label> #version# </label>
+          {{form.text(['disabled'=>true, 'value'=>NP_VERSION ])}}
+        @endgrid
+
+        @grid('col-md-3 col-sm-3')
+          <label>#datetime#</label>
+          {{form.text(['disabled'=>true, 'value'=>format(NP_DATETIME,'datetime') ])}}
+        @endgrid
+
+        @grid('col-md-3 col-sm-3')
+          <label>#date#</label>
+          {{form.text(['disabled'=>true, 'value'=>format(NP_DATE,'date') ])}}
+        @endgrid
+
+        @grid('col-md-3 col-sm-3')
+          <label>#time#</label>
+          {{form.text(['disabled'=>true, 'value'=>NP_TIME ])}}
+        @endgrid
+		 @endgrid
+    </div>
+
+      </div>               
+
+      @endgrid
+  {{form.close()}}
+
+
+  @painel_footer()

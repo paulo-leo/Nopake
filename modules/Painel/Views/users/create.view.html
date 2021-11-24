@@ -1,0 +1,49 @@
+ @painel_header() 
+{{form.header([
+'title'=>'Adicionar usuário',
+'url'=>'dashboard/users',
+'method'=>'POST'
+])}}
+
+ @grid('container')
+@grid('row m-auto p-3')
+{{form.token()}}
+	
+	 <div class="col-6">
+      <label>#email#</label>
+	  {{form.text(['name'=>'email','required'=>true])}}
+    </div>
+	
+	<div class="col-6">
+      <label>#full.name#</label>
+	  {{form.text(['name'=>'name','required'=>true])}}
+    </div>
+	
+  
+  
+      <div class="col-4">
+	  <label>#lang#</label>
+	    {{form.select(['name'=>'lang','required'=>true],$langOptions)}}
+     </div>
+	   
+	  <div class="col-4">
+	  <label>#role#</label>
+	    {{form.select(['name'=>'role','required'=>true],$roleOptions)}}
+     </div>
+	 
+	 <div class="col-4">
+      <label>#password#</label>
+	  {{form.password(['name'=>'password','required'=>true])}}
+    </div>
+	
+	<div class="np-col m12 np-padding" style="padding-top:20px">
+	<input type="checkbox" name="accept_terms" value="on">
+	<label for="conect-me">#i_accept_the_terms#</label><br>
+	 </div>
+	   
+
+@endgrid
+@endgrid
+{{form.close()}}
+
+@painel_footer()

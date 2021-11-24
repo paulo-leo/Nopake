@@ -1,0 +1,41 @@
+@include("@Painel/Views/header")
+{!form_open(':SMTP_server_settings','settings/smtp')!}
+{{csrf_field()}}
+	<div class="col m2 s6">
+      <label>#port#</label>
+      <input type="number" name="port" min="0" value="{{NP_EMAIL_PORT}}">
+    </div>
+	
+	<div class="col m5 s6">
+      <label>#host#</label>
+      <input type="text" name="host" value="{{NP_EMAIL_HOST}}">
+    </div>
+	
+	<div class="col m5 s6">
+      <label>#email#</label>
+      <input type="email" name="email"  value="{{NP_EMAIL}}">
+    </div>
+	
+	<div class="col m4 s6">
+      <label>#name#</label>
+      <input type="text" name="name" value="{{NP_EMAIL_NAME}}">
+    </div>
+
+	<div class="col m4 s6">
+      <label>Usuário do servidor SMTP</label>
+      <input type="text" name="user" value="{{NP_EMAIL_USER}}">
+    </div>
+	
+	<div class="col m4 s6">
+      <label>#password#</label>
+      <input type="password" name="pass"  value="{{NP_EMAIL_PASS}}">
+    </div>
+	
+	 <div class="col m12">
+	  {!form_checkbox('auth',NP_EMAIL_AUTH)!}
+	  <label style="position:relative;top:5px">Usar autenticação SMTP</label>
+    </div>
+
+{!form_close()!}
+
+@include("@Painel/Views/footer")

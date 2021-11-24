@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="{{NP_LANG}}">
+  <head>
+    <!-- Meta tags Obrigatórias -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-href-fit=no">
+
+    <!-- Nopadi CSS -->
+    <link rel="stylesheet" href="{{asset('css/nopadi/nopadi.css')}}">
+	<link rel="stylesheet" href="{{asset('css/nopadi/progress.css')}}">
+	
+	
+	
+     <!--Arquivos JS-->
+	<script src="{{asset('js/jquery.min.js')}}"></script>
+	<script src="{{asset('js/jquery.form.min.js')}}"></script>
+    <title>{{$page_title}}</title>
+	
+	<link rel="apple-touch-icon" sizes="76x76" href="{{asset('img/favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{asset('img/favicon/favicon-32x32.png')}}">
+   <link rel="icon" type="image/png" sizes="16x16" href="{{asset('img/favicon/favicon-16x16.png')}}">
+   <link rel="manifest" href="{{asset('img/favicon/site.webmanifest')}}">
+  </head>
+<body>
+<style>
+#my-app{margin-left:250px;}
+#myTop{display:none;}
+@media (max-width:992px) and (min-width:400px),(max-width:400px) and (min-width:50px){
+.app-content{padding-top:65px !important;}
+#myTop{display:block !important;}
+.site{display:none !important;}
+#my-app{margin-top:45px;margin-left:0px;}
+}
+p > .icon{position:relative;top:5px;}
+h3 > .icon{position:relative;top:5px;}
+</style>
+<body class="row bg-1">
+
+<div class="bar card white hide-medium hide-small" style="z-index:91;position:fixed;top:0px;height:40px;">
+  <a href="{{url('dashboard')}}" class="bar-item link margin-left hover-opacity" style="padding:0px">
+     <img style="width:110px;height:38px;" src="{{asset('img/np-logo-text.png')}}">
+  </a>
+ <a href="http://nopadi.com/doc/mf" target="_blank" class="bar-item button" style="position:relative;top:-4px">
+ <i class="icon">help_outline</i>#support_nopadi#</a>
+ 
+  <div class="bar-item right btn-menu-perfil link margin-right">
+       <div class="floating-small" style="position:relative;top:-5px">
+             @if(user_image())
+              <img src="{{user_image()}}">
+             @else
+               <i class="icon">account_circle</i>
+            @endif
+	   </div>
+    </div>
+</div> 
+<div style="height:38px" class="hide-medium hide-small"></div>
+
+<div class="btn-open-menu-auxi hide-big" style="z-index:89;background-color:rgb(4,0,0,0.1);position:fixed;top:0px;height:100%;width:100%;display:none"></div>
+
+<nav class="sidebar menu-main bar-block collapse white card" style="z-index:90;width:250px;left:0;">
+<!--Inclusão do menu lateral-->
+ <a href="{{url('/')}}" target="_blank" class="bar-item button">
+<i class="icon">web</i></div>#view_website#</a>
+@include('dashboard/sidebar-menu-component')
+</nav>
+
+<div class="sidebar menu-perfil bar-block border-left" style="position:relative;top:0;right:0;z-index:92;display:none;">
+  <div class="bar-item center border-bottom">
+		      <b>{{user('name')}}</b></div>
+			   <a class="bar-item button btn-menu-perfil-close hide-medium hide-small">
+			  <div class="floating-small green">
+              <i class="icon">close</i></div><span>#close#</span></a>
+              <a href="{{url('profile')}}" class="bar-item button btn-route" id="perfil">
+			  <div class="floating-small blue">
+              <i class="icon">edit</i></div><span>#profile_edit#</span></a>
+		      <a onclick="document.getElementById('modal-logout').style.display='block'" class="bar-item button">
+			  <div class="floating-small red">
+              <i class="icon">power_settings_new</i></div><span>#go_out#</span></a>
+</div>
+
+<div id="myTop" class="card white container top big bar display-container center" style="height:42px;z-index:51">
+
+    <span class="bar-item link hover-text-teal left"><i class="icon xxbig btn-open-menu" style="position:relative;top:-5px;">menu</i></span>
+	
+	<a class="link center" href="{{url('dashboard')}}" style="position:relative;top:-3px;">
+	<div class="floating hover-teal card" style="position:relative;top:4px; width:40px !important;height:40px !important">
+	<img src="{{asset('img/np-logo.png')}}"></div></a>
+	
+	<div class="bar-item right right btn-menu-perfil link" style="position:relative;top:-5px;">
+       <div class="floating-small" >
+             @if(user_image())
+              <img src="{{user_image()}}">
+             @else
+               <i class="icon">account_circle</i>
+            @endif
+	   </div>
+    </div>
+</div>
+<script>
+$(function(){
+ $('.btn-open-menu').click(function(){
+    $('.btn-open-menu-auxi').show();
+    $('.menu-perfil').hide();
+	$('.menu-main').slideDown('fast');
+    
+ });
+ 
+ $('.btn-menu-perfil').click(function(){
+    $('.menu-main').hide();
+	$('.menu-perfil').show('fast');
+	$('.btn-open-menu-auxi').show();
+ });
+ 
+ $('.btn-open-menu-auxi,.btn-menu-perfil-close').click(function(){
+    $('.menu-perfil').hide('fast');
+	$('.menu-main').slideUp('fast');
+	$('.btn-open-menu-auxi').hide();
+ });
+});
+</script>
+<div id="my-app" class="animate-left">
+<div id="modal-logout" class="modal">
+     <div class="modal-content">
+      <div class="container center">
+	  <h3><i class="icon text-pink xxbig" style="position:relative;top:8px">power_settings_new</i>#go_out#</h3>
+      <p>#leave_question#</p>
+	  <button class="pink hover-red button card small right" onclick="document.getElementById('modal-logout').style.display='none'">#no#</button>
+	      <a href="{{url('logout')}}" class="card button small right">#yes#</a>
+        </div>
+     </div>
+</div>

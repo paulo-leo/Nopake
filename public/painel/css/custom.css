@@ -1,0 +1,356 @@
+
+    body{
+        overflow-x: hidden;
+        overflow-y: hidden;
+        color: #333333;        
+    }
+    
+    h1, h2, h3, h4, h5, h6{
+        margin: 0;
+    }
+  
+    a{
+        text-decoration: none;
+        color: inherit;
+    }
+    
+    .card{
+        border-radius: 12px;
+    }
+    
+    .card-header{
+        padding: 1rem 1.25rem;
+        background: none;
+        border: none;
+    }
+    
+    .card-body{
+        color: rgb(87, 87, 87);
+        padding-top: 1.2rem;
+    }
+    
+    .height-fit{
+        height: fit-content;
+    }
+    
+    .remove-last-element-border > tr:last-child, .remove-last-element-border > tr:last-child > td{
+        border: 0;
+    }
+    
+    .sticky-header{
+        position: sticky;
+        top: 12px;
+    
+        padding: .3rem 1.45rem;
+        background-color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        z-index: 1024;
+    }
+    
+    .fixed-header{
+        padding: .3rem 1.3rem;
+        padding-right: 2.45rem;
+        padding-top: .45rem!important;
+        background: rgba(255, 255, 255, .9);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        
+        position: relative;
+        box-shadow: 2px 0 5.5px rgb(0 0 0 / 20.5%);
+        z-index: 1024;
+    }
+    
+    .btn-sticky {
+      padding: .25rem 2.5rem;
+      font-weight: bold;
+    }
+    
+    .sticky-title, .header-title{
+      text-transform: uppercase;
+      font-size: 1.2rem;
+      opacity: .75;
+      margin: 0;
+    }
+    
+    .btn-back{
+      border: 0;
+      background-color: transparent;
+      cursor:default!important;
+    }
+    
+    .btn-back:focus{
+      background-color: transparent;
+    }
+    
+    .btn-back i{
+      border-radius: 50%;
+      border: 1px solid rgb(75, 75, 75);
+      
+      color: rgb(75, 75, 75);
+      font-size: 1.34rem;
+      font-weight: 500;
+      
+      margin-right: .4rem;
+      margin-top: .45rem;
+      transition: .65s ease;
+  
+      cursor:pointer;
+    }
+    
+    .btn-back i:hover{    
+      color: rgb(148, 30, 30);
+      border-color: rgb(148, 30, 30);
+    }
+    
+    .form-obs{
+        font-size: .9rem; 
+        font-weight: 500; 
+        color: gray;
+        text-align: center;
+    
+        padding:.5rem 5rem;
+    }
+    
+    textarea.form-control{
+        height:37.53px;
+    }
+    
+    .select2-container--default .select2-selection--single, .select2-dropdown{
+        border: 1px solid #ced4da!important;
+    }
+    
+    .select2-dropdown{
+        border-top: none!important;
+    }
+    
+    #np-form-open{
+        position: relative;
+        height: 100vh;
+        overflow-y: auto;
+    }
+    
+    #scroll, .np-scroll{
+        position: relative;
+        height: calc(100vh - 6.3rem);  
+        width: 99.65%;
+        margin: 0;
+        overflow-y: auto;
+    }
+    
+    .select2-container .select2-selection--single{
+        height:37.53px !important
+    }
+    
+    .apps{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    
+        flex-direction: column;  
+        padding:.6rem;
+        
+    }
+    
+    .btn-none{
+        background: transparent;
+        border: none;
+    }
+  
+    .apps i {
+    font-size: 3.5rem;
+    padding: .6rem;
+    border-radius: 12px;
+    background-color: white;
+
+    align-self: center;
+    justify-self: center;
+    }
+
+    .apps p {
+    font-weight: bold;
+    font-size: .8rem;
+    margin-top: .65rem;
+    text-align: center;
+    letter-spacing: 1px;
+    }
+
+    .btn-filter{
+    border: none;
+    background: transparent;
+    }
+
+    .btn-filter i {
+    border: 2px solid rgb(75, 75, 75);
+    color: rgb(72, 72, 72);
+    border-radius: 4px;
+    padding: .19rem;
+    transition: .45s ease;
+    }
+
+    .btn-filter i:hover {
+    opacity: .65;
+    }
+
+    .text-white-80{
+    color: rgba(245,245,245, 1);
+    }
+
+    .table-custom-hover > tbody > tr{
+    transition: all .3s ease ;
+    cursor:pointer;
+    }
+
+    .table-custom-hover > tbody > tr:active{
+    font-size: 15px;
+    background: rgba(0,0,0,.05);
+    }
+
+    .badge-center{
+    position: absolute;  
+    transform: translateY(-50%);
+    bottom: 20%;
+    right: 10px;  
+
+    font-size: .85rem!important;  
+    }
+
+    .badge-bottom{
+    position: absolute;  
+    transform: translateY(-50%);
+    bottom: -5px;
+    right: 10px;  
+
+    font-size: .85rem!important;  
+    }
+
+    .top-client-name{
+    text-align: justify;
+    font-size: .9rem;    
+
+    width: 60%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    }
+
+    .qtd-titles{
+    position: absolute;
+    left:8px;
+    bottom:-10px; 
+    font-size: .85rem;
+    }
+
+    .custom-thead > tr > th{
+    border: none!important;
+    background-color: #abacac;
+    color: white;  
+    }
+
+    .custom-thead > tr > th:nth-child(1){
+    border-radius: .65rem 0 0 0;
+    }
+
+    .custom-thead > tr > th:last-child{
+    border-radius: 0 .65rem 0 0;
+    }
+
+    .np-hide-element{
+    color: rgb(126, 126, 126);
+    }
+
+    .link-disabled{
+    cursor: default;
+    color: rgb(174, 174, 174);
+    }
+
+    .link-disabled:hover{
+    color: rgb(174, 174, 174);
+    }
+
+    ::-webkit-scrollbar-track
+    {
+        background-color: transparent;
+    }
+
+    ::-webkit-scrollbar
+    {
+        width: 8px;     
+    }
+
+    ::-webkit-scrollbar-thumb
+    {
+        border-radius: 8px;
+        -webkit-box-shadow: inset 0 0 6px rgba(125,125,126, .3);
+        background-color: rgba(85, 85, 85, 0.6); 
+    }
+
+
+    .text-light-blue{
+    color: rgb(187, 207, 237);
+    }
+
+    .bg-smooth-blue{  
+    background: #2978B5;
+    }
+
+    .bg-white-green{
+    background: rgb(241, 247, 243)!important;
+    }
+
+    .bg-white-red{
+    background: rgb(251, 240, 240)!important;
+    }
+
+    .bg-vintage-green{
+    background: #59886B!important;
+    }
+
+    .bg-vintage-red{
+    background: #C05555!important;
+    }
+
+    .bg-light-gray{
+    background: rgb(231, 243, 255);
+    }
+
+    .bg-transparent-green{
+    background: #066d2edb!important;
+    }
+
+    .bg-transparent-red{
+    background: #C0555530!important;
+    }
+
+    .bg-default{
+      background-color: #F2F4F4;
+    }
+  
+  @media (max-width:576px) {
+    .sticky-title, .header-title{
+      font-size: 1.1rem;
+    }
+  
+    .fixed-header{
+      padding: .35rem .5rem;
+    }
+  
+    .top-client-name{
+      text-align: justify;
+      font-size: .8rem;
+  
+      font-weight: bold;    
+    }
+  
+    .phone-graph{
+      border: none;
+      box-shadow: unset!important;
+      padding: 0;
+    }
+  
+    *, body{
+      font-size: 12px;
+    }
+  }

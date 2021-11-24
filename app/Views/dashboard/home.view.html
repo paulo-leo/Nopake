@@ -1,0 +1,75 @@
+@include("dashboard/header")
+@php
+
+$user_count = db_table('users')->count();
+$posts_count = db_table('posts')->where([['type','post']])->count();
+$docs_count = db_table('posts')->where([['type','doc']])->count();
+$pages_count = db_table('posts')->where([['type','page']])->count();
+
+@endphp
+
+<div class="">
+<div class="col m12 padding">
+  <div class="card-4 padding" style="min-height:70px">
+     <div class="container">
+       <div class="floating border">
+	      <i class="icon">description</i>
+	   </div>
+         {{$page_description}}
+     </div>
+   </div> 
+   </div>
+   
+  <div class="col m3 padding">
+  <div class="card-4 padding border-top border-teal" style="height:200px">
+     <div class="container center">
+       <div class="floating teal">
+	      <i class="icon">group</i>
+	   </div>
+	   <p class="badge pale-green small">{{$user_count}}</p>
+	   <h5>#users#</h5>
+     </div>
+   </div> 
+   </div> 
+   
+   <div class="col m3 padding">
+  <div class="card-4 padding border-top border-blue" style="height:200px">
+     <div class="container center">
+       <div class="floating blue">
+	      <i class="icon">edit</i>
+	   </div>
+	   <p class="badge green pale-blue">{{$posts_count}}</p>
+	   <h5>#posts#</h5>
+     </div>
+   </div> 
+   </div> 
+   
+    <div class="col m3 padding">
+  <div class="card-4  padding border-top border-pink" style="height:200px">
+     <div class="container center">
+       <div class="floating pink">
+	      <i class="icon">import_contacts</i>
+	   </div>
+	   <p class="badge pale-red pink">{{$pages_count}}</p>
+	   <h5>#pages#</h5>
+     </div>
+   </div> 
+   </div> 
+   
+   <div class="col m3 padding">
+  <div class="card-4 padding border-top border-teal" style="height:200px">
+     <div class="container center">
+       <div class="floating teal">
+	      <i class="icon">library_books</i>
+	   </div>
+	   <p class="badge green pale-red">{{$docs_count}}</p>
+	   <h5>#docs#</h5>
+     </div>
+   </div> 
+   </div> 
+   
+</div>
+
+
+
+@include("dashboard/footer")

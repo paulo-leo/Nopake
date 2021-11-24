@@ -1,0 +1,32 @@
+{
+  "executive":{
+    "name":"Executivo Comercial",
+	"description":"Setor responsavel pela organização comercial da empresa. ",
+	"sub":"",
+	"status":"active"
+  },
+  "maneger_fin":{
+    "name":"Gerente finaceiro",
+	"description":"crud",
+	"sub":"",
+	"status":"active"
+  },
+  "maneger_all":{
+    "name":"Gerente geral",
+	"description":"crud",
+	"sub":"maneger_fin",
+	"status":"active"
+  },
+  "maneger_one":{
+    "name":"Gerente único",
+	"description":"crud",
+	"sub":"maneger_fin",
+	"status":"active"
+  },
+  "maneger_on":{
+    "name":"Gerente teste",
+	"description":"crud",
+	"sub":"maneger_one",
+	"status":"disa"
+  }
+}

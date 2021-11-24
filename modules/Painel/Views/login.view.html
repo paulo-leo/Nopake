@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="{{NP_LANG}}">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+        <meta name="description" content="" />
+        <meta name="author" content="" />
+        <title>#login_account#</title>
+        <link href="{{asset()}}/painel/css/styles.css" rel="stylesheet" />
+    </head>
+    <body class="bg-light">
+        <div id="layoutAuthentication">
+            <div id="layoutAuthentication_content">
+                <main>
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-lg-5">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                    <div class="card-header text-center">
+									
+									<h3 class="font-weight-light my-4">
+									<a href="{{url()}}">{{NP_NAME}}</a></h3>
+									<p class="rounded-pill card">#login_account#</p>
+									
+									@if($logout)
+                                      <div class="alert alert-primary" role="alert">#session_closed_success#</div>
+	                                @endif
+									
+									</div>
+                                    <div class="card-body">
+                                        <form id="login">
+										   {{csrf_field()}}
+                                            <div class="form-floating mb-3">
+                                                <input required class="form-control" id="inputEmail" name="email" type="email" placeholder="#email#" />
+                                                <label for="inputEmail">#email#</label>
+                                            </div>
+                                            <div class="form-floating mb-3">
+                                                <input required class="form-control" name="password" id="inputPassword" type="password" placeholder="Password" />
+                                                <label for="inputPassword">#password#</label>
+                                            </div>
+                                            <div class="form-check mb-3">
+                                                <input class="form-check-input" id="inputRememberPassword" type="checkbox" name="remember"/>
+                                                <label class="form-check-label" for="inputRememberPassword">#remember_login#</label>
+                                            </div>
+											
+											<div class="align-items-center justify-content-between">
+					                         <div class="np-local-alert"></div>
+											</div>
+											
+                                            <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+                                                <a class="small" href="{{url('password/reset')}}">#forgot_password#</a>
+                                                <input type="submit" class="btn btn-outline-primary np-btn-enter" value="#enter#">
+												
+												<button class="btn btn-primary np-btn-loading" style="display:none" type="button" disabled>
+                                                <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+                                                Conectando...
+                                                </button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <div class="card-footer text-center py-3">
+                                        <div class="small"><a href="{{url('register')}}">#register#</a></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </main>
+            </div>
+			
+
+		
+            <div id="layoutAuthentication_footer">
+                <footer class="py-4 bg-light mt-auto">
+                    <div class="container-fluid px-4">
+                        <div class="d-flex align-items-center justify-content-between small">
+                            <div class="text-muted">{{date('Y')}} &copy; {{NP_NAME}}</div>
+                            <div>
+                                <a href="#">Privacy Policy</a>
+                                &middot;
+                                <a href="#">Terms &amp; Conditions</a>
+                            </div>
+                        </div>
+                    </div>
+                </footer>
+            </div>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="js/scripts.js"></script>
+		<script src="{{asset()}}/painel/js/jquery.min.js"></script>
+    </body>
+</html>
+ <script>
+      $(function(){ 
+        $("#login").submit(function(){
+		
+          let local = $('.np-local-alert');
+          var vars = $(this).serialize();
+
+            <?php
+			   $url = (isset($_SESSION['np_route_auth_login'])) ? $_SESSION['np_route_auth_login'] : url('dashboard'); 
+			?>
+            $.ajax({
+            url : "{{url('login')}}",
+            type : 'post',
+            data : vars,
+            beforeSend : function(){  
+			      local.html('');
+			      $('.np-btn-enter').hide();
+                  $('.np-btn-loading').show();
+                  
+            },
+          success : function(data){
+              if(data == 'success'){
+                window.location.href = "{{$url}}";
+              }else{
+                if(data == 'user_not_found'){
+				  
+				     local.html('<div class="alert alert-danger" role="alert">#user_not_found#</div>');
+				  
+                }else if(data == 'invalid_email'){
+				
+					 local.html('<div class="alert alert-danger" role="alert">#invalid_email#</div>');
+					 
+                }else if(data == 'invalid_password'){
+
+					 local.html('<div class="alert alert-danger" role="alert">#invalid_password#</div>');
+					 
+                }else{
+                  alert("server error");
+                }
+              }
+                  $('.np-btn-loading').hide();
+                  $('.np-btn-enter').show();
+            }
+            }); 
+          
+            return false;
+          });
+        
+        });
+</script>

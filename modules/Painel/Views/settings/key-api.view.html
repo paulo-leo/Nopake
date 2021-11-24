@@ -1,0 +1,53 @@
+@painel_header()
+
+{{form.header(['title'=>'Chave de API', 'url'=>''])}}
+	{{form.token()}}	
+	@grid('container-fluid mt-5')
+		@grid('row')
+
+			@grid('col-md-6 col-sm-12')
+				<h6>Segurança da chave</h6>
+				<p>As chaves API geralmente não são consideradas seguras. Normalmente, elas são acessíveis aos clientes, facilitando o roubo de uma delas. Se a chave for roubada, ela não tem expiração, assim pode ser usada indefinidamente, a menos que o dono do projeto a revogue ou gere a chave novamente. Ainda que as restrições que você pode definir em uma chave de API atenuem isso, há abordagens melhores para a autorização.</p>
+				{{form.label(['text'=>'Chave da aplicação', 'id'=>'inputEmailpass'])}}
+				{{form.text(['name'=>'key', 'value'=>NP_KEY_API])}}
+			@endgrid
+			
+			@grid('col-md-6 col-sm-12')
+				<h6>Gerar nova chave de API</h6>
+				<p><b>Atenção:</b> ao gerar uma nova chave de API para sua aplicação, os serviços e sessões ativos atualmente não conseguiram mais ter acesso à sua aplicação, pois será necessário trocar as chaves nas aplicações de terceiros que acessam o seu sistema via API ou iniciar novas sessões no caso de acessos via JWT entre outros.</p>				
+			@endgrid
+
+		@endgrid
+	@endgrid
+{{form.close()}}
+@painel_footer()
+
+<script>
+$(function(){
+
+  $(".np-btn-modal").click(function(){
+     $("#np-modal-key").toggle();
+  });
+  
+   let form = $("form");
+   form.submit(function(){
+    let key = $("input[name=key]");
+    $.ajax({
+	url:"{{url('dashboard/settings/key-api')}}",
+	data:$(this).serialize(),
+	type:"post",
+    beforeSend:function(){
+		
+	},
+	success:function(data){
+	   $("#np-modal-key").hide();
+	   alert('A nova chave de API foi gerada com sucesso.');
+	   key.val(data);	   
+	}
+	});
+    return false;
+   });
+   
+});
+</script>
+

@@ -1,0 +1,44 @@
+{
+  "admin":{
+    "name":"Administrador",
+	"description":"Essa função de usuário tem todos os acessos permitidos de forma irrestrita no sistema.",
+	"sub":"",
+	"status":"active"
+  },
+  "edit":{
+    "name":"Editor",
+	"description":"Essa função permiti publicar e gerenciar posts e páginas, bem como gerenciar posts de outros usuários, etc.",
+	"sub":"",
+	"status":"active"
+  },
+  "author":{
+    "name":"Autor",
+	"description":"Alguém que possa publicar e gerenciar seus próprios posts.",
+	"sub":"",
+	"status":"active"
+  }, 
+  "collaborator":{
+    "name":"Colaborador",
+	"description":"Alguém que pode escrever e gerenciar suas posts, mas não publicá-las.",
+	"sub":"",
+	"status":"active"
+  },
+  "subscriber":{
+    "name":"Assinante",
+	"description":"Alguém que só pode gerir seu próprio perfil.",
+	"sub":"",
+	"status":"active"
+  },
+  "executive":{
+    "name":"Executivo Comercial",
+	"description":"Setor responsavel pela organização comercial da empresa. ",
+	"sub":"",
+	"status":"active"
+  },
+  "maneger_fin":{
+    "name":"Gerente financeiro",
+	"description":"crud",
+	"sub":"",
+	"status":"active"
+  }
+}

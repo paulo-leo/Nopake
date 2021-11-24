@@ -1,0 +1,137 @@
+@include("dashboard/header")
+<ul class="ul ul-border-none">
+<form action="{{url('dashboard/users')}}" method="get" class="margin-left margin-right bg-1">
+  <div class="cell-row margin-bottom">
+   <div class="cell" style="width:35%">
+	 <select name="role" class="input border cell bg-1">
+	   <option value="0">#all#</option>
+       {!$rolesOptions!}
+    </select>
+	</div>
+    <div class="cell" style="width:35%">
+    <select name="status" class="input border cell bg-1">
+	  <option value="0">#all#</option>
+      {!$statusOptions!}
+    </select>
+	</div>
+	<div class="cell" style="width:30%;position:relative;top:-2px">
+	<input type="submit" style="height:38px" class="white border border-teal block button cell" value="#filter#">
+	</div>
+	</div>
+  </form>
+
+
+ @if($list->results)
+  @in($list->results)
+  
+  <!-- Modal para apagar registro -->
+  <div id="id{{$id}}" class="modal">
+     <div class="modal-content">
+      <div class="container center">
+	  <h2><i class="icon text-pink xxbig" style="position:relative;top:8px">delete</i>#delete#</h2>
+	  <p>#user.delete# "<b>{{$name}}</b>"?</p>
+	  <div class="msg"></div>
+	  <button class="pink hover-red button card small right" onclick="document.getElementById('id{{$id}}').style.display='none'">#no#</button>
+	  <button id="{{$id}}" class="btn-delete card button small right">#yes#</button>
+        </div>
+     </div>
+  </div>
+  
+  
+  <li class="id{{$id}} margin card display-container" style="margin-top:0 !important;">
+     <p>
+	 
+	 <!--Inico do código para exibir a imagem do perfil do usuário-->
+	 
+	 @php
+	   $image = strlen($image) > 10 ? '<img src="'.url($image).'">' : '<i class="icon">person</i>'; 
+	 @endphp
+	 
+     <div class="floating-small blue">{!$image!}</div>
+	 
+	 <!--Fim do código para exibir a imagem do perfil do usuário-->
+	 
+	 <b class="big">{{$name}}</b>
+	 @if($status == 'pending')
+	     <b class="text-yellow small">{{text(':'.$status)}}</b>
+	 @elseif($status == 'active')
+	     <b class="text-green small">{{text(':'.$status)}}</b>
+	 @else
+	     <span class="text-red small">{{text(':'.$status)}}</span>
+	 
+	 @endif
+	 <div>
+	 <span class="text-red"><i class="icon">settings</i>{{text(':'.$role)}}</span>
+	 <span class="text-blue"><i class="icon">email</i>{{$email}}</span>
+	 <span class="text-green"><i class="icon">access_time</i>{{format($created_in,'datetime')}}</span>
+	 </div>
+	 </p>
+	<div class="display-topright">
+	  <div class="bar-block">
+      <div class="dropdown-hover hover-text-blue white bg-1">
+        <div class="floating-small"><i class="icon">more_vert</i></div>
+        <div class="dropdown-content bar-block bg-1">
+	    <div class="card white round padding" style="width:110px;position:relative;right:70px">
+	       
+		   <a title="#edit#" href="{{url('dashboard/users/'.$id.'/edit')}}" class="link">
+	         <div class="floating-small teal card hover-green"><i class="icon">edit</i></div></a>
+	  
+	        <a title="#delete#" onclick="document.getElementById('id{{$id}}').style.display='block'" class="link">
+	          <div class="floating-small red card hover-teal"><i class="icon">delete</i></div></a>
+	         </div>
+         </div>
+      </div>
+  </div>
+</div>
+  </li>
+  @endin
+    @else
+     <li><h3 class="text-red">#user.not.show#</h3></li>
+  @endif
+  
+   <li>
+      @if($list->previous)
+        <a class="button border small" href="{{pag_filter($list->previous)}}">#previous#</a>
+      @endif
+  
+     @if($list->next)
+        <a class="button border small" href="{{pag_filter($list->next)}}">#next#</a>
+     @endif
+   </li>
+   
+</ul>
+
+<script>
+$(function(){
+
+  $(".btn-delete").click(function(){
+	 
+     var id = $(this).attr('id');
+	 var msg = $(".msg");
+	 msg.html('');
+	 
+     $.ajax({
+     url : "{{url('dashboard/users')}}",
+     type : 'delete',
+     data : {id:id},
+     beforeSend : function(){
+       msg.html('<div class="progress"><div class="indeterminate"></div></div>')   
+     },
+	 success : function(data){
+         if(data == 'ok'){
+		    $('.modal').hide('fast');
+		    $('.id'+id).hide('fast');
+			msg.html('');
+		 }else{
+		    $('.id'+id).addClass('red');
+			 msg.html(data);
+		 }
+     }
+    }); 
+  
+     return false;
+  });
+});
+</script>
+
+<include src="dashboard/footer">

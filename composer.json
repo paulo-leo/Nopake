@@ -1,0 +1,29 @@
+{
+    "name": "nopadi/mf",
+    "type": "project",
+    "description": "Nopadi",
+    "keywords": [
+        "framework",
+        "nopadi"
+    ],
+    "license": "MIT",
+    "require": {
+	    "php": "^7.0.0",
+		"phpmailer/phpmailer": "~6.1",
+		"league/csv":"^9.0",
+		"dompdf/dompdf":"0.8.*",
+        "pagarme/pagarme-php": "^4.1"
+    },
+    "scripts": {
+	   "np-server":"php -S localhost:8080 public/index.php",
+	   "np-8000":"php -S 0.0.0.0:8000 public/index.php",
+	   "np":"php nopadi/CLI/nopadi.php"
+	},
+	"autoload" : {
+	    "psr-4":{
+		  "Nopadi\\":"nopadi/",
+		  "Modules\\":"modules/",
+		  "App\\":"app/"
+		}
+    }
+}

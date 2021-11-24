@@ -1,0 +1,190 @@
+@painel_header()
+
+{!painel_title($page_title_type,[
+'dashboard/settings/modules'=>'Todos os módulos',
+'dashboard/settings/modules?all=active'=>'Módulos habilitados',
+'dashboard/settings/modules?all=disabled'=>'Módulos desabilitados',
+'#btn-update-all'=>'Atualizar todos os módulos',
+'#btn-update-new'=>'Registrar novos módulos'
+])!}
+
+@grid(container-fluid row)
+
+@php $i=0; @endphp
+
+@foreach($list as $key=>$data)
+
+@php  
+extract($data);
+$i++; 
+@endphp
+
+<div class="col-sm-3 p-2">
+    <div class="card text-center">
+      <div class="card-body">
+        <h5 class="card-title">
+        {{$name}}</h5>
+		 @php
+		     $btn_text = $status == 'disabled' ? 'Habilitar' : 'Desabilitar';
+		 @endphp
+		 
+		 @if($status != 'disabled')
+		 <div class="spinner-grow spinner-grow-sm text-success" role="status">
+               <span class="visually-hidden">Loading...</span>
+        </div>
+		 @endif
+        <a href="#" id="{{$key}}" class="btn btn-sm btn-outline-primary np-btn-mod-status">{{$btn_text}}</a>
+		<a href="#" class="btn btn-sm" data-bs-toggle="modal" data-bs-target="#modalModule{{$i}}"><i class="material-icons">info_outline</i></a>
+      </div>
+    </div>
+</div>
+
+<!-- Modal -->
+@php
+	$btn_text = $status == 'disabled' ? 'Desabilitado' : 'Habilitado';
+	$btn_class = $status == 'disabled' ? 'bg-danger' : 'bg-success';
+@endphp
+
+
+<div class="modal fade" id="modalModule{{$i}}" tabindex="-1" aria-labelledby="modalModuleLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalModuleLabel">{{$name}}</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+		  <span class="badge {{$btn_class}}">{{$btn_text}}</span> - {{$description}}
+		   <a href="{{url($url)}}" target="_blank">{{$url}}</a>
+		</p>
+		<ul class="list-group">
+		   <li class="list-group-item"><b>Ícone</b>: {{$icon}}</li>
+		   <li class="list-group-item"><b>Cor</b>: {{$color}}</li>
+		   <li class="list-group-item"><b>Autor</b>: {{$author}}</li>
+		   <li class="list-group-item"><b>Versão</b>: {{$version}}</li>
+		   <li class="list-group-item"><b>Licença</b>: {{$license}}</li>
+		   <li class="list-group-item"><b>Rota</b>: {{$route}}</li>
+		   <li class="list-group-item"><b>Dependência</b>: {{$parent}}</li>
+		   @php
+		      $require = implode(',',$require);
+		   @endphp
+		   <li class="list-group-item"><b>Requerimentos</b>: {{$require}}</li>
+		</ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+@endforeach
+
+@endgrid
+
+<script>
+//settings/modules/update
+$(function(){
+
+  var btn = $(".np-btn-mod-status");
+
+  var loading = document.createElement("div");
+  loading.innerHTML = "<div class='spinner-grow' role='status'><span class='visually-hidden'>Loading...</span></div>";
+
+
+  btn.click(function(){
+  
+    var id = $(this).attr("id");
+	
+	let conf = false; 
+
+	swal({
+		title: "Você deseja confirmar esta ação?",
+		icon: "info",
+		buttons: {
+			cancel: "Cancelar",
+			confirmar: {
+				text: "Confirmar", 
+				value: true
+			}
+		} 
+	}).then((result)=>{
+		if(result){
+			$.ajax({
+				url:"{{url('dashboard/settings/modules')}}",
+				data:$(this).serialize(),			
+				type:"post",
+				dataType: "json",
+				data:{'_token':"{{csrf_token()}}",'key':id},
+				beforeSend:function(){
+				swal({
+					content: loading,
+					title: "Processando...",
+					button: false,
+					closeOnClickOutside: false,
+					closeOnEsc: false
+					});
+				},
+				success:function(data){
+				$(".np-progress").hide();
+					let msg = data.msg;
+					let type = data.type;
+					swal.close();
+					if(type == "success"){
+					location.reload();
+					}else{
+					swal("#error#", msg, "error");
+					}
+				
+				}
+			});
+		}
+	});
+	
+  });
+  
+  
+  
+  function type(btnId,type)
+  {
+     $(btnId).click(function(){
+	
+	$.ajax({
+	url:"{{url('dashboard/settings/modules/update')}}",
+	data:$(this).serialize(),
+	type:"post",
+	 dataType: "json",
+	data:{'_token':"{{csrf_token()}}",'type':type},
+    beforeSend:function(){
+	   swal({
+             content: loading,
+			 title: "Processando...",
+             button: false,
+             closeOnClickOutside: false,
+             closeOnEsc: false
+            });
+	},
+	success:function(data){
+	   
+	   
+	    let msg = data.msg;
+		let type = data.type;
+	   
+	   if(type == "success"){
+		   swal("#success#", msg, "success");
+		}else{
+		   swal("#error#", msg, "error");
+		}
+	   
+	}
+	});
+  });
+  }
+  
+ type('#btn-update-all','all');
+ type('#btn-update-new','new');
+  
+});
+
+</script>
+
+
+@painel_footer()

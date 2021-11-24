@@ -1,0 +1,72 @@
+@include("dashboard/header")
+
+<form class="container">
+<h3>#add_cats_of#
+   <select name="type">
+        {!options($cat_types,$cat_type)!}
+   </select>
+   <input type="submit" class="link" value="#select#">
+   </h3>
+</form>
+
+<form id="form" class="container" style="margin-bottom:70px">
+{{csrf_field()}}
+
+<div class="col m6">
+    <div class="rest">#name#
+      <input class="input border" required name="name" type="text" placeholder="#name#">
+    </div>
+	<div class="rest">#description#
+      <textarea class="input border" required name="description" type="text" placeholder="#description#"></textarea>
+    </div>
+</div>
+
+<div class="col m6">
+    <div class="rest">#type#
+      <input class="input border white" disabled  type="text" value="{{text(':'.$cat_type)}}">
+	  <input name="type" type="hidden" value="{{$cat_type}}">
+    </div>
+	<div class="rest">#higher#
+      <select name="cat_id" class="select border">
+	     <option value="0">#not.category#</option>
+	     {!$catOptions!}
+	  </select>
+    </div>
+	
+</div>
+
+<div class="col m12 margin-top">
+    <div class="msg"></div>
+	<button type="submit" class="right button teal hover-green">#add#</button>
+	<a class="button orange text-white hover-red right" onclick="window.history.go(-1);">#cancel#</a>
+   
+</div>
+</form>
+
+<script>
+$(function(){
+
+  $("#form").submit(function(){
+	 
+     var vars = $(this).serialize();
+	 var msg = $(".msg");
+	 
+     $.ajax({
+     url : "{{url('dashboard/cats')}}",
+     type : 'post',
+     data : vars,
+     beforeSend : function(){
+           msg.html('<div class="progress"><div class="indeterminate"></div></div>');
+     },
+	 success : function(data){
+          msg.html(data);
+     }
+
+    }); 
+  
+     return false;
+  });
+
+});
+</script>
+@include("dashboard/footer")

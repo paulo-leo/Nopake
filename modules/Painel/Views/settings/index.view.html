@@ -1,0 +1,57 @@
+@include("@Painel/Views/header")
+<style>
+.np-icon-person-inline{padding:3px;width:30px;height:30px}
+</style>
+<div class="np-row np-content" style="min-height:500px">
+ 
+    <h3 class="np-col m12 np-center">#settings#</h3>
+   <p class="np-col m12 np-center">As opções marcadas com asteriscos (*) significam que não estão disponíveis ou estão em desenvolvimento.</p>
+  <div class="np-col m3 np-padding-small">
+    <div class="np-card np-round-large np-white np-animate-zoom" style="min-height:250px">
+	 <div class="np-bar np-bar-block">
+	 <a class="np-bar-item np-card np-round-large"><i class="material-icons np-circle np-pink np-icon-person-inline np-card">group</i>Usuários</a>
+     <a href="{{url('users')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">group</i>#users#</a>
+    <a href="{{url('users/create')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">add</i>#user.create#</a>
+    </div> 
+    </div>
+  </div>
+  
+  <div class="np-col m3 np-padding-small">
+    <div class="np-card np-round-large np-white np-animate-zoom" style="min-height:250px">
+	 <div class="np-bar np-bar-block">
+	 <a class="np-bar-item np-card np-round-large"><i class="material-icons np-circle np-green np-icon-person-inline np-card">device_hub</i>Fluxo de Trablaho</a>
+     <a href="{{url('settings/sectors')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">directions</i>Setores</a>
+     <a href="#" class="np-bar-item np-button np-hover-gray"><i class="material-icons">add</i>*Adicionar setor</a>
+	  <a href="#" class="np-bar-item np-button np-hover-gray"><i class="material-icons">lock_open</i>*Acessos</a>
+	 <a href="#" class="np-bar-item np-button np-hover-gray"><i class="material-icons">add</i>*Adicionar acesso</a>
+    </div> 
+    </div>
+  </div>
+  
+   <div class="np-col m3 np-padding-small">
+    <div class="np-card np-round-large np-white np-animate-zoom" style="min-height:250px">
+	 <div class="np-bar np-bar-block">
+	 <a class="np-bar-item np-card np-round-large"><i class="material-icons np-circle np-blue np-icon-person-inline np-card" >settings_applications</i>Aplicativo</a>
+     <a href="{{url('settings/environment')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">settings</i>#general_settings#</a>
+     <a href="{{url('settings/smtp')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">mail_outline</i>Servidor SMTP</a>
+     <a href="{{url('settings/db')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">storage</i>Banco de dados</a>
+    </div> 
+    </div>
+  </div>
+  
+   <div class="np-col m3 np-padding-small">
+    <div class="np-card np-round-large np-white np-animate-zoom" style="min-height:250px">
+	 <div class="np-bar np-bar-block">
+	 <a class="np-bar-item np-card np-round-large"><i class="material-icons np-circle np-indigo np-icon-person-inline np-card">developer_mode</i>Desenvolvimento</a>
+     <a href="{{url('settings/key-api')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">lock_outline</i>Chave de API</a>
+     <a href="#" class="np-bar-item np-button np-hover-gray"><i class="material-icons">all_inclusive</i>*Automação</a>
+     <a href="{{url('settings/modules')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">widgets</i>Módulos</a>
+	 <a href="{{url('settings/theme')}}" class="np-bar-item np-button np-hover-gray"><i class="material-icons">color_lens</i>Temas</a>
+    </div> 
+    </div>
+  </div>
+
+</div> 
+
+
+@include("@Painel/Views/footer")

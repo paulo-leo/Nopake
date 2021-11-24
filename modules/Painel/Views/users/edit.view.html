@@ -1,0 +1,77 @@
+@painel_header()
+
+
+
+@if($find->id == user_id())
+  
+  <div class="modal" tabindex="-1" style="display:block" data-bs-backdrop="static" data-bs-keyboard="false">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ops!</h5>
+        <button type="button" class="btn-close" onclick="window.history.go(-1);" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Desculpe, mas por questão de segurança você não pode editar a si mesmo por esta tela.</p>
+      </div>
+      <div class="modal-footer">
+        <a type="button" href="{{url('profile')}}" class="btn btn-primary">Editar meu perfil</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+@else
+
+
+   
+{{form.header([
+'title'=>'Atualizar usuário',
+'url'=>'dashboard/users',
+'method'=>'PUT'
+])}}
+
+@endif
+ @grid('container')
+@grid('row m-auto p-3')
+{{form.token()}}
+     <input type="hidden" name="id" value="{{$find->id}}">  
+	
+	 <div class="col-6">
+      <label>#email#</label>
+	  {{form.text(['name'=>'email','value'=>$find->email,'readonly'=>true])}}
+    </div>
+	
+	<div class="col-6">
+      <label>#full.name#</label>
+	  {{form.text(['name'=>'name','value'=>$find->name,'required'=>true])}}
+    </div>
+	
+   
+
+      <div class="col-3">
+	  <label>#situation#</label>
+	    {{form.select(['name'=>'status','value'=>$find->status],$statusOptions)}}
+     </div>
+  
+      <div class="col-3">
+	  <label>#lang#</label>
+	    {{form.select(['name'=>'lang','value'=>$find->lang],$langOptions)}}
+     </div>
+	   
+	  <div class="col-3">
+	  <label>#role#</label>
+	    {{form.select(['name'=>'role','value'=>$find->role],$roleOptions)}}
+     </div>
+	   
+	 <div class="col-3">
+	  <label>#sector#</label>
+	    {{form.select(['name'=>'sector','value'=>$find->sector],$sectorOptions)}}
+     </div>
+@endgrid
+@endgrid
+{{form.close()}}
+
+
+
+@painel_footer()

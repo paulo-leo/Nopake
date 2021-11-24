@@ -1,0 +1,10 @@
+{
+        "name": "Painel de Controle",
+        "description": "Painel de Controle ou simplesmente painel, é um módio nativo do Onpaulo. Esse módulo permiti gerenciar usuários e sessões, além de poder gerenciar outros módulos de forma intuitiva e simples. ",
+        "author": "Paulo Leonardo",
+        "version": "0.1",
+        "license": "MIT",
+        "require": ["php7"],
+        "url": "www.onpaulo.com.br",
+		"parent":""
+}
