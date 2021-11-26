@@ -7,7 +7,7 @@ use Nopadi\FS\Json;
  ******** Nopadi - Desenvolvimento web progressivo***************
  ********* Arquivo de rotas para API******************************
  *****************************************************************/
-
+use Nopadi\Base\DB;
 use Nopadi\Http\JWT;
 use Nopadi\Http\Auth;
 use Nopadi\Http\Request;
@@ -58,12 +58,20 @@ function _utf8_decode($string)
  
 }
 
-Route::get('json/{string}',function(){
+Route::get('api/users',function(){
 	
 	
 	
-	var_dump(Auth::sector());
+	$x = DB::table('users')->as('u')
+	->select(['id','name','image'],'u')
+	->leftJoin('tokens t','t.user_id','u.id')
+	->select(['token'],'t')
+	->get();
 	
+	
+	
+	
+	var_dump($x);
 	
 });
 

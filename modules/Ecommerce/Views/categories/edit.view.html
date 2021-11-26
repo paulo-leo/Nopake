@@ -1,0 +1,73 @@
+@include("@Ecommerce/Views/templates/header")
+
+<div class="container">
+   {{form.header([
+		 'title'=>'Editar categoria',
+		 'url'=>'ecommerce/categories',
+		 'method'=>'put'
+		])}}
+
+	   {{form.token()}}
+
+		<div class="mt-3 np-scroll">
+			<input type="text" name="id" id="id" value="{{ $data->id }}" hidden="true">
+			<div class="row g-3">
+				<div class="mb-3 col-sm-9">
+					<label for="formGroupExampleInput" class="form-label">Nome da categoria</label>
+					<input type="text" value="{{ $data->name }}" class="form-control" name="name" id="formGroupExampleInput" placeholder="Nome da categoria">
+				</div>
+				<div class="mb-3 col">
+					<label for="formGroupExampleInput2" class="form-label">Ordem da categoria</label>
+					<input type="number" value="{{ $data->category_order }}" class="form-control" name="category_order" id="formGroupExampleInput2" placeholder="Ordem da categoria" min="0" max="999">
+				</div>
+			</div> 
+			
+			<div class="row g-3">
+				<div class="mb-3 col-sm-9">
+					<label for="formGroupExampleInput" class="form-label">Categoria mãe</label>
+					<select class="form-select" name='category_id'>
+						 {!options($categories)!} 
+						
+					</select> 
+				</div>
+				<div class="mb-3 col-sm">
+					<label for="formGroupExampleInput2" class="form-label">Status da categoria</label>
+					<select name="status" class="form-select">
+						<option value="1" {{ $data->status ? 'selected' : null }}>Habilitado</option>
+						<option value="0" {{ $data->status ? null : 'selected' }}>Desabilitado</option>
+					</select>
+				</div>
+			</div>
+			<div class="row g-3">
+				<div class="mb-3 col-sm">
+					<label for="formGroupExampleInput" class="form-label">Cor da categoria</label>
+					<input type="text" value="{{ $data->color }}" class="form-control" name="color" id="formGroupExampleInput" placeholder="Cor da categoria">
+				</div>
+				<div class="mb-3 col-sm">
+					<label for="formGroupExampleInput" class="form-label">Palavra chave da categoria</label>
+					<input type="text" value="{{ $data->keywords }}"class="form-control" name="keywords" id="formGroupExampleInput" placeholder="Palavra chave da categoria (separe por vírgula)">
+				</div>
+			</div>
+			<div class="mb-3 form-floating">
+				<textarea  name="description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea">{{$data->description}}</textarea>
+				<label for="formGroupExampleInput" class="form-label">Descrição da categoria</label>
+			</div>
+			<div class="row">
+				<div class=" mx-3 form-check form-switch">
+					<input class="form-check-input" {{ $data->category_new ? 'checked' : null  }} value="1" name="category_new" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+					<label class="form-check-label" for="flexSwitchCheckDefault">Nova categoria</label>
+				</div>
+				<div class=" mx-3 form-check form-switch">
+					<input class="form-check-input" value="1" {{ $data->category_new ? 'checked' : null  }} type="checkbox" role="switch" id="flexSwitchCheckChecked" name="category_show">
+					<label class="form-check-label" for="flexSwitchCheckChecked">Mostrar categoria</label>
+				</div>
+			</div>
+		</div>	
+	{{form.close()}}
+</div>
+ 
+	
+ 
+	
+ 
+	

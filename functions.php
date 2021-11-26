@@ -41,7 +41,7 @@ if(!function_exists('getallheaders'))
 function isnull($var,$default){
 	return is_null($var) ? $default : $var;
 }
-
+/*Define um valor padrão para uma variável do tipo não nula*/
 function notnull($var,$default){
 	return !is_null($var) ? $default : $var;
 }
@@ -127,7 +127,7 @@ function query_pre_rows($rows,$prefix=null)
 	$string = substr($string,0,-1);
 	return $string;
 }
-
+/*Transforma um array em uma string*/
 function to_string($array,$key=null)
 {
 	$string = null;
@@ -214,7 +214,7 @@ function get_client_ip() {
     return $ipaddress;
 }
 
-/*Pega a primeira letra ou segund*/
+/*Pega a primeira letra ou segunda*/
 function np_lf($string,$qtd=1){
 	$string = trim($string);
 	$string = $string ? $string : 'z';
@@ -403,8 +403,8 @@ function np_painel_menu()
 	return $html;
 }
 
-/*Carrega as informações de todos os módulos*/
-function get_info_modules()
+/*Carrega as informações de todos os módulos ativos*/
+function get_info_modules($statusx='active')
 {
 	$instance = $GLOBALS['np_instance_of_json_mods'];
 	$instance = $instance->gets();
@@ -414,7 +414,7 @@ function get_info_modules()
 	   extract($values);
        if(strtolower($key) != strtolower('Painel'))
 	   {
-		if($status == 'active')
+		if($status == $statusx)
 		    {
 				$menus[$route] = $values;
 			}

@@ -233,6 +233,17 @@ class View extends Translation
 		}
 	}
 
+    private function importx($imports)
+	{
+		$imports = is_array($imports) ? $imports : array($imports);
+		
+		foreach($imports as $view)
+		{
+			$this->render($view);
+		}
+		
+	}
+
 
 	/*Sintaxe dos arquivos de inclusão*/
 	private function dir_tmp($file)
@@ -243,8 +254,17 @@ class View extends Translation
 		$file = preg_replace($painel_footer, "<?php \$this->render('@Painel/Views/footer'); ?>", $file);
 		
 		/*Include de templates*/
+		$import = "/@import\(({$this->all})\)/simU";
+		$file = preg_replace($import, "<?php \$this->importx($1); ?>", $file);
+		
+		
 		$include = "/@include\(({$this->all})\)/simU";
 		$file = preg_replace($include, "<?php \$this->render($1,\$this->scope); ?>", $file);
+		
+		///////////////////////////////
+		$componet2 = "/@component\(({$this->all})\)/simU";
+		$file = preg_replace($componet2, "<?php echo \$this->component($1); ?>", $file);	
+
 		/*Função para token contra ataque crsf*/
 		$crsf = "/\{\{ ?csrf_field\(\) ?\}\}/simU";
 		$file = preg_replace($crsf, '<input type="hidden" name="_token" value="{{csrf_token()}}"/>', $file);
@@ -256,27 +276,30 @@ class View extends Translation
 	}
   
 /******* Renderiza um componente*******/
-	
-	private function viewRenderProps($x,$props)
+	private function component($component,$scope=null)
 	{
-		if(function_exists($x))
-		{
-			return call_user_func($x,$props);
-		}
+		  $component = 'np_'.str_ireplace('-','_',$component);
+		  if(function_exists($component))
+		  {
+			return call_user_func($component,$scope);
+		  }
 	}
+	
 
 	/*Sintaxe para condicionais*/
 	private function dir_if($file)
 	{
-       	///////////////////////////////
-		$componet2 = "/<x-({$this->all}) scope=({$this->all})\/>/simU";
-		$file = preg_replace($componet2, "<?php echo \$this->viewRenderProps('$1',$3); ?>", $file);	
+		$file = str_ireplace('@endtemplate','} ?>',$file);
 		
-		$componet1 = "/<x-({$this->all})\/>/simU";
-		$file = preg_replace($componet1, "<?php echo \$this->viewRenderProps('$1',null); ?>", $file);
+		$componet23 = "/@template\(({$this->all})\)/simU";
+		$file = preg_replace($componet23, '<?php function np_$1($scope=null){ if(is_array($scope)) extract($scope);', $file);
+		
+		
+   
+		
 
         ///////////////////////////////
-
+    
 		/*If e Elseif*/
 		$if = "/@if\(({$this->all})\)/simU";
 		$file = preg_replace($if, "<?php if($1): ?>", $file);
@@ -424,11 +447,11 @@ class View extends Translation
 		$file = preg_replace($text, "<?php echo \$this->text('$1'); ?>", $file);
 
 		$view = "/@view\(({$this->all})\)/simU";
-		$template = "/@template\(({$this->all})\)/simU";
+		
 
 		$file = preg_replace($view, "<?php \$this->loadComponent($1); ?>", $file);
 
-		$file = preg_replace($template, "<?php \$this->loadComponent($1); ?>", $file);
+		
 		
 		
 		

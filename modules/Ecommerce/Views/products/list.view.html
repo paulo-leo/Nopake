@@ -1,0 +1,39 @@
+@include("@Ecommerce/Views/templates/header")
+
+<div class="container">
+	<table class="table">
+		<thead>
+		<tr>
+			<th scope="col">ID</th>
+			<th scope="col">Nome do produto</th>
+			<th scope="col">Status</th>
+			<th scope="col">Preço</th>
+			<th scope="col">Nome da categoria</th>
+			<th scope="col">Tipo do produto</th>
+		</tr>
+		</thead>
+		<tbody>
+		</tbody>
+		<tbody>
+		@in($product->results)
+		<tr>
+			<th scope="row">{{$id}}</th>
+			<td>{{ $name }}</td>
+			<td>{{ $status }}</td>
+			<td>{{ $price }}</td>
+			<td>{{ $category_name }}</td>
+			<td>	
+				{{ $type }}
+				<div class="btn-group btn-group-sm" role="group" aria-label="Basic outlined example">
+					<a href="{{ url("ecommerce/products/{$id}/edit") }}" class="btn btn-outline-success">Editar</a>
+					<button type="button" id="{{ $id }}" class="btn btn-outline-danger">Deletar</button>
+				</div>
+			</td>
+		</tr>
+		@endin
+		</tbody>
+	</table>
+
+	{!$product->links!}
+</div>
+	

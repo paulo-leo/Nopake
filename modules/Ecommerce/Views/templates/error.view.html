@@ -1,0 +1,16 @@
+@include("@Ecommerce/Views/templates/header")
+
+<body>
+
+	<div class="errormain d-flex flex-column text-center  align-itens-center">
+		<h1 class="display-1">E <span style="color: rgb(17, 128, 255);">rr</span> or</h1>
+		<h4>Categoria não existente</h4>  
+		<p>{{ $msg_error }}</p>
+		<div class="buttons">
+			<a href="{{ url('ecommerce/categories/create') }}" class="btn btn-primary">Verificar Produtos</a>
+			<a href="{{ url('ecommerce/categories/create?type=' .$type ) }}" class="btn btn-primary">Verificar Categorias</a>
+		</div>
+	</div>
+
+
+</body>

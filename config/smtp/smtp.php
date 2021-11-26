@@ -1,9 +1,9 @@
 <?php
 return [
-'host'=>'smtpi.kinghost.net',
+'host'=>'',
 'auth'=>true,
-'user'=>'admin@empresa.russelservicos.com.br',
-'pass'=>'Pl@890508',
+'user'=>'',
+'pass'=>'',
 'port'=>587,
-'email'=>'admin@empresa.russelservicos.com.br',
+'email'=>'',
 'name'=>'Russel Serviços'];

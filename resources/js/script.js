@@ -1,0 +1,1 @@
+alert('Você está dentro de um script JS');
