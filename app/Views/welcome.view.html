@@ -1,68 +1,34 @@
-<!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{NP_DESCRIPTION}}">
-    <meta name="author" content="{{NP_AUTHOR}}">
-    <meta name="generator" content="012">
-    <title>{{NP_NAME}}</title>
-    <link rel="shortcut icon" href="{{asset('favicon.png')}}" />
-    <!-- Principal CSS do Bootstrap -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
 
-    </head>
-       @import('header')
-    <body>  
-  
-	 
-	 @component('comp3',[
-	  'id'=>'12',
-	  'title'=>'Modal 1',
-	  'content'=>'Conteúdo da modal 1'
-	 ])
-	 
-	 @component('comp3',[
-	   'id'=>'142',
-	   'title'=>'Modal 2',
-	   'content'=>'Conteúdo da modal 2'
-	 ])
-	 
-    <main role="main">
-       <a href="@asset:mais">xx</a>
-      <!-- Principal jumbotron, para a principal mensagem de marketing ou call to action -->
-      <div class="jumbotron">
-        <div class="container">
-          <h1 class="display-3">
-		  <img src="{{asset('logo.png')}}">
-		  </h1>
+@include('header')
+<div class="container py-4">
+    <header class="pb-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <img src="{{asset('logo.png')}}" style="width:150px">
+      </a>
+    </header>
+
+    <div class="p-5 mb-4 bg-light rounded-3">
+      <div class="container-fluid py-5">
+        <h1 class="display-5 fw-bold">Seja Bem-vindo ao Nopake!</h1>
+        <p class="col-md-8 fs-4">Nopake é um microframework escrito em PHP com foco em MVC. O Nopake utiliza uma sintaxe de template chamado VH para renderização da UI.</p>
+        <a class="btn btn-success btn-lg" type="button">Documentação</a>
+      </div>
+    </div>
+
+    <div class="row align-items-md-stretch">
+      <div class="col-md-6">
+        <div class="h-100 p-5 text-white bg-dark rounded-3">
+          <h2>Componentes</h2>
+          <p>Use componentes para o reaproveitamento do código e a separação da interface de usuário das demais camadas.</p>
+          <button class="btn btn-outline-light" type="button">Mais</button>
         </div>
       </div>
-
-      <div class="container">
-        <!-- Exemplo de linha de colunas -->
-        <div class="row">
-          <div class="col-md-4">
-            <h2>{{NP_NAME}}</h2>
-            <p>{{NP_DESCRIPTION}}</p>
-            <p><a class="btn btn-success" href="{{url('login')}}" role="button">Login</a></p>
-          </div>
+      <div class="col-md-6">
+        <div class="h-100 p-5 bg-light border rounded-3">
+          <h2>MVC</h2>
+          <p>O Nopake utiliza o padrão MVC para separar as camadas de controle, modelo e visual  no desenvolvimento de sua aplicação.</p>
+          <button class="btn btn-outline-secondary" type="button">Mais</button>
         </div>
-
-        <hr>
-
-      </div> <!-- /container -->
-
-    </main>
-
+      </div>
+    </div>
     @include('footer')
-
-    <!-- Principal JavaScript do Bootstrap
-    ================================================== -->
-    <!-- Foi colocado no final para a página carregar mais rápido -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery-slim.min.js"><\/script>')</script>
-    <script src="../../assets/js/vendor/popper.min.js"></script>
-    <script src="../../dist/js/bootstrap.min.js"></script>
-  </body>
-</html>

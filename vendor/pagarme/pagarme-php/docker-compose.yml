@@ -1,0 +1,21 @@
+version: '2'
+services:
+  php:
+    image: php:5.6
+    volumes:
+      - .:/code
+    working_dir: /code
+
+  php7:
+    build:
+      dockerfile: ./docker/php7/Dockerfile
+      context: ./
+    volumes:
+      - .:/code
+    working_dir: /code
+
+  composer:
+    image: pagarme/composer:php5.6
+    volumes:
+      - .:/code
+    working_dir: /code

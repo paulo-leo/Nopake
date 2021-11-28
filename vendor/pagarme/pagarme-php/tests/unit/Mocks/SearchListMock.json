@@ -1,0 +1,399 @@
+[
+    {
+    "took": 4,
+    "timed_out": false,
+    "_shards": {
+        "total": 5,
+        "successful": 5,
+        "failed": 0
+    },
+    "hits": {
+        "total": 2,
+        "max_score": 13.157412,
+        "hits": [
+            {
+                "_index": "pagarme",
+                "_type": "transaction",
+                "_id": "8345559",
+                "_score": 13.157412,
+                "_source": {
+                    "object": "transaction",
+                    "status": "paid",
+                    "refuse_reason": null,
+                    "status_reason": "acquirer",
+                    "acquirer_response_code": "0000",
+                    "acquirer_name": "pagarme",
+                    "acquirer_id": "5e74c1d40b76d639103b282a",
+                    "authorization_code": "626794",
+                    "soft_descriptor": null,
+                    "tid": 8345559,
+                    "nsu": 8345559,
+                    "date_created": "2020-04-27T23:54:12.106Z",
+                    "date_updated": "2020-04-27T23:54:12.749Z",
+                    "amount": 25000,
+                    "authorized_amount": 25000,
+                    "paid_amount": 25000,
+                    "refunded_amount": 0,
+                    "installments": 1,
+                    "id": 8345559,
+                    "cost": 120,
+                    "card_holder_name": "Willian Teste",
+                    "card_last_digits": "4242",
+                    "card_first_digits": "424242",
+                    "card_brand": "visa",
+                    "card_pin_mode": null,
+                    "card_magstripe_fallback": false,
+                    "cvm_pin": false,
+                    "postback_url": "https:\/\/52974206.ngrok.io\/api\/postback",
+                    "payment_method": "credit_card",
+                    "capture_method": "ecommerce",
+                    "antifraud_score": null,
+                    "boleto_url": null,
+                    "boleto_barcode": null,
+                    "boleto_expiration_date": null,
+                    "referer": "api_key",
+                    "ip": "179.157.196.13",
+                    "subscription_id": null,
+                    "phone": null,
+                    "address": null,
+                    "customer": {
+                        "object": "customer",
+                        "id": 2889944,
+                        "external_id": "#123456",
+                        "type": "individual",
+                        "country": "br",
+                        "document_number": null,
+                        "document_type": "cpf",
+                        "name": "Willian Teste",
+                        "email": "cliente@email.com",
+                        "phone_numbers": [
+                            "+551199999999"
+                        ],
+                        "born_at": null,
+                        "birthday": null,
+                        "gender": null,
+                        "date_created": "2020-04-27T23:54:12.013Z",
+                        "documents": [
+                            {
+                                "object": "document",
+                                "id": "doc_ck9j51ku103dy6b6dnn0cuql3",
+                                "type": "cpf",
+                                "number": "45498515030"
+                            }
+                        ]
+                    },
+                    "billing": {
+                        "object": "billing",
+                        "id": 1225064,
+                        "name": "Pagador Teste",
+                        "address": {
+                            "object": "address",
+                            "street": "Avenida Brigadeiro Faria Lima",
+                            "complementary": null,
+                            "street_number": "111111",
+                            "neighborhood": "Jardim Paulistano",
+                            "city": "Sao Paulo",
+                            "state": "sp",
+                            "zipcode": "01451001",
+                            "country": "br",
+                            "id": 2762349
+                        }
+                    },
+                    "shipping": {
+                        "object": "shipping",
+                        "id": 954043,
+                        "name": "Recebedor do produto Teste",
+                        "fee": 800,
+                        "delivery_date": "2018-09-22",
+                        "expedited": false,
+                        "address": {
+                            "object": "address",
+                            "street": "Avenida Brigadeiro Faria Lima",
+                            "complementary": null,
+                            "street_number": "1811",
+                            "neighborhood": "Jardim Paulistano",
+                            "city": "Sao Paulo",
+                            "state": "sp",
+                            "zipcode": "01451001",
+                            "country": "br",
+                            "id": 2762350
+                        }
+                    },
+                    "items": [
+                        {
+                            "object": "item",
+                            "id": "9",
+                            "title": "C-3PO",
+                            "unit_price": 12300,
+                            "quantity": 1,
+                            "category": null,
+                            "tangible": true,
+                            "venue": null,
+                            "date": null
+                        },
+                        {
+                            "object": "item",
+                            "id": "1",
+                            "title": "R2D2",
+                            "unit_price": 11900,
+                            "quantity": 1,
+                            "category": null,
+                            "tangible": true,
+                            "venue": null,
+                            "date": null
+                        }
+                    ],
+                    "card": {
+                        "object": "card",
+                        "id": "card_ck9j51kvw03dz6b6dgv5z57ov",
+                        "date_created": "2020-04-27T23:54:12.092Z",
+                        "date_updated": "2020-04-27T23:54:12.811Z",
+                        "brand": "visa",
+                        "holder_name": "Willian Teste",
+                        "first_digits": "424242",
+                        "last_digits": "4242",
+                        "country": "UNITED STATES",
+                        "fingerprint": "cj7t2pcew03tn0l09n98ibta0",
+                        "valid": true,
+                        "expiration_date": "1220"
+                    },
+                    "split_rules": [
+                        {
+                            "object": "split_rule",
+                            "id": "sr_ck9j51kwt03e16b6dc79np7ve",
+                            "liable": true,
+                            "amount": null,
+                            "percentage": 80,
+                            "recipient_id": "re_ck80f52wx02vv0e6e77zdn4ov",
+                            "charge_remainder": false,
+                            "charge_processing_fee": false,
+                            "block_id": null,
+                            "date_created": "2020-04-27T23:54:12.125Z",
+                            "date_updated": "2020-04-27T23:54:12.125Z"
+                        },
+                        {
+                            "object": "split_rule",
+                            "id": "sr_ck9j51kws03e06b6dp1spmauj",
+                            "liable": true,
+                            "amount": null,
+                            "percentage": 20,
+                            "recipient_id": "re_ck807h7lu05h69s6dffimaqj5",
+                            "charge_remainder": true,
+                            "charge_processing_fee": true,
+                            "block_id": null,
+                            "date_created": "2020-04-27T23:54:12.125Z",
+                            "date_updated": "2020-04-27T23:54:12.125Z"
+                        }
+                    ],
+                    "antifraud_metadata": {},
+                    "reference_key": null,
+                    "device": null,
+                    "local_transaction_id": null,
+                    "local_time": null,
+                    "fraud_covered": false,
+                    "fraud_reimbursed": null,
+                    "order_id": null,
+                    "risk_level": "very_low",
+                    "receipt_url": null,
+                    "payment": null,
+                    "addition": null,
+                    "discount": null,
+                    "private_label": null,
+                    "metadata": {}
+                }
+            },
+            {
+                "_index": "pagarme",
+                "_type": "transaction",
+                "_id": "8345558",
+                "_score": 12.089798,
+                "_source": {
+                    "object": "transaction",
+                    "status": "paid",
+                    "refuse_reason": null,
+                    "status_reason": "acquirer",
+                    "acquirer_response_code": "0000",
+                    "acquirer_name": "pagarme",
+                    "acquirer_id": "5e74c1d40b76d639103b282a",
+                    "authorization_code": "372506",
+                    "soft_descriptor": null,
+                    "tid": 8345558,
+                    "nsu": 8345558,
+                    "date_created": "2020-04-27T23:54:07.971Z",
+                    "date_updated": "2020-04-27T23:54:09.486Z",
+                    "amount": 25000,
+                    "authorized_amount": 25000,
+                    "paid_amount": 25000,
+                    "refunded_amount": 0,
+                    "installments": 1,
+                    "id": 8345558,
+                    "cost": 120,
+                    "card_holder_name": "Willian Teste",
+                    "card_last_digits": "4242",
+                    "card_first_digits": "424242",
+                    "card_brand": "visa",
+                    "card_pin_mode": null,
+                    "card_magstripe_fallback": false,
+                    "cvm_pin": false,
+                    "postback_url": "https:\/\/52974206.ngrok.io\/api\/postback",
+                    "payment_method": "credit_card",
+                    "capture_method": "ecommerce",
+                    "antifraud_score": null,
+                    "boleto_url": null,
+                    "boleto_barcode": null,
+                    "boleto_expiration_date": null,
+                    "referer": "api_key",
+                    "ip": "179.157.196.13",
+                    "subscription_id": null,
+                    "phone": null,
+                    "address": null,
+                    "customer": {
+                        "object": "customer",
+                        "id": 2889943,
+                        "external_id": "#123456",
+                        "type": "individual",
+                        "country": "br",
+                        "document_number": null,
+                        "document_type": "cpf",
+                        "name": "Willian Teste",
+                        "email": "cliente@email.com",
+                        "phone_numbers": [
+                            "+551199999999"
+                        ],
+                        "born_at": null,
+                        "birthday": null,
+                        "gender": null,
+                        "date_created": "2020-04-27T23:54:07.889Z",
+                        "documents": [
+                            {
+                                "object": "document",
+                                "id": "doc_ck9j51hni03lzmb6e8ssdxcyq",
+                                "type": "cpf",
+                                "number": "45498515030"
+                            }
+                        ]
+                    },
+                    "billing": {
+                        "object": "billing",
+                        "id": 1225063,
+                        "name": "Pagador Teste",
+                        "address": {
+                            "object": "address",
+                            "street": "Avenida Brigadeiro Faria Lima",
+                            "complementary": null,
+                            "street_number": "111111",
+                            "neighborhood": "Jardim Paulistano",
+                            "city": "Sao Paulo",
+                            "state": "sp",
+                            "zipcode": "01451001",
+                            "country": "br",
+                            "id": 2762347
+                        }
+                    },
+                    "shipping": {
+                        "object": "shipping",
+                        "id": 954042,
+                        "name": "Recebedor do produto Teste",
+                        "fee": 800,
+                        "delivery_date": "2018-09-22",
+                        "expedited": false,
+                        "address": {
+                            "object": "address",
+                            "street": "Avenida Brigadeiro Faria Lima",
+                            "complementary": null,
+                            "street_number": "1811",
+                            "neighborhood": "Jardim Paulistano",
+                            "city": "Sao Paulo",
+                            "state": "sp",
+                            "zipcode": "01451001",
+                            "country": "br",
+                            "id": 2762348
+                        }
+                    },
+                    "items": [
+                        {
+                            "object": "item",
+                            "id": "1",
+                            "title": "R2D2",
+                            "unit_price": 11900,
+                            "quantity": 1,
+                            "category": null,
+                            "tangible": true,
+                            "venue": null,
+                            "date": null
+                        },
+                        {
+                            "object": "item",
+                            "id": "9",
+                            "title": "C-3PO",
+                            "unit_price": 12300,
+                            "quantity": 1,
+                            "category": null,
+                            "tangible": true,
+                            "venue": null,
+                            "date": null
+                        }
+                    ],
+                    "card": {
+                        "object": "card",
+                        "id": "card_ck9j51hp203m0mb6eh83wxvvl",
+                        "date_created": "2020-04-27T23:54:07.959Z",
+                        "date_updated": "2020-04-27T23:54:09.546Z",
+                        "brand": "visa",
+                        "holder_name": "Willian Teste",
+                        "first_digits": "424242",
+                        "last_digits": "4242",
+                        "country": "UNITED STATES",
+                        "fingerprint": "cj7t2pcew03tn0l09n98ibta0",
+                        "valid": true,
+                        "expiration_date": "1220"
+                    },
+                    "split_rules": [
+                        {
+                            "object": "split_rule",
+                            "id": "sr_ck9j51hpx03m2mb6e9yo41o9m",
+                            "liable": true,
+                            "amount": null,
+                            "percentage": 80,
+                            "recipient_id": "re_ck80f52wx02vv0e6e77zdn4ov",
+                            "charge_remainder": false,
+                            "charge_processing_fee": false,
+                            "block_id": null,
+                            "date_created": "2020-04-27T23:54:07.989Z",
+                            "date_updated": "2020-04-27T23:54:07.989Z"
+                        },
+                        {
+                            "object": "split_rule",
+                            "id": "sr_ck9j51hpw03m1mb6emqzzvuqb",
+                            "liable": true,
+                            "amount": null,
+                            "percentage": 20,
+                            "recipient_id": "re_ck807h7lu05h69s6dffimaqj5",
+                            "charge_remainder": true,
+                            "charge_processing_fee": true,
+                            "block_id": null,
+                            "date_created": "2020-04-27T23:54:07.989Z",
+                            "date_updated": "2020-04-27T23:54:07.989Z"
+                        }
+                    ],
+                    "antifraud_metadata": {},
+                    "reference_key": null,
+                    "device": null,
+                    "local_transaction_id": null,
+                    "local_time": null,
+                    "fraud_covered": false,
+                    "fraud_reimbursed": null,
+                    "order_id": null,
+                    "risk_level": "very_low",
+                    "receipt_url": null,
+                    "payment": null,
+                    "addition": null,
+                    "discount": null,
+                    "private_label": null,
+                    "metadata": {}
+                }
+            }
+        ]
+    }
+    }
+]

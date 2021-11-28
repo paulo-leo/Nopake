@@ -16,8 +16,35 @@ Route::get('/',function(){ return view('welcome'); });
 
 Route::get('teste',function(){
 	
-  return calc_p(100,10);
+  $request = new Request;
+  $page = $request->get('page');
+  $search = $request->get('search');
+
+  $datas = DB::table('users');
   
+if(strlen(trim($search)) > 1)
+  {
+    $sql = "SELECT id,name FROM users WHERE name LIKE '%{$search}'" ;
+  }else{
+    $sql = "SELECT id,name FROM users";
+  }
+
+  $datas = $datas->firstQuery($sql);
+  $datas = $datas->paginate();
+
+  $data = null;
+
+  foreach ($datas->results as $values) 
+  {
+    extract($values);
+    $data[] = array("id"=>$id, "text"=>'['.$id.'] '.$name);
+  }
+
+  $data[] = array("paginate"=>true);
+  
+  return json($data);
+
+
 });
 
 

@@ -1,0 +1,448 @@
+<!--Inputs-->
+@template(p_input)
+
+$type = isset($type) ? $type : 'text';
+$value = isset($value) ? $value : null;
+$text = isset($text) ? $text : 'Text of input here';
+$name = isset($name) ? $name : '';
+$help = isset($help) ? $help : false;
+$min = isset($min) ? $min : null;
+$max = isset($max) ? $max : null;
+$required = isset($required) && is_bool($required) && $required == true ? 'required' : null;
+$placeholder = isset($placeholder) ? $placeholder : null;
+
+$html = "<label for='id-{$name}' class='form-label'>$text</label>
+<input type='{$type}' name='{$name}' class='form-control' id='id-{$name}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required}>";
+
+if($help) $html .= "<div id='help-{$name}' class='form-text'>$help</div>";
+
+return $html;
+
+@endtemplate
+
+<!--switch-->
+@template(p_switch)
+$name = isset($name) ? $name : '';
+$text = isset($text) ? $text : 'Text of input here';
+$checked = (isset($checked) && $checked && $checked != '') ? 'checked' : null;
+
+$html = "<div class='form-check form-switch'>
+    <input class='form-check-input' name='{$name}' type='checkbox' role='switch' id='id-{$name}' {$checked}>
+    <label class='form-check-label' for='id-{$name}'>{$text}</label>
+  </div>";
+
+  return $html;
+
+@endtemplate
+
+
+<!--select-->
+@template(p_select)
+
+$name = isset($name) ? $name : '';
+$value = isset($value) ? $value : null;
+$text = isset($text) ? $text : 'Text of input here';
+$required = isset($required) && is_bool($required) && $required == true ? 'required' : null;
+
+$select = isset($select) ? $select : [];
+
+
+
+$html = "<label for='id-{$name}' class='form-label'>$text</label>
+<select name='{$name}' class='form-select' aria-label='Default select example' {$required}>";
+$html .= options($select,$value);
+$html .= "</select>";
+
+return $html;
+
+@endtemplate
+
+<!--Menu sidebar do painel-->
+@template(p_sidebar)
+
+$html = null;
+
+foreach($scope as $key=>$val)
+{
+    if(is_numeric($key) && is_string($val))
+    {
+       $val = qsh_to_array($val,"|");
+       $text = isset($val['text']) ? $val['text'] : 'Link';
+       $icon = isset($val['icon']) ? $val['icon'] : '';
+       $link = isset($val['link']) ? $val['link'] : '#';
+
+       $link = $link != '#' ? url($link) : $link;
+
+       $html .= "<a class='nav-link' href='{$link}'>
+        <div class='np-nav-link-icon'>
+            <i class='material-icons'>{$icon}</i>
+        </div>{$text}</a>";
+    }
+    
+    if(is_string($key) && is_array($val))
+    {
+       $key = qsh_to_array($key,"|");
+       $text = isset($key['text']) ? $key['text'] : 'Link';
+       $icon = isset($key['icon']) ? $key['icon'] : 'Link';
+       $id = str_to_sanitize($text,false);
+
+       $html .= "<a class='nav-link collapsed' style='cursor:pointer' data-bs-toggle='collapse'
+       data-bs-target='#{$id}' aria-expanded='false'
+       aria-controls='{$id}'>
+       <div class='np-nav-link-icon'>
+           <i class='material-icons'>{$icon}</i>
+       </div>{$text}
+       <div class='np-sidenav-collapse-arrow'>
+           <i class='material-icons'>arrow_drop_down</i>
+       </div></a>";
+
+
+       $html .= "<div class='collapse' id='{$id}' aria-labelledby='headingOne'
+       data-bs-parent='#sidenavAccordion'><nav class='np-sidenav-menu-nested nav'>";
+   
+          foreach($val as $submenu)
+          {
+             $submenu = qsh_to_array($submenu,"|");
+             $sub_text = isset($submenu['text']) ? $submenu['text'] : 'Link';
+             $sub_icon = isset($submenu['icon']) ? $submenu['icon'] : '';
+             $sub_link = isset($submenu['link']) ? $submenu['link'] : '#';
+             $sub_link = $sub_link != '#' ? url($sub_link) : $sub_link;
+
+             $html .= "<a class='nav-link' href='https://erp.russelservicos.com/dashboard/users'>
+                <i class='material-icons'>{$sub_icon}</i>
+               {$sub_text}</a>";
+
+          }
+   
+       $html .= "</nav></div>";
+  
+
+    }
+}
+
+return $html;
+
+@endtemplate
+
+<!--Hiddens--->
+@template(p_hidden)
+$html = null;
+foreach($scope as $name=>$value)
+{
+   $html .= "<input type='hidden' name='{$name}' value='{$value}'>";
+}
+return $html;
+@endtemplate
+
+<!--Títulos-->
+@template(p_title)
+
+$title = isset($title) ? $title : null;
+$btns = isset($btns) ? $btns : null;
+$modal_content = isset($modal_content) ? $modal_content : null;
+$title_modal = isset($title_modal) ? $title_modal : null;
+
+    if(is_string($scope)){ $title = $scope; }
+
+    set_var('np_table_title',$title);
+	$title_modal = is_null($title_modal) ? 'Filtro' : $title_modal;
+	$html = "<div class='fixed-header'>
+        <div class='d-flex align-items-center'>
+            <button class='btn-back' onclick='history.go(-1);'><i class='material-icons'>chevron_left</i></button>
+            <h2 class='header-title'>{$title}</h2>
+        </div>
+        
+        <div class='d-flex'>";
+		
+	  if(!is_null($modal_content))
+	  {
+            $html .= "<button  data-bs-toggle='modal' data-bs-target='#exampleModal' class='btn-filter'>
+                <i class='material-icons'>menu</i></button>"; 
+	  }
+
+      $html .= "<div class='dropdown mx-2'>";
+	  
+	  if(!is_null($btns))
+	  {
+          $html .= "<button  class='btn btn-primary dropdown-toggle py-1 p-2' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
+                  Ações
+	          </button>";
+	  }
+
+       $btn_item = null;		
+		 if(is_array($btns))
+		 {
+			foreach($btns as $key=>$text){
+		      
+              $key = explode('|',$key);	
+		      $id = null;
+			  
+		      if(substr($key[0],0,1) == '#')
+			  {
+				  
+				$id = str_ireplace('#','',$key[0]);
+                $url = $key[0];	
+				
+			  }else{
+				$url = url($key[0]);  
+			  }
+	
+			  $target = isset($key[1]) ? $url : '_self';
+
+		      $btn_item .= "<li><a target='{$target}' id='{$id}' class='dropdown-item' href='{$url}'>{$text}</a></li>";
+			} 
+		 }
+              
+         $html .= "<ul class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
+		            {$btn_item}
+                </ul>
+			 </div>
+           </div>
+       </div>"; 
+	
+	if(!is_null($modal_content)){
+  
+    $html .= "<div class='modal fade' id='exampleModal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+        <div class='modal-dialog modal-dialog-scrollable modal-lg'>
+          <div class='modal-content'>
+            <div class='modal-header'>
+              <h5 class='modal-title' id='exampleModalLabel'>
+			    {$title_modal}
+			  </h5>
+              <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+            </div>
+            <div class='modal-body'>
+			   {$modal_content}
+            </div>
+          </div>
+        </div>
+    </div>"; 
+	}
+	
+	return $html;
+
+@endtemplate
+
+<!--Campo de buscas com select2-->
+@template(p_select2)
+
+$default= isset($default) ? $default : null;
+$args = isset($args) ? $args : null;
+$method = isset($method) ? $method : 'POST';
+$observe =  isset($observe) ? $observe : null;
+$multiple = isset($multiple) ? $multiple : false;
+$required = isset($required) ? $required : false;
+	
+ $id = 'select2-'.str_url($url.$default);
+ $id = str_ireplace('|','',$id);
+ 
+ $url = url($url);
+ $params = null;
+
+ if(is_array($args))
+ {
+    foreach ($args as $key => $value) 
+    {
+    	$params .= ",{$key}:'{$value}'";
+    }
+ }
+	 
+	 $required = $required ? 'required' : null;
+
+     $default = explode('|',$default);
+	 $name = $default[0];
+
+	 if(isset($default[1])){
+	 	 $key =  $default[1];
+	 	 $val = isset($default[2]) ? $default[2] : 'Padrão';
+	     $default =  "<option value='{$key}'>{$val}</option>";
+	 }else{
+	 	 $default = null;
+	 }
+
+$observe_id = 'observe_id';
+$observe_name ='observe_name';	
+
+if(!is_null($observe))
+{
+	$observe = explode('|',$observe);
+	$observe_id = $observe[0];
+	if(isset($observe[1])) $observe_name = $observe[1];
+}
+$token = csrf_token();
+$multiple = $multiple ? "multiple='multiple'" : null;
+
+$select  = "<select {$multiple} {$required} id='{$id}' name='{$name}' class='select2 form-select'>{$default}</select>";
+$select .= "<script type='text/javascript'>
+            $(document).ready(function(){
+			
+             let obVal = null;
+			 let observeSelect = $('#{$observe_id}');
+             obVal = observeSelect.val();
+
+			observeSelect.change(function(){
+				obVal = $('option:selected', this).val();
+			});
+
+            $('#{$id}').select2({
+				width:'100%',
+                ajax: {
+                    url: '{$url}',
+                    type: '{$method}',
+                    dataType: 'json',
+                    delay: 250,
+                    data: function (params) {
+                    var query = {
+						 $observe_name:obVal,
+						 _token: '{$token}',
+                         search: params.term,
+                         page: params.page{$params}
+                         }
+                      return query;
+                    },
+                    processResults: function (response) {
+                        return {
+                            results: response
+                        };
+                    },
+                    cache: true
+                }
+            });
+});
+</script>";
+
+return $select;
+
+@endtemplate
+
+
+<!--Formulário-->
+
+@template(p_header_form)
+   
+
+	$id = isset($id) ? $id : null;
+	$text_btn = isset($text_btn) ? $text_btn : null;
+    $title = isset($title) ? $title : 'Formulário sem título';	
+	$method = isset($method) ? $method : 'POST';
+	$route = isset($route) ? $route : null;
+	$loading_text = isset($loading_text) ? $loading_text : 'Enviando...';
+	
+	if(isset($url)){ $route = $url; }
+		
+	$args = isset($args) ? $args : null;
+	$max_file_size = isset($max_file_size) ? $max_file_size : 30000;	
+	$id_form = !is_null($id) ? "-{$id_form}" : null;
+	$max = null;
+	$file = null;
+	
+	if(isset($files))
+	{
+		$file = $files;
+	}
+	
+	if(isset($file))
+	{
+		if(is_bool($file) && $file == true){
+			$file = "enctype='multipart/form-data'";
+			$max = "<input type='hidden' name='MAX_FILE_SIZE' value='{$max_file_size}' />";
+		}
+	}
+	$debug =false;
+	
+	if(isset($debug))
+	{
+		if(is_bool($debug) && $debug == true)
+		{
+			$debug = true;
+		}
+	}
+	
+	$url = url($route);
+	
+	$reset = null;
+	
+	if(is_null($text_btn)){
+		$text_btn = (strtolower($method) == strtolower('PUT')) ? text(':update') : text(':save');
+	}
+	
+	$text_class_color = isset($text_class) ? $text_class : 'btn-outline-primary';
+   //id="np-form-open'.$id_form.'" action="'.url($url).'" method="'.$method.'" 
+   $form = "<form id='np-form-open{$id_form}' {$file}>{$max}
+            <div class='sticky-header'>
+	         <div class='d-flex align-items-center'>
+		      <a class='btn-back' href='javascript:history.back()'><i class='material-icons'>chevron_left</i></a>
+		      <h2 class='sticky-title'>{$title}</h2>
+	        </div>
+	       <div>
+		      <div class='btn btn-sticky btn-primary' id='np-form-loading{$id_form}' style='display:none'>
+                <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
+				{$loading_text}
+             </div>
+		      <button id='np-form-submit{$id_form}' type='submit' class='btn btn-sticky {$text_class_color}'>{$text_btn}</button>
+	      </div>
+         </div>";
+		 
+		 
+	 $form .= '<div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>';
+		 
+	  $form .= '<script>
+	   $(document).ready(function() { 
+            var form = $("#np-form-open'.$id_form.'"); 
+			form.submit(function(){ 
+			var values = form.serialize();
+					$.ajax({
+					url : "'.$url.'",
+                    type :"'.$method.'",
+                    data :values,
+					cache: false,
+					dataType: "json",
+                    beforeSend : function(){ 
+					
+					      $("#np-form-loading'.$id_form.'").show();
+						  $("#np-form-submit'.$id_form.'").hide();
+
+					},
+					error:function(data){
+						 console.log(data);
+						$("#form-local").append(\'<div class="alert alert-warning alert-dismissible" role="alert"><strong>'.text(':error').'!</strong> Verifique se o registo não está duplicado. Ou realize o debug da aplicação. <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>\');
+						 
+					},
+					success : function(data){';
+					
+					          if($debug){ $form .= " console.log(data); ";}
+					  
+                              $form .= 'var type = data.type;
+							  var msg  = data.msg;
+							  if(type == "success"){
+								 
+							      $("#form-local").append(\'<div class="alert alert-success alert-dismissible" role="alert"><strong>'.text(':success').'!</strong> \'+msg+\'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>\');
+								  
+							  }else if(type == "error"){
+								  
+								    $("#form-local").append(\'<div class="alert alert-danger alert-dismissible" role="alert"><strong>'.text(':error').'!</strong> \'+msg+\'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>\');
+								   
+							  }else{
+								 
+								  $("#form-local").append(\'<div class="alert alert-primary alert-dismissible" role="alert"><strong>'.text(':info').'!</strong> \'+msg+\'<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>\');
+								 
+							  }';
+							  
+					$form .= '},
+				complete:function(data){
+					
+				    $("#np-form-loading'.$id_form.'").hide();
+					$("#np-form-submit'.$id_form.'").show();'; 
+					
+					if($debug){ $form .= " console.log(data); ";}
+                   				
+				$form .= '}
+				});
+				return false;
+			});
+      });
+	  </script>';
+	  
+	  
+	  return $form;
+@endtemplate

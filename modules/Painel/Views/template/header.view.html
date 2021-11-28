@@ -1,0 +1,102 @@
+@php
+$title = isset($title) ? $title : NP_NAME;
+$color_top = isset($color_top) ? 'bg-'.$color_top : 'bg-primary';
+@endphp
+<!DOCTYPE html>
+<html lang="{{NP_LANG}}">
+<head>
+    <meta name="robots" content="none" />
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="author" content="{{NP_AUTHOR}}" />
+    <meta name="description" content="{{NP_DESCRIPTION}}">
+    <title>{{$title}}</title>
+    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+    <link href="{{asset()}}/painel/css/custom.css" rel="stylesheet" />
+    <link href="{{asset()}}/painel/css/styles.css" rel="stylesheet" />
+    <link href="{{asset()}}/painel/sweetalert/sweetalert.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="{{asset()}}/painel/select2/select2.min.css" type="text/css">
+    <script src="{{asset()}}/painel/js/jquery.min.js"></script>
+    <script src="{{asset()}}/painel/sweetalert/sweetalert.min.js"></script>
+
+    <link rel="shortcut icon" href="{{asset('favicon.png')}}" />
+</head>
+
+<body class="np-nav-fixed">
+    <nav class="np-topnav navbar navbar-expand navbar-dark {{$color_top}}">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3 text-uppercase" href="{{url('dashboard')}}" title="{{NP_NAME}}">
+            <img src="{{asset('favicon.png')}}"></a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
+                class="material-icons">menu</i></button>
+
+
+        <!-- Navbar Search-->
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        </form>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+            <a class="nav-link" href="{{url('dashboard/applications')}}" role="button" aria-expanded="false"><i
+                    class="material-icons">apps</i></a>
+            <a class="nav-link" href="#" role="button" aria-expanded="false"><i
+                    class="material-icons">notifications</i></a>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
+                    aria-expanded="false"><i class="material-icons">person</i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li>
+                        <b class="dropdown-item text-uppercase font-weight-bold">{{NP_NAME}}</b>
+                        <hr class="dropdown-divider" />
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{url('dashboard/profile')}}">{{user_name()}}</a>
+                    </li>
+                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
+                            data-bs-target="#np-modal-logout-x">Sair</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="np-sidenav accordion np-sidenav-light" id="sidenavAccordion">
+                <div class="np-sidenav-menu">
+                    <div class="nav">
+
+                       @component('p_sidebar',$sidebar)
+ 
+                    </div>
+                </div>
+                <div class="np-sidenav-footer">
+                    <div class="small">{{user_name()}}</div>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main class="">
+
+                <!--Modal para sair-->
+                <!-- Modal -->
+                <div class="modal fade" id="np-modal-logout-x" tabindex="-1" aria-labelledby="np-modal-logout"
+                    aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="np-modal-logout">Desconectar conta</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                Olá <b>{{user_first()}}</b>! Tem certeza que deseja desconectar da sua conta?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">#close#</button>
+                                <a href="{{url('logout')}}" class="btn btn-primary">#confirm#</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
