@@ -70,7 +70,7 @@ foreach($scope as $key=>$val)
        $text = isset($val['text']) ? $val['text'] : 'Link';
        $icon = isset($val['icon']) ? $val['icon'] : '';
        $link = isset($val['link']) ? $val['link'] : '#';
-
+       $link = str_ireplace(':','=', $link);
        $link = $link != '#' ? url($link) : $link;
 
        $html .= "<a class='nav-link' href='{$link}'>
@@ -106,12 +106,13 @@ foreach($scope as $key=>$val)
              $sub_text = isset($submenu['text']) ? $submenu['text'] : 'Link';
              $sub_icon = isset($submenu['icon']) ? $submenu['icon'] : '';
              $sub_link = isset($submenu['link']) ? $submenu['link'] : '#';
+			 $sub_link = str_ireplace(':','=', $sub_link);
              $sub_link = $sub_link != '#' ? url($sub_link) : $sub_link;
 
-             $html .= "<a class='nav-link' href='https://erp.russelservicos.com/dashboard/users'>
+             $html .= "<a class='nav-link' href='{$sub_link}'>
                 <i class='material-icons'>{$sub_icon}</i>
                {$sub_text}</a>";
-
+													
           }
    
        $html .= "</nav></div>";

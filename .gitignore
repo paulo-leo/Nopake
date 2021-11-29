@@ -1,0 +1,5 @@
+!app/Controllers/UserController.php
+!app/Controllers/AuthenticateController.php
+!app/Views/components.json
+!app/Views/authenticate
+/vendor
