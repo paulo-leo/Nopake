@@ -22,6 +22,7 @@ return $html;
 
 <!--switch-->
 @template(p_switch)
+
 $name = isset($name) ? $name : '';
 $text = isset($text) ? $text : 'Text of input here';
 $checked = (isset($checked) && $checked && $checked != '') ? 'checked' : null;
@@ -39,6 +40,7 @@ $html = "<div class='form-check form-switch'>
 <!--select-->
 @template(p_select)
 
+$id = isset($id) ? $id : '';
 $name = isset($name) ? $name : '';
 $value = isset($value) ? $value : null;
 $text = isset($text) ? $text : 'Text of input here';
@@ -49,7 +51,7 @@ $select = isset($select) ? $select : [];
 
 
 $html = "<label for='id-{$name}' class='form-label'>$text</label>
-<select name='{$name}' class='form-select' aria-label='Default select example' {$required}>";
+<select name='{$name}' id='{$id}' class='form-select' aria-label='Default select example' {$required}>";
 $html .= options($select,$value);
 $html .= "</select>";
 
@@ -72,6 +74,8 @@ foreach($scope as $key=>$val)
        $link = isset($val['link']) ? $val['link'] : '#';
        $link = str_ireplace(':','=', $link);
        $link = $link != '#' ? url($link) : $link;
+	   
+	   $text = is_url($link) ? "<b>{$text}</b>" : $text;
 
        $html .= "<a class='nav-link' href='{$link}'>
         <div class='np-nav-link-icon'>
@@ -84,6 +88,15 @@ foreach($scope as $key=>$val)
        $key = qsh_to_array($key,"|");
        $text = isset($key['text']) ? $key['text'] : 'Link';
        $icon = isset($key['icon']) ? $key['icon'] : 'Link';
+	   $path = isset($key['path']) ? $key['path'] : null;
+	   
+	   $show = null; 
+	   if(has_path($path))
+	   {
+	      $text = "<b>{$text}</b>";
+	      $show = 'show'; 
+	   } 
+	   
        $id = str_to_sanitize($text,false);
 
        $html .= "<a class='nav-link collapsed' style='cursor:pointer' data-bs-toggle='collapse'
@@ -97,7 +110,7 @@ foreach($scope as $key=>$val)
        </div></a>";
 
 
-       $html .= "<div class='collapse' id='{$id}' aria-labelledby='headingOne'
+       $html .= "<div class='collapse {$show}' id='{$id}' aria-labelledby='headingOne'
        data-bs-parent='#sidenavAccordion'><nav class='np-sidenav-menu-nested nav'>";
    
           foreach($val as $submenu)
@@ -108,16 +121,11 @@ foreach($scope as $key=>$val)
              $sub_link = isset($submenu['link']) ? $submenu['link'] : '#';
 			 $sub_link = str_ireplace(':','=', $sub_link);
              $sub_link = $sub_link != '#' ? url($sub_link) : $sub_link;
-
-             $html .= "<a class='nav-link' href='{$sub_link}'>
-                <i class='material-icons'>{$sub_icon}</i>
-               {$sub_text}</a>";
-													
+			 $sub_text = is_url($sub_link) ? "<b>{$sub_text}</b>" : $sub_text;
+             $html .= "<a class='nav-link' href='{$sub_link}'><i class='material-icons'>{$sub_icon}</i>{$sub_text}</a>";									
           }
    
        $html .= "</nav></div>";
-  
-
     }
 }
 

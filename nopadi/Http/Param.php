@@ -131,16 +131,29 @@ class Param
 		return is_numeric($id) ? $id : false;
 	}
 	/*Retona a URL/Rota do recurso atual*/
-	public static function route()
+	public static function route($queryIgnore=true)
     {
 		$uri = new URI();
 		$base = $uri->base();
-		$url = explode('?',$uri->uri());
-		$url = $url[0];
-
+		
+		if($queryIgnore)
+		{
+		  $url = explode('?',$uri->uri());
+		  $url = $url[0];	
+		}else
+		{
+		  $url = $uri->uri();
+		}
+		
         $route = substr($url,strlen($base));
         return trim(htmlspecialchars($route, ENT_QUOTES));
     }
+	
+	public static function path($queryIgnore=true)
+	{
+		return self::route($queryIgnore);
+	}
+	
 	/*Verifca se a rota atual corresponde a rota informada no parametro*/
 	public static function isRoute($route)
     {

@@ -840,6 +840,22 @@ function is_url($route = null, $ignoreType = false)
 		else return false;
 	}
 }
+/*Identifica se existe ocorrência no caminho especificado*/
+function has_path($route = null,$queryIgnore=true)
+{
+	if($route == '/'){ $route = null; } 
+	
+	if(!is_null($route))
+	{
+      $uri = Param::path($queryIgnore);
+      $route = str_ireplace('/','\/',$route);
+	  $route = str_ireplace('?','\?',$route);
+      if(preg_match("/{$route}/i", $uri)) return true;
+      else return false;  	  	
+	}else{
+		return false;
+	}
+}
 
 /*Redireciona o usuário para uma URL especifica informada*/
 function to_url($to = null)
