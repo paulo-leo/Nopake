@@ -1,10 +1,14 @@
 {
-    "name": "nopadi/mf",
+    "name": "Nopake/mf",
     "type": "project",
-    "description": "Nopadi",
+    "description": "Desenvolvimento web progressivo",
     "keywords": [
         "framework",
-        "nopadi"
+        "nopadi",
+		"nopake",
+		"PHP",
+		"routes",
+		"api"
     ],
     "license": "MIT",
     "require": {
