@@ -9,6 +9,7 @@ class Request
 {
 	private $all;
 	private $check;
+	private $files;
 	private $erros;
 	private $values;
 	private $allHeaders;
@@ -17,6 +18,7 @@ class Request
 	{
 	  $this->erros = array();
 	  $this->values = array();
+	  $this->files = array();
 	  $this->check = 1;
       switch ($_SERVER['REQUEST_METHOD']) 
 	  {
@@ -25,6 +27,7 @@ class Request
 				break;
 			case 'POST':
 				$this->all = isset($_POST) ? $_POST : array();
+				$this->files = isset($_FILES) ? $_FILES : array();
 				break;
 			default:
 				$_REQUEST_NOPADI = file_get_contents('php://input');
@@ -216,6 +219,27 @@ class Request
 		return $ar;
 	}
 	//!empty($this->all[$x])
+	
+	/*Retorna o array de arquivos*/
+	public function getFile($file_name,$file_value=null)
+	{
+		$value = null;
+		$files = $this->files;
+		if(array_key_exists($file_name,$files))
+		{
+		  if(!is_null($file_value))
+		  {
+			if(isset($files[$file_name][$file_value]))
+			{
+				$value = $files[$file_name][$file_value];
+			}
+		  }else{
+			  $value = $files[$file_name];
+		  }
+		}
+		return $value;
+	}
+	
 	/*Retorna um valor de uma chave informada*/
 	public function get($x, $dafault = null)
 	{

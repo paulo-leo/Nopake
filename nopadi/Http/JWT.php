@@ -39,7 +39,7 @@ class JWT
         $this->charset =  $value;
     }
 
-    /*Define oo dominio da aplicativo que irá usar o token JWT. Geralmente é usada o nome da URL onde está hospedado a aplicação*/
+    /*Define o dominio da aplicativo que irá usar o token JWT. Geralmente é usada o nome da URL onde está hospedado a aplicação*/
     final public function appHost($url)
     {
         $this->iss = $url;
@@ -69,7 +69,7 @@ class JWT
         return "$header.$payload.$signature";
     }
 
-    /*gera um login retonando os dados do usuário autenticado junto com o token gerado*/
+    /*gera um login retornando os dados do usuário autenticado junto com o token gerado*/
     final public function login($payload,$merge=false/*Retorna os dados do payload na response*/){
 
         $token = $this->createToken($payload);
