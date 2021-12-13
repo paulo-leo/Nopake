@@ -5,6 +5,7 @@ Autor: Paulo Leonardo
 namespace Modules\Painel\Controllers; 
 
 use Nopadi\Http\Auth;
+use Nopadi\Http\JWT;
 use Nopadi\Http\Param;
 use Nopadi\Http\Request;
 use Nopadi\MVC\Controller;
@@ -39,6 +40,30 @@ class LoginController extends Controller
 	   return view("@Painel/Views/users/form");	   
 	   
     }
+	/*Faz login via JWT*/
+	public function jwtLogin()
+	{
+		$request = new Request;
+		
+		$login = $request->get('login');
+		$password = $request->get('password');
+		
+		$login = Auth:: loginJWT($login,$password);
+		
+		$jwt = new JWT;
+		
+		if($login)
+		{
+			$jwt->login($login,true);
+			
+		}else{
+			
+			$jwt->response([
+			'code'=>401,
+			'message'=>'Login ou senha inválida.'
+			]);
+		}
+	}
 } 
 
 

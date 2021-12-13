@@ -14,32 +14,19 @@ class Request
 	private $values;
 	private $allHeaders;
 
-	public function __construct()
+	public function __construct($json=false)
 	{
 	  $this->erros = array();
 	  $this->values = array();
 	  $this->files = array();
 	  $this->check = 1;
-      switch ($_SERVER['REQUEST_METHOD']) 
-	  {
-           case 'GET':
-				$this->all = isset($_GET) ? $_GET : array();
-				break;
-			case 'POST':
-				$this->all = isset($_POST) ? $_POST : array();
-				$this->files = isset($_FILES) ? $_FILES : array();
-				break;
-			default:
-				$_REQUEST_NOPADI = file_get_contents('php://input');
-				parse_str($_REQUEST_NOPADI, $_REQUEST_NOPADI);
-				$this->all = isset($_REQUEST_NOPADI) ? $_REQUEST_NOPADI : array();
-				break;
-		}
-		
-		/*Salva todos os headers dentro de um array associativo*/
-		$this->allHeaders = $this->setAllHeaders();	
+     
+	  $_REQUEST_NOPADI = json_decode(file_get_contents('php://input'),true); 
+	  $this->all = $_REQUEST_NOPADI ? $_REQUEST_NOPADI : array();
+	  $this->files = isset($_FILES) ? $_FILES : array();
+	  $this->allHeaders = $this->setAllHeaders();	
 	}
-	
+	/*Inicaliza todos os headers submetidos para o servidor*/
 	private function setAllHeaders()
 	{
 		$arr = array();
@@ -50,7 +37,8 @@ class Request
 		return $arr;
 	}
 	
-	public function __destruct() {
+	/*Apaga as sessões de erros do sistema*/
+	public function deleteErrors() {
          if($this->check == 1){
 			 if (!isset($_SESSION)) session_start();
 	         if(isset($_SESSION['np_errors'])){

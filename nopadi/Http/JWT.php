@@ -36,7 +36,7 @@ class JWT
     /*Define o formato de caracters de saída da função responde*/
     final public function appCharset($value)
     {
-        $this->charset =  $value;
+        $this->charset = $value;
     }
 
     /*Define o dominio da aplicativo que irá usar o token JWT. Geralmente é usada o nome da URL onde está hospedado a aplicação*/
@@ -70,7 +70,7 @@ class JWT
     }
 
     /*gera um login retornando os dados do usuário autenticado junto com o token gerado*/
-    final public function login($payload,$merge=false/*Retorna os dados do payload na response*/){
+    final public function login($payload,$merge=false/*Retorna os dados do payload na response*/,$typeReturn=true){
 
         $token = $this->createToken($payload);
          
@@ -91,9 +91,23 @@ class JWT
 			if(array_key_exists('message',$payload)) unset($payload['message']); 
 			if(array_key_exists('created_in',$payload)) unset($payload['created_in']); 
 			
-			$this->response(array_merge($message,$payload));
+			if($typeReturn){
+				$this->response(array_merge($message,$payload));
+			}else{
+				return array_merge($message,$payload);
+			}
 			
-		}else $this->response($message);
+			
+			
+		}else{
+			
+			if($typeReturn){
+				$this->response($message);
+			}else{
+				return $message;
+			}
+			
+		}
     }
 
     /*verifica se o token JWT é válido, se for válido, irá retonar o token sem o prefix JWT, caso contário, retonará falso*/

@@ -529,14 +529,26 @@ function theme_null($color=null,$colors=array()){
 	 }
 }
 
+function route_last()
+{
+	return Param::last();
+}
+
 function route_first()
 {
 	return Param::first();
 }
 
+/*Permite executar um ORM em qualquer lugar do APP*/
 function db_table($tableName)
 {
 	return DB::table($tableName);
+}
+
+/*Permite executar um ORM em qualquer lugar do APP*/
+function db_query($sql)
+{
+	return DB::sql($sql);
 }
 
 

@@ -17,7 +17,8 @@ class Painel extends Module
         $login = array(
            'get:login'=>'showLoginForm',
 		   'post:login'=>'login',
-		   'get:logout'=>'logout'
+		   'get:logout'=>'logout',
+		   'post:api/jwt/login'=>'jwtLogin'
        );
 	   
 	   $register = array(
@@ -116,6 +117,7 @@ class Painel extends Module
 	   Route::get('dashboard/settings/theme',function(){
 		   return view('@Painel/Views/settings/theme');
 	   });
+	   
 	   
 	   
 	   Route::post('api/np/xls/table',function(){
