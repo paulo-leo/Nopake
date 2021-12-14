@@ -1,5 +1,5 @@
 <?php
-
+use Nopadi\Http\Auth;
 use Nopadi\Base\DB;
 use Nopadi\Http\Route;
 use Nopadi\Http\Request;
@@ -14,12 +14,12 @@ Route::get('/',function(){ return view('welcome'); });
 
 
 
-Route::post('api/teste',function(){
+Route::get('teste',function(){
 
-
-  $r = new Request;
-  return json($r->all());
-  
+  $password = '123456';
+  $id = 1;
+  $x = Auth::passwordUpdateManual($password, $id);
+  return $x;
 });
 
 
