@@ -19,7 +19,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `np2`
+-- O login é user@teste.com, e a senha do usuário é: 123456
 --
 
 -- --------------------------------------------------------

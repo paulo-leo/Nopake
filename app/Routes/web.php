@@ -11,20 +11,3 @@ use Nopadi\Http\Request;
 
 Route::get('*',function(){ return view('404'); });
 Route::get('/',function(){ return view('welcome'); });
-
-
-
-Route::get('teste',function(){
-
-  $password = '123456';
-  $id = 1;
-  $x = Auth::passwordUpdateManual($password, $id);
-  return $x;
-});
-
-
-
-
-
-
-
