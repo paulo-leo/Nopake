@@ -25,15 +25,30 @@ class FileManagerController extends Controller
     private function renderDir($dir,$path='uploads')
     {
        $ext = array(
-         'jpge',
+         'jpeg',
          '.jpg',
          '.png',
          '.gif',
          '.pdf',
          'json',
          'html',
-         '.php'
+         '.php',
+		 '.doc',
+		 'docx',
+		 'xlsx',
+		 'xls',
+		 'csv',
+		 'txt',
+		 'text'
        ); 
+	   
+	   
+	   $ext_img = array(
+         'jpeg',
+         '.jpg',
+         '.png',
+         '.gif'
+       );
 
        $codes = array(
         'json',
@@ -59,16 +74,38 @@ class FileManagerController extends Controller
             </li>";
          }else{
 			 
-            return "<li class='list-group-item'>
-                       <img style='width:50px;height:50px' src='{$dir}'>
-                       <span>{$name}</span>
-					</li>"; 
+			 
+			if(in_array($dir_ext,$ext_img))
+			{
+				
+				return "<li class='list-group-item'>
+                           <img style='width:50px;height:50px' src='{$dir}'>
+                           <span>{$name}</span>
+					    </li>"; 
+				
+			}elseif($dir_ext == '.pdf'){
+				
+				return "<li class='list-group-item'>
+                          <a target='_blank' href='{$dir}'><i class='material-icons text-danger' style='font-size:50px'>article</i></a>
+                          <span style='position:relative;top:-20px'>{$name}</span>
+					    </li>"; 
+			}else{
+				
+				$color = $dir_ext == '.xls' || $dir_ext == 'xlsx' ? 'text-success' :'text-primary';
+				return "<li class='list-group-item'>
+                          <a target='_blank' href='{$dir}'><i class='material-icons {$color}' style='font-size:50px'>article</i></a>
+                          <span style='position:relative;top:-20px'>{$name}</span>
+					    </li>"; 
+				
+				
+			}
+
          }
 
        }else{
           $url = url("filemanager/dir?dir={$path}/{$dir}"); 
           return "<li class='list-group-item'>
-                     <a href='$url'><i class='material-icons' style='font-size:50px'>folder</i></a>
+                     <a href='$url'><i class='material-icons text-info' style='font-size:50px'>folder</i></a>
                      <span style='position:relative;top:-20px'>{$dir}</span>
                   </li>";
        }
@@ -135,6 +172,12 @@ class FileManagerController extends Controller
     public function importImage()
     {
         return view("@FileManager/Views/import");
+    }
+	
+	//Retorna a view de importação de arquivo
+    public function importFile()
+    {
+        return view("@FileManager/Views/import-file");
     }
 
 } 

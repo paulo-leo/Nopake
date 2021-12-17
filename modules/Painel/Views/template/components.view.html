@@ -1,12 +1,3 @@
-@template(p_form_close) 
-	return "</form>";
-@endtemplate 
-
-@template(p_csrf) 
-   $token = csrf_token();
-	return "<input type='hidden' name='_token' value='{$token}'>";
-@endtemplate
-
 <!--Inputs-->
 @template(p_input)
 
@@ -14,15 +5,14 @@ $type = isset($type) ? $type : 'text';
 $value = isset($value) ? $value : null;
 $text = isset($text) ? $text : 'Text of input here';
 $name = isset($name) ? $name : '';
-$id = isset($id) ? $id : $name;
 $help = isset($help) ? $help : false;
 $min = isset($min) ? $min : null;
 $max = isset($max) ? $max : null;
 $required = isset($required) && is_bool($required) && $required == true ? 'required' : null;
 $placeholder = isset($placeholder) ? $placeholder : null;
 
-$html = "<label for='{$id}' class='form-label'>$text</label>
-<input type='{$type}' name='{$name}' class='form-control' id='{$id}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required}>";
+$html = "<label for='id-{$name}' class='form-label'>$text</label>
+<input type='{$type}' name='{$name}' class='form-control' id='id-{$name}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required}>";
 
 if($help) $html .= "<div id='help-{$name}' class='form-text'>$help</div>";
 
@@ -32,6 +22,7 @@ return $html;
 
 <!--switch-->
 @template(p_switch)
+
 $name = isset($name) ? $name : '';
 $text = isset($text) ? $text : 'Text of input here';
 $checked = (isset($checked) && $checked && $checked != '') ? 'checked' : null;

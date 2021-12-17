@@ -1,0 +1,12 @@
+@php
+$sidebar = array(
+     "text=Diretórios|link=filemanager|icon=folder",
+	 "text=Protegidos|link=filemanager?init:../storage|icon=lock",
+	 "icon=backup|text=Uploads|path=filemanager"=>
+	 [
+		"icon=image|text=Imagens|link=filemanager/import-image",
+		"icon=upload_file|text=Arquivos|link=filemanager/import-file"
+	 ]
+	 );
+@endphp
+@include('@Painel/Views/template/header',['sidebar'=>$sidebar,'color_top'=>'info','title_app'=>'Gerenciador de arquivos'])

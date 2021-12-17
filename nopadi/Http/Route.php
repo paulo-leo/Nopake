@@ -209,6 +209,7 @@ class Route extends RouteCollection
 		
 		/*Rota para atualiza um recurso*/
         self::put($route, $callback.'@update', $args);
+		self::put(($route.'/{id}', $callback.'@update', $args);
 		/*Rota para atualiza um recurso pelo id*/
         //self::put($route.'/{id}', $callback.'@up', $args);
 		

@@ -16,7 +16,8 @@ class FileManager extends Module
            	'filemanager'=>'index',
 			'filemanager/dir'=>'showDir',
 			'filemanager/show/code'=>'showCode',
-			'filemanager/import-image'=>'importImage'	   
+			'filemanager/import-image'=>'importImage',
+            'filemanager/import-file'=>'importFile'			
        	);		
 	 
 		$folder = array(
@@ -24,7 +25,8 @@ class FileManager extends Module
 		);
 
 		$file = array(
-			'post:store-image'=>'storeImage'
+			'post:store-image'=>'storeImage',
+			'post:store-file'=>'storeFile'
 		);
 
 		Route::controllers($fileManagement,'@FileManager/Controllers/FileManagerController');

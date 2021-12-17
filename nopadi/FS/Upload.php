@@ -8,6 +8,9 @@ namespace Nopadi\FS;
 
   class Upload
     {
+	  private $version_file = false;
+	  private $version_total = null;
+	  private $random_file = true;
 	  private $code_error = null;
 	  private $messages = null;
 	  private $file_path = null;
@@ -17,6 +20,8 @@ namespace Nopadi\FS;
       private $maxSize='2';//2mb  tamanho máximo do arquivo que pode ser enviado
       private $randomName=false;//define a opção se o arquivo irá receber um nome aleatório ou continuar com o nome original
       
+	  
+	  
       //modifica a variavel $uploadDir informando um novo local(pasta,diretório) para onde o arquivo será enviado
       public function setUploadDir($dir)
       {
@@ -73,6 +78,7 @@ namespace Nopadi\FS;
       */
       public function uploadFile($postFile)
       {
+		 $this->version_total = rand(1,100);
         //verifica se existe algum erro ao enviar o arquivo. 
         //Se existir, exibe o erro e encerra a função
         if(!is_null($postFile['error']))
@@ -113,6 +119,30 @@ namespace Nopadi\FS;
 
           //tenta mover o arquivo enviado através do formulário html para a pasta de upload informada
 		  $file_path = $this->uploadDir.'/'.$fileName;
+		  
+		  if($this->version_file)
+		  {
+			 if(file_exists($file_path))
+		     {
+				$fileName = $this->version_total.'-'.$fileName;
+				$file_path = $this->uploadDir.'/'.$fileName;
+		     } 
+		  }
+		  
+		  
+		  if(!$this->random_file)
+		  {
+			 if(file_exists($file_path))
+		     {
+				$date_time_dir = date('m/Y');
+			    $this->messages .= "Já existe um arquivo importado para o mês e ano atual ($date_time_dir) com o mesmo nome.".$this->br;
+				$this->messages .= $fileName.$this->br;
+				return false;
+			   exit;
+		     } 
+		  }
+		  
+		  
           if(move_uploaded_file($postFile['tmp_name'], $file_path))
           {
 			$this->file_path = $file_path;
@@ -124,6 +154,17 @@ namespace Nopadi\FS;
             return false;
           }
       }
+	 
+	  public function randomFile(bool $yes)
+	  {
+		  $this->random_file = $yes;
+	  }
+	  
+	  public function versionFile(bool $yes)
+	  {
+		  $this->version_file = $yes;
+	  }
+	  
 	  
 	  /*Retorna a pasta ao qual o arquivo foi salvo*/
 	  public function getFilePath()

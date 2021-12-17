@@ -3,41 +3,56 @@
 <div class="sticky-header container mt-2 ">
   <div class="d-flex align-items-center">
       <button class="btn-back" onclick="history.go(-1);"><i class="material-icons">chevron_left</i></button>
-      <h2 class="sticky-title">Importar imagem</h2>
+      <h2 class="sticky-title">Importar arquivo para nuvem</h2>
   </div>
 </div>
 
-<form enctype="multipart/form-data" action="{{url()}}store-image" method="post">
+<form enctype="multipart/form-data" action="{{url()}}store-file" method="post">
   <div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
   {{form.token()}}
   @grid('container-fluid np-scroll')
     @grid('row m-auto p-4_5')      
     
+	  @grid('col-md-4 mt-1 mb-3')
+	     {{form.label(['text'=>'Arquivo', 'id'=>'description'])}}
+        {{form.file(['name'=>'userfile','required'=>true])}}
+      @endgrid
+	
       @grid('col-md-8 mb-3')
           {{form.label(['text'=>'Descrição', 'id'=>'description'])}}
           {{form.textarea(['name'=>'description', 'id'=>'description'])}}
 		   <p>É importante informa a descrição do arquivo, pois ela será utilizada no campo de busca caso você deseja buscar um arquivo especificamente. </p>
       @endgrid
+	  
 
-      @grid('col-md-4 mb-3')
-          {{form.label(['text'=>'Qualidade da imagem', 'id'=>'image-quality'])}}
-          {{form.select(['name'=>'image-quality', 'id'=>'image-quality', 'required'=>true],
-           [
-            '1'=>'Alta', 
-            '2'=>'Média', 
-            '3'=>"Baixo", 
-            '4'=>"Miniatura"
-           ])}}
-      @endgrid
+<div class="col-12">
+	  <div class="form-check form-switch">
+  <input name="file_version" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Gerar contador para versionamento de arquivo.</label>
+</div></div>	  
 
-      @grid('col-md-6 mt-1 mb-3')
-        {{form.file(['name'=>'userfile'])}}
-      @endgrid
+<div class="col-12">
+	  <div class="form-check form-switch">
+  <input name="file_write" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Sobrescrever arquivo já salvo. <span class="text-danger"> A sobrescrita só irá funcionar para arquivos importados no mesmo mês e ano.</span></label>
+</div></div>
+
+<div class="col-12">
+	  <div class="form-check form-switch">
+  <input name="name_random" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Gerar nome aleatório e único para o arquivo.</label>
+</div></div>
+
+  <div class="col-12">
+	  <div class="form-check form-switch">
+  <input name="public" class="form-check-input" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+  <label class="form-check-label" for="flexSwitchCheckDefault">Salvar arquivo em diretório acessível pela web.</label>
+</div></div>
 
     @endgrid
   @endgrid
   <div class="submit-position">
-    <button id="create-title" class="btn btn-sticky fw-bold btn-primary btn-form-submit">Importar</button>
+    <button id="create-title" class="btn btn-sticky btn-outline-success btn-form-submit">Importar arquivo</button>
     <button id="create-title-loading" class="btn btn-primary btn-form-loading" style="display:none;" type="button" disabled>
     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
       Importando...
@@ -76,7 +91,7 @@
     $('#create-title').hide();
     $('#create-title-loading').show();
     $.ajax({
-      url: '{{url()}}store-image',
+      url: '{{url()}}store-file',
       type: 'POST',
       data: formData,
       cache: false,      

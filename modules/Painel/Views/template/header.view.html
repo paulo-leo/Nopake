@@ -2,6 +2,7 @@
 @php
 $title = isset($title) ? $title : NP_NAME;
 $color_top = isset($color_top) ? 'bg-'.$color_top : 'bg-primary';
+$title_app = isset($title_app) ?$title_app : NP_NAME;
 @endphp
 <!DOCTYPE html>
 <html lang="{{NP_LANG}}">
@@ -33,12 +34,13 @@ $color_top = isset($color_top) ? 'bg-'.$color_top : 'bg-primary';
             <img src="{{asset('favicon.png')}}"></a>
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i
-                class="material-icons">menu</i></button>
+                class="material-icons">menu</i>
+		</button>
 
+        <a class="navbar-brand text-uppercase">{{$title_app}}</a>
 
         <!-- Navbar Search-->
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
-        </form>
+        <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
         <!-- Navbar-->
         <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
             <a class="nav-link" href="{{url('dashboard/applications')}}" role="button" aria-expanded="false"><i
@@ -92,7 +94,7 @@ $color_top = isset($color_top) ? 'bg-'.$color_top : 'bg-primary';
                                     aria-label="Close"></button>
                             </div>
                             <div class="modal-body">
-                                Olá <b>{{user_first()}}</b>! Tem certeza que deseja desconectar da sua conta?
+                               Tem certeza que deseja desconectar da sua conta?
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">#close#</button>

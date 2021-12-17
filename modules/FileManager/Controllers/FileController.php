@@ -1,7 +1,6 @@
 <?php 
 namespace Modules\FileManager\Controllers;
 
-use Nopadi\FS\UploadImage;
 use Nopadi\Base\DB;
 use Nopadi\Http\URI;
 use Nopadi\Http\Auth;
@@ -9,10 +8,61 @@ use Nopadi\Http\Send;
 use Nopadi\Http\Param;
 use Nopadi\Http\Request;
 use Nopadi\MVC\Controller;
+use Nopadi\FS\Upload;
+use Nopadi\FS\UploadImage;
+
 use Modules\FileManager\Models\UploadModel;
 
 class FileController extends Controller
 {
+	public function storeFile()
+	{
+	
+		$request = new Request;
+		$public = $request->getBit('public');
+		$name_random = $request->getBool('name_random');
+		$file_write = $request->getBool('file_write');
+		$file_version = $request->getBool('file_version');
+		
+		$uploads = new Upload;
+		
+		$public = $public == 1 ? 'uploads' : '../storage/uploads';
+		
+	
+		 $public =  $public.'/'.date('Y/m');
+		 $public = str_ireplace('//','/',$public);
+		 if(!file_exists($public))
+		 {
+			  mkdir($public, 0777,true);
+		 }
+		
+		$uploads->versionFile($file_version);
+        $uploads->randomFile($file_write);
+		$uploads->setUploadDir($public);
+		$uploads->setRandomName($name_random);
+		
+		
+		$uploads->setAllowedExtensions(['png','pdf','jpg','jpeg','gif','doc','docx','csv','xls','text','txt','xlsx']);
+		
+		$file = $request->getFile('userfile');
+
+		
+		$file = $uploads->uploadFile($file);
+	
+	     if($file)
+		 {
+			 $path =  $uploads->getFilePath();
+			 return alert($uploads->getErrorMessage(),'success');
+			 
+		 }else{
+			 return alert($uploads->getErrorMessage(),'error');
+		 }
+		 
+       
+		
+
+	}
+	
 	public function storeImage()
     {
         $request = new Request();
