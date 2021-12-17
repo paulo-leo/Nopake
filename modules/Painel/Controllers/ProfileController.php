@@ -12,6 +12,20 @@ use Modules\Painel\Controllers\UserController;
 class ProfileController extends Controller
 {
  
+ 
+   private function menu()
+   {
+
+	   return array(
+	   "text=Meu perfil|link=dashboard/profile|icon=person",
+	   "text=Editar perfil|link=dashboard/profile/edit|icon=edit",
+	   "text=Alterar imagem|link=dashboard/profile/image|icon=image",
+	   "text=Alterar senha|link=dashboard/profile/password|icon=lock"
+       ); 
+	   
+   }
+ 
+ 
    /*Mostar o perfil do usuário*/
    public function index()
    {
@@ -19,16 +33,57 @@ class ProfileController extends Controller
 	  $find = UserModel::model()->find(user_id());
 	      
 	  if($find){
-		  
-	   $langOptions = options($this->users()->langs(),$find->lang);
 	   
        return view('@Painel/Views/users/profile',[
 	       'page_title'=>text(':user.edit'),
 	       'find'=>$find,
-		   'langOptions'=>$langOptions]);
+		   'menu'=>$this->menu()]);
 	   
 	   }else return view('404');
 
+   }
+   
+   public function edit()
+   {
+	  $find = UserModel::model()->find(user_id());
+	  if($find){
+		  
+	   $langOptions = options($this->users()->langs(),$find->lang);
+	   
+       return view('@Painel/Views/users/profile-edit',[
+	       'page_title'=>text(':user.edit'),
+	       'find'=>$find,
+		   'menu'=>$this->menu(),
+		   'langOptions'=>$langOptions]);
+	   
+	   }else return view('404');
+	   
+   }
+   
+   public function editPassword()
+   {
+	  
+	  if(user_id()){
+	   
+       return view('@Painel/Views/users/profile-password',[
+	       'page_title'=>text(':user.edit'),
+		   'menu'=>$this->menu()]);
+	   
+	   }else return view('404');
+	   
+   }
+   
+   public function editImage()
+   {
+	  
+	  if(user_id()){
+	   
+       return view('@Painel/Views/users/profile-image',[
+	       'page_title'=>text(':user.edit'),
+		   'menu'=>$this->menu()]);
+	   
+	   }else return view('404');
+	   
    }
    
    public function profileUpdate()

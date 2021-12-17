@@ -23,6 +23,7 @@ class FileController extends Controller
 		$name_random = $request->getBool('name_random');
 		$file_write = $request->getBool('file_write');
 		$file_version = $request->getBool('file_version');
+		$description = $request->get('description');
 		
 		$uploads = new Upload;
 		
@@ -52,7 +53,13 @@ class FileController extends Controller
 	     if($file)
 		 {
 			 $path =  $uploads->getFilePath();
-			 return alert($uploads->getErrorMessage(),'success');
+			 $description = strlen($description) < 2 ?  $uploads->getFileName() : $description;
+			 
+			 $model = new UploadModel;
+			 $model = $model->insertUpload($path,$description);
+			 
+			 if($model) return alert($uploads->getErrorMessage(),'success');
+			 else return alert('Erro salvar arquivo no banco de dados','danger');
 			 
 		 }else{
 			 return alert($uploads->getErrorMessage(),'error');

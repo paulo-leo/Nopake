@@ -1,82 +1,22 @@
-@painel_header()
-
+@include('@Painel/Views/template/header',['sidebar'=>$menu])
 <!-- BEGIN: Page Main-->
-        <div class="row">
+        <div class="row  px-4">
             <div class="breadcrumbs-inline pt-3 pb-1" id="breadcrumbs-wrapper">
-                <!-- Search for small screen-->
-                <div class="container">
-                    <div class="row">
-                        <div class="col-6">
-                            <h5 class="breadcrumbs-title mt-0 mb-0 display-inline hide-on-small-and-down"><span>{{user_first()}}</span></h5>
-                            <ol class="breadcrumbs mb-0">
-                                <li class="breadcrumb-item"><a href="{{url('profile')}}">Meu perfil</a>
-                                </li>
-                                <li class="breadcrumb-item active">{{user_name()}}</li>
-                            </ol>
-                        </div>
-                    </div>
-                </div>
+			<div class="jumbotron jumbotron-fluid">
+             <div class="container">
+             <h1 class="display-4"><img src="{{user_image()}}" alt="..." class="rounded-circle">{{$find->name}}</h1>
+            <p class="lead">{{$find->email}}</p>
+			
+			
+			  <div class="btn-group text-center" role="group" aria-label="Basic mixed styles example">
+                <span class="btn btn-danger">{{$find->id}}</span>
+                <span class="btn btn-success">{{$find->role}}</span>
+				<span class="btn btn-info">{{$find->credit}}</span>
+              </div>
+			
+           </div>
             </div>
-            <div class="col s12">
-                <div class="container">
-                    <!-- users view start -->
-                    <div class="section users-view">
-                        <!-- users view media object start -->
-                        <div class="card-panel">
-                            <div class="row">
-                                <div class="col s12 m7">
-                                    <div class="display-flex media">
-                                        <a href="#" class="avatar">
-                                            <img src="{{user_image()}}" alt="users view avatar" class="z-depth-4 circle" height="64" width="64">
-                                        </a>
-                                        <div class="media-body">
-                                            <h6 class="media-heading">
-                                                <b class="users-view-name">{{user_name()}}</b>
-                                                <span class="users-view-username grey-text">{{user()->email}}</span>
-                                            </h6>
-                                            <span>ID:</span>
-                                            <span class="users-view-id">{{user_id()}}</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col s12 m5 quick-action-btns display-flex justify-content-end align-items-center pt-2">
-                                    <a href="#" onclick="alert('Edição indisponível')" class="btn-small blue">#edit#</a>
-                                </div>
-                            </div>
-                        </div>
-                        <!-- users view media object ends -->
-                        <!-- users view card data start -->
-                        <div class="card">
-                            <div class="card-content">
-                                <div class="row">
-                                    <div class="col s12 m12">
-                                        <table class="striped">
-                                            <tbody>
-                                                <tr>
-                                                    <td>Função:</td>
-                                                    <td class="users-view-role">Administrador</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Situação:</td>
-                                                    <td><span class=" users-view-status chip green lighten-5 green-text">Ativo</span></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-       
-                                </div>
-                            </div>
-                        </div>
-                        <!-- users view card data ends -->
-
-                        
-                        <!-- users view card details ends -->
-
-                    </div>
-                  
-                </div>
-                <div class="content-overlay"></div>
-            </div>
+			</div>
         </div>
     <!-- END: Page Main-->
  

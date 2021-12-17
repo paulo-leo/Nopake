@@ -18,7 +18,9 @@ class FileManager extends Module
 			'filemanager/show/code'=>'showCode',
 			'filemanager/import-image'=>'importImage',
             'filemanager/import-file'=>'importFile'			
-       	);		
+       	);	
+
+        		
 	 
 		$folder = array(
 			'post:open-folder'=>'openFolder'
@@ -28,6 +30,9 @@ class FileManager extends Module
 			'post:store-image'=>'storeImage',
 			'post:store-file'=>'storeFile'
 		);
+
+       
+	    Route::resources('filemanager/folders','@FileManager/Controllers/FolderManagerController');
 
 		Route::controllers($fileManagement,'@FileManager/Controllers/FileManagerController');
 

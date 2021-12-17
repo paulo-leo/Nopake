@@ -79,7 +79,9 @@ class FileManagerController extends Controller
 			{
 				
 				return "<li class='list-group-item'>
+				           <a target='_blank' href='{$dir}'>
                            <img style='width:50px;height:50px' src='{$dir}'>
+						   </a>
                            <span>{$name}</span>
 					    </li>"; 
 				

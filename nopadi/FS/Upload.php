@@ -14,6 +14,7 @@ namespace Nopadi\FS;
 	  private $code_error = null;
 	  private $messages = null;
 	  private $file_path = null;
+	  private $file_name = null;
 	  private $br = '<br>';
       private $uploadDir = 'uploads/';//pasta para onde os arquivos serão enviados
       private $allowedExtensions = array();//extensões permitidas para upload
@@ -115,7 +116,12 @@ namespace Nopadi\FS;
           }
           //a linha abaixo atribui um nome ao arquivo
           //se for definido para gerar um nome aleatório ele gera um nome aleatório, senão, ele mantém o nome original do arquivo
-          $fileName = $this->randomName ? date('dmyhis').rand().'.'.$fileExt : $postFile['name'];
+		  
+		  $fileName = $postFile['name'];
+		  
+		  $this->file_name = $fileName;
+		  
+          $fileName = $this->randomName ? date('dmyhis').rand().'.'.$fileExt : $fileName;
 
           //tenta mover o arquivo enviado através do formulário html para a pasta de upload informada
 		  $file_path = $this->uploadDir.'/'.$fileName;
@@ -154,6 +160,10 @@ namespace Nopadi\FS;
             return false;
           }
       }
+	  
+	  public function getFileName(){
+		  return $this->file_name;
+	  }
 	 
 	  public function randomFile(bool $yes)
 	  {

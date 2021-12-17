@@ -37,6 +37,9 @@ class Painel extends Module
 	   
 	   $profile = array(
 		   'dashboard/profile'=>'index',
+		   'dashboard/profile/edit'=>'edit',
+		   'dashboard/profile/password'=>'editPassword',
+		   'dashboard/profile/image'=>'editImage',
 		   'post:profile/upload'=>'updateAvatar',
 		   'post:profile/update'=>'profileUpdate',
 		   'post:profile/avatar'=>'updateAvatar',

@@ -12,15 +12,14 @@ use Nopadi\MVC\Model;
 		return new UploadModel();
 	  }
      /*Registra a instancia do arquivo no banco de dados. */
-     public function insertUpload($path,$description=null)
+     public function insertUpload($path,$description=null,$folder_id=0)
 	 {
         $ext = substr($path,-4,4); 
 		$name = explode('/',$path);
-		$name = $name[count($name) - 1];
 		
 		$imgs = array('.png','.gif','.jpeg','.jpg');
 		$pdfs = array('.pdf');
-        $docs = array('.pdf','docx','.xls','.zip','.rar');
+        $docs = array('.pdf','docx','.xls','.zip','.rar','xlsx');
 		$codes = array('html','.js','.css','.php');
 
         if(in_array($ext,$imgs)) $type = 'img';
@@ -31,12 +30,12 @@ use Nopadi\MVC\Model;
         //any para arquivos não identificados
 
 		$data = array(
+		    'folder_id'=>$folder_id,
 			'path'=>$path,
-			'name'=>$name,
 			'type'=>$type,
 			'description'=>$description);
 
-		$this->insert($data);
+		return $this->insert($data);
 
 	  }
     }
