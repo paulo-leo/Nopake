@@ -91,21 +91,33 @@ class ProfileController extends Controller
       //Busca pelo usuário por meio do ID
 	  $request = new Request();
 	   
-	   $id = $request->get('id');
-	   $name = $request->get('name');
-	   $lang = $request->get('lang');
+	   $id = $request->getInt('id');
+	   $name = $request->getString('name','5:50');
+	   $autobiography = $request->getString('autobiography','0:250');
+	   $lang = $request->get('lang',NP_LANG);
 	   $values = array(
 	     'lang'=>$lang,
-		 'name'=>$name
+		 'name'=>$name,
+		 'autobiography'=>$autobiography
 	   );
 	   
-	   $query = UserModel::model()->update($values,$id);
+
+	   if($request->checkError())
+	   {
+
+        $query = UserModel::model()->update($values,$id);
 	   
-	   if($query){
+	   if($query)
+	   {
 		   user_set('lang',$lang);
 		   user_set('name',$name);
-		   hello(':user.update.success','success');
-	   }else hello(':user.update.error','danger');
+		   return alert(':user.update.success','success');
+	   }else return alert(':user.update.error','danger');
+
+	   }else{
+		return alert($request->getErrorMessage(),'danger');
+	   }
+	   
 
    }
    
@@ -128,14 +140,14 @@ class ProfileController extends Controller
 			  if($pass1 == $pass2 && strlen($pass1) > 5){
 			  if($pass1 != $pass){
 			    if(Auth::passwordUpdateManual($pass1,user_id())) 
-					hello(':password_update_success','success');
-				else hello(':password_update_error','danger');
-			  }else hello(':equal_password','danger');
+				 return alert(':password_update_success','success');
+				else return alert(':password_update_error','danger');
+			  }else return alert(':equal_password','danger');
 			  
-		     }else hello(':passwords_do_not_match','danger');
-		  }else hello(':invalid_password','danger'); 
+		     }else return alert(':passwords_do_not_match','danger');
+		  }else return alert(':invalid_password','danger'); 
 		   }else{
-			   hello(':invalid_password_strong','danger'); 
+			return alert(':invalid_password_strong','danger'); 
 		   } 
    }
    public function removeImage(){

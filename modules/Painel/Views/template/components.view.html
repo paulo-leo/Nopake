@@ -20,6 +20,14 @@ return $html;
 
 @endtemplate
 
+<!--Token CSRF-->
+@template(p_csrf)
+
+$token = csrf_token();
+return "<input type='hidden' name='_token' value='{$token}'/>";
+
+@endtemplate
+
 <!--switch-->
 @template(p_switch)
 
