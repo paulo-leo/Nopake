@@ -1,17 +1,92 @@
 @include('@Painel/Views/template/header',['sidebar'=>$menu])
-<!-- BEGIN: Page Main-->
-        <div class="row  px-4">
-            <div class="breadcrumbs-inline pt-3 pb-1" id="breadcrumbs-wrapper">
-			
-		
-			<div class="mb-3">
-               <label for="formFile" class="form-label">Selecione uma imagem de perfil em seu dispositivo.</label>
-              <input class="form-control" type="file" id="formFile">
-          </div>
-			
-			
-			</div>
-        </div>
-    <!-- END: Page Main-->
+
+
+<div class="sticky-header container mt-2 ">
+  <div class="d-flex align-items-center">
+      <button class="btn-back" onclick="history.go(-1);"><i class="material-icons">chevron_left</i></button>
+      <h2 class="sticky-title">Importar imagem</h2>
+  </div>
+</div>
+
+<form enctype="multipart/form-data" action="{{url('profile/avatar')}}" method="post">
+  <div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
+   {{form.token()}}
+
+    <div class="col-md-6 mt-1 mb-3 p-2">
+        {{form.file(['name'=>'userfile'])}}
+    </div>
+
+  <div class="submit-position">
+    <button id="create-title" class="btn btn-sticky fw-bold btn-primary btn-form-submit">Importar</button>
+    <button id="create-title-loading" class="btn btn-primary btn-form-loading" style="display:none;" type="button" disabled>
+    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
+      Importando...
+    </button>
+  </div>
+</form>
+
+
+<style scoped>
+  .submit-position{
+    position: absolute;
+    top: 1.9%;
+    right: 2%;
+    z-index: 1024;    
+  }
+
+  .sticky-header{
+    padding: .4rem 1.85rem;
+  }
+
+  .scroll-alert{
+    overflow-y: scroll;
+    max-height: 65vh;
+    z-index: 99;
+  }
+
+  .lh-alert{
+    line-height: 1.65rem;
+  }
+</style>
+
+<script>
+  $('form').submit(function(){
+    let formData = new FormData(this);
+    $('#create-title').hide();
+    $('#create-title-loading').show();
+    $.ajax({
+      url: '{{url("profile/avatar")}}',
+      type: 'POST',
+      data: formData,
+      cache: false,      
+      processData: false,
+      contentType: false,
+      xhr: function() { // Custom XMLHttpRequest
+        let myXhr = $.ajaxSettings.xhr();
+        if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+          myXhr.upload.addEventListener('progress', function() {
+            /* faz alguma coisa durante o progresso do upload */            
+          }, false);
+        }
+
+        return myXhr;
+      }
+    }).done(function(data){
+      $('#create-title').show();
+      $('#create-title-loading').hide();
+      json = JSON.parse(data);
+        $("#form-local").append(
+            `<div class="alert alert-${json.type == "error" ? "danger" : "info"} scroll-alert alert-dismissible" role="alert">
+                ${json.msg}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+            </div>`
+        );
+    });
+
+    return false;
+  });
+</script>
+
+
  
 @painel_footer()

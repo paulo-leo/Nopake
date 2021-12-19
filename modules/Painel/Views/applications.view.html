@@ -1,13 +1,30 @@
-@painel_header()
-
-@grid('container p-2')
-  <h4 class="text-black-50" ><i class="material-icons" style="position:relative;top:3px; left:-6px;">apps</i>#applications#</li></h4>
-@endgrid
-
-
-@grid('row container-fluid justify-content-center m-0 p-0 align-items-center')
-
 <?php
+
+$modules = get_info_modules();
+
+$menu = array();
+foreach($modules as $module)
+{
+  $name = $module['name'];
+  $icon = $module['icon'];
+  $route = $module['route'];
+  $menu[] = "text=$name|link={$route}|icon={$icon}";
+}
+
+
+?>
+@include('@Painel/Views/template/header',['sidebar'=>$menu])
+<style>
+  .feature-icon{width:50px;height:50px;border-radius:10px}
+  .feature-icon > .material-icons{font-size:50px;color:#fff;}
+  </style>
+
+  <div class="container px-4 py-2" id="featured-3">
+      <h2 class="pb-2 border-bottom">Aplicativos</h2>
+      <div class="row g-4 py-2 row-cols-2 row-cols-lg-4">
+    
+@php
+
 $colors = array(
 'yellow'=>'bg-warning',
 'green'=>'bg-success',
@@ -19,32 +36,37 @@ $colors = array(
 'info'=>'bg-info',
 'warning'=>'bg-warning',
 'secondary'=>'bg-secondary',
-'dark'=>'bg-dark'
+'dark'=>'bg-darkx'
 );
 
-foreach(get_info_modules() as $apps)
-{
-    extract($apps);
+   foreach($modules as $apps)
+   {
 
+    extract($apps);
 	$url = url($route);
 	$description = text_more($description,90);
 	
 	$bg_color = array_key_exists($color,$colors) ? $colors[$color] : 'bg-secondary';
 	
-  $html = "<div class='apps col-6 col-md-2 mb-4'>
-    <a href='{$url}' class='btn-none shadow-lg' data-bs-toggle='tooltip' data-bs-placement='bottom' title='{$description}'>
-      <i class='material-icons text-black {$bg_color} bg-gradient text-white'>{$icon}</i>       
-    </a>         
-    <p>{$name}</p>            
+  $html = "<div class='feature col'>
+    <div class='feature-icon {$bg_color} bg-gradient'>
+       <i class='material-icons'>{$icon}</i>
+    </div>
+    <h3>{$name}</h3>
+    <p>{$description}</p>
+    <a href='{$url}' class='icon-link'>Acessar aplicativo</a>
+  </div></p>            
   </div>";
   
   hello($html);
   
-}
+  }
+
+   @endphp
+      </div>
+    </div>
 
 
-?>
 
-@endgrid
 
 @painel_footer()

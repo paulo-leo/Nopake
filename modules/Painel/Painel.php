@@ -73,6 +73,14 @@ class Painel extends Module
 	   $access = array(
 		   'get:settings/sectors'=>'index'
        );
+
+       $permissions = array(
+		'dashboard/settings/permissions/create'=>'create',
+		'dashboard/settings/permissions'=>'getPermissions'
+	   );
+
+
+	   Route::controllers($permissions,'@Painel/Controllers/PermissionController');
 	   
 	   Route::controllers($records,'@Painel/Controllers/RecordController');
 	   
@@ -203,10 +211,3 @@ class Painel extends Module
 		
 	}
 } 
-
-
-
-
-
-
-

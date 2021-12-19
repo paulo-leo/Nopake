@@ -189,10 +189,10 @@ class ProfileController extends Controller
 		 Auth::setSession('image',$save);
 		 Auth::imageUpdate($save,$id);
 
-		 hello(text(':change_profile_picture_success'),'success');
+		 return alert(':change_profile_picture_success','success');
 
 	 }else{
-		 hello($message,'danger');
+		 return alert($message,'danger');
 	 }
    }
 

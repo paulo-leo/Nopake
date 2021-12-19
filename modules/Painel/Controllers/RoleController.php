@@ -21,7 +21,8 @@ class RoleController extends Controller
 	   $this->instance = new Json($this->fileDir);
 	   $this->roles = $this->instance->gets();  
    }
-	
+
+
    public function getRoles()
    {
 	  $roles = array();
@@ -69,12 +70,8 @@ class RoleController extends Controller
              <label class='form-check-label' for='{$key}'>{$val}</label>
             </div>";
 			
-			
-		
 	   }
 		
-
-	 
 	  $data = array(
 	    'form'=>$form,
 		'name'=>$name

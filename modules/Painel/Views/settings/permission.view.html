@@ -1,0 +1,18 @@
+@include("@Painel/Views/header")
+
+{!painel_title('Permissões',['dashboard/settings/permissions/create'=>'Adicionar permissão'])!}
+
+<table class="table">
+<tr>
+		<td>Chave</td>
+		<td>Descriçao</td>
+</tr>
+@foreach($permissions as $key=>$val)
+<tr>
+<td><i class="material-icons">key</i>{{$key}}</td>
+<td>{{$val}}</td>
+</tr>
+@endforeach
+</table>
+
+@include("@Painel/Views/footer")
