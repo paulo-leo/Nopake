@@ -20,9 +20,8 @@ foreach($modules as $module)
   </style>
 
   <div class="container px-4 py-2" id="featured-3">
-      <h2 class="pb-2 border-bottom">Aplicativos</h2>
-      <div class="row g-4 py-2 row-cols-2 row-cols-lg-4">
-    
+      <h2 class="pb-2 border-bottom col-12">Aplicativos</h2>
+      <div class="row g-3 py-2 row-cols-2 row-cols-lg-4">
 @php
 
 $colors = array(
@@ -44,18 +43,17 @@ $colors = array(
 
     extract($apps);
 	$url = url($route);
-	$description = text_more($description,90);
+	$description = text_more($description,180);
 	
 	$bg_color = array_key_exists($color,$colors) ? $colors[$color] : 'bg-secondary';
 	
   $html = "<div class='feature col'>
-    <div class='feature-icon {$bg_color} bg-gradient'>
+    <div class='feature-icon shadow-lg {$bg_color} bg-gradient'>
        <i class='material-icons'>{$icon}</i>
     </div>
     <h3>{$name}</h3>
     <p>{$description}</p>
     <a href='{$url}' class='icon-link'>Acessar aplicativo</a>
-  </div></p>            
   </div>";
   
   hello($html);

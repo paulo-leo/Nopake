@@ -11,8 +11,6 @@ use Modules\Painel\Controllers\UserController;
 
 class ProfileController extends Controller
 {
- 
- 
    private function menu()
    {
 

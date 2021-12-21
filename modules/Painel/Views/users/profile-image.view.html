@@ -4,27 +4,35 @@
 <div class="sticky-header container mt-2 ">
   <div class="d-flex align-items-center">
       <button class="btn-back" onclick="history.go(-1);"><i class="material-icons">chevron_left</i></button>
-      <h2 class="sticky-title">Importar imagem</h2>
+      <h2 class="sticky-title">Alterar imagem de perfil</h2>
   </div>
 </div>
 
-<form enctype="multipart/form-data" action="{{url('profile/avatar')}}" method="post">
+<div class="row">
+
+<div class="col-2"> 
+   <img id="np-image-loading"  style="width:120px;height:120px" src="{{user_image()}}" alt="..." class="rounded-circle">
+</div>
+
+<form class="col-10" enctype="multipart/form-data" action="{{url('profile/avatar')}}" method="post">
   <div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
    {{form.token()}}
 
     <div class="col-md-6 mt-1 mb-3 p-2">
-        {{form.file(['name'=>'userfile'])}}
+        {{form.file(['name'=>'userfile','required'=>true])}}
     </div>
+	
+	
 
   <div class="submit-position">
-    <button id="create-title" class="btn btn-sticky fw-bold btn-primary btn-form-submit">Importar</button>
+    <button id="create-title" class="btn btn-sticky fw-bold btn-primary btn-form-submit">Alterar imagem</button>
     <button id="create-title-loading" class="btn btn-primary btn-form-loading" style="display:none;" type="button" disabled>
     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-      Importando...
+      Atualizando imagem...
     </button>
   </div>
 </form>
-
+</div>
 
 <style scoped>
   .submit-position{
@@ -50,6 +58,19 @@
 </style>
 
 <script>
+  function loadImageAvatar()
+  {
+     $.ajax({
+       url: '{{url("profile/avatar")}}',
+       type: 'GET',
+	   success:function(data)
+	   {
+		  $('#np-image-loading').attr('src',data);
+	   }});
+  }
+
+  loadImageAvatar();
+
   $('form').submit(function(){
     let formData = new FormData(this);
     $('#create-title').hide();
@@ -72,6 +93,7 @@
         return myXhr;
       }
     }).done(function(data){
+	  loadImageAvatar();
       $('#create-title').show();
       $('#create-title-loading').hide();
       json = JSON.parse(data);

@@ -407,16 +407,16 @@ function np_painel_menu()
 function get_info_modules($statusx='active')
 {
 	$instance = $GLOBALS['np_instance_of_json_mods'];
-	$instance = $instance->gets();
+	$mods = $instance->gets();
 	$menus = array();
-	foreach($instance as $key=>$values)
+	foreach($mods as $key=>$values)
 	{
 	   extract($values);
        if(strtolower($key) != strtolower('Painel'))
 	   {
 		if($status == $statusx)
 		    {
-				$menus[$route] = $values;
+				$menus[$route] = $instance->revert_utf8($values,true);
 			}
 		  
        }
@@ -529,26 +529,14 @@ function theme_null($color=null,$colors=array()){
 	 }
 }
 
-function route_last()
-{
-	return Param::last();
-}
-
 function route_first()
 {
 	return Param::first();
 }
 
-/*Permite executar um ORM em qualquer lugar do APP*/
 function db_table($tableName)
 {
 	return DB::table($tableName);
-}
-
-/*Permite executar um ORM em qualquer lugar do APP*/
-function db_query($sql)
-{
-	return DB::sql($sql);
 }
 
 
@@ -610,6 +598,22 @@ function id_value($array, $val='name', $id = 'id')
 		}
 		return $x;
 	} else return $x;
+}
+
+/*Impera sobre resultados de um array,geralmente usado com array associativos de uma query SQL
+$map = array que será imperado
+$ind = índice
+$fun = Callback
+*/
+function np_map($map,$ind,$fun){
+	  foreach($map as $i=>$v)
+	  {
+		  if(is_callable($fun))
+		  {
+			$map[$i][$ind] = call_user_func($fun,$map[$i][$ind]);  
+		  }
+	  }
+	    return $map;
 }
 
 /*Retonar o id numerico do recurso*/

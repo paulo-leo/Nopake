@@ -47,21 +47,15 @@ $title_app = isset($title_app) ?$title_app : NP_NAME;
                     class="material-icons">apps</i></a>
             <a class="nav-link" href="#" role="button" aria-expanded="false"><i
                     class="material-icons">notifications</i></a>
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown"
-                    aria-expanded="false"><i class="material-icons">person</i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li>
-                        <b class="dropdown-item text-uppercase font-weight-bold">{{NP_NAME}}</b>
-                        <hr class="dropdown-divider" />
-                    </li>
-                    <li>
-                        <a class="dropdown-item" href="{{url('dashboard/profile')}}">{{user_name()}}</a>
-                    </li>
-                    <li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-                            data-bs-target="#np-modal-logout-x">Sair</a></li>
-                </ul>
-            </li>
+			
+             @if(auth('admin'))			
+			 <a class="nav-link" href="{{url('dashboard/settings')}}" role="button" aria-expanded="false"><i
+                    class="material-icons">settings</i></a>
+			 @endif
+				
+			<a class="nav-link" href="#" role="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"> 
+			<img style="width:32px;height:32px" src="{{user_image()}}" alt="..." class="rounded-circle"></a>
+			
         </ul>
     </nav>
     <div id="layoutSidenav">
@@ -103,3 +97,18 @@ $title_app = isset($title_app) ?$title_app : NP_NAME;
                         </div>
                     </div>
                 </div>
+			
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+   <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  <div class="offcanvas-header justify-content-center text-center">
+    <h4><img style="width:100px;height:100px" src="{{user_image()}}" alt="..." class="rounded-circle"><br>
+	{{user_name()}}</h4>
+  </div>
+  <div class="offcanvas-body">
+     <div class="btn-group btn-group-sm col-12" role="group" aria-label="Basic example">
+        <a href="{{url('dashboard/profile')}}" class="btn btn-primary">Minha conta</a>
+        <a data-bs-toggle="modal" data-bs-target="#np-modal-logout-x"class="btn btn-outline-danger">Sair</a>
+     </div>
+  </div>
+</div>

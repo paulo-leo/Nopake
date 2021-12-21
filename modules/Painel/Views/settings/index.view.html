@@ -1,79 +1,17 @@
 @include("@Painel/Views/header")
 
-<style>
-.feature-icon{width:50px;height:50px;border-radius:10px}
-.feature-icon > .material-icons{font-size:50px;color:#fff;}
-</style>
-
 <div class="container px-4 py-2" id="featured-3">
-    <h2 class="pb-2 border-bottom">Nuvem de aplicativos</h2>
-    <div class="row g-4 py-2 row-cols-2 row-cols-lg-4">
-	
-      <div class="feature col">
-        <div class="feature-icon bg-primary bg-gradient">
-           <i class="material-icons">home</i>
-        </div>
-        <h2>Featured title</h2>
-        <p>Paragrwords.</p>
-        <a href="#" class="icon-link">
-          Call to action
-          <i class="material-icons">home</i>
-        </a>
-      </div>
-	  
-	  <div class="feature col">
-        <div class="feature-icon bg-primary bg-gradient">
-           <i class="material-icons">home</i>
-        </div>
-        <h2>Featured title</h2>
-        <p>Paragraph of text beneath ords.</p>
-        <a href="#" class="icon-link">
-          Call to action
-         
-        </a>
-      </div>
-	  
-	  <div class="feature col">
-        <div class="feature-icon bg-primary bg-gradient">
-           <i class="material-icons">home</i>
-        </div>
-        <h2>Featured title</h2>
-        <p>Paragraph of text beneath the helain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#">
-          Call to action
-        </a>
-      </div>
-	  
-	  
-	  <div class="feature col">
-        <div class="feature-icon bg-primary bg-gradient">
-           <i class="material-icons">home</i>
-        </div>
-        <h2>Featured title</h2>
-        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#" class="icon-link">
-          Call to action
-         
-        </a>
-      </div>
-	  
-	  <div class="feature col">
-        <div class="feature-icon bg-primary bg-gradient">
-           <i class="material-icons">home</i>
-        </div>
-        <h2>Featured title</h2>
-        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
-        <a href="#" class="icon-link">
-          Call to action
-         
-        </a>
-      </div>
-	  
-	 
-	  
-	  
     
-    </div>
-  </div>
+<div class="jumbotron">
+  <h1 class="display-4">Olá, {{user_first()}}!</h1>
+  <p class="lead">Configure e personalize a plataforma do seu jeito usando o menu de configurações ao lado ou abrindo no ícone de menu.</p>
+  <hr class="my-4">
+  <p>Para acesso rápido as configurações gerais, utilize o botão abaixo.</p>
+  <p class="lead">
+    <a class="btn btn-outline-primary btn-md" href="{{url('dashboard/settings/environment')}}" role="button">Configurações gerais</a>
+  </p>
+</div>	
+	
+</div>
 
 @include("@Painel/Views/footer")
