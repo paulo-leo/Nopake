@@ -30,6 +30,14 @@ class FileManager extends Module
 			'post:store-image'=>'storeImage',
 			'post:store-file'=>'storeFile'
 		);
+		
+		$files = array(
+			'files'=>'getFiles',
+			'post:attachment'=>'addAttachment',
+			'attachments'=>'getAttachments'
+		);
+		
+        Route::controllers($files,'@FileManager/Controllers/FileIncludeController');
 
        
 	    Route::resources('filemanager/folders','@FileManager/Controllers/FolderManagerController');
