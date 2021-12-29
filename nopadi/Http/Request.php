@@ -13,33 +13,21 @@ class Request
 	private $erros;
 	private $values;
 	private $allHeaders;
-	private $body = null;
 
-	public function __construct($json=false)
+	public function __construct()
 	{
 	  $this->erros = array();
 	  $this->values = array();
 	  $this->files = array();
 	  $this->check = 1;
-     
-      $this->body = file_get_contents('php://input');
-
-	  $this->files = isset($_FILES) ? $_FILES : array();
-	  $this->allHeaders = $this->setAllHeaders();
-
-      if($json || $this->getHeader('Content-Type') == 'application/json')
-	  {
-		$_REQUEST_NOPADI = json_decode(file_get_contents('php://input'),true); 
-		$this->all = isset($_REQUEST_NOPADI) ? $_REQUEST_NOPADI : array();
-	  }else{
-
-	  switch ($_SERVER['REQUEST_METHOD']) 
+      switch ($_SERVER['REQUEST_METHOD']) 
 	  {
            case 'GET':
 				$this->all = isset($_GET) ? $_GET : array();
 				break;
 			case 'POST':
 				$this->all = isset($_POST) ? $_POST : array();
+				$this->files = isset($_FILES) ? $_FILES : array();
 				break;
 			default:
 				$_REQUEST_NOPADI = file_get_contents('php://input');
@@ -47,9 +35,11 @@ class Request
 				$this->all = isset($_REQUEST_NOPADI) ? $_REQUEST_NOPADI : array();
 				break;
 		}
-	  }
+		
+		/*Salva todos os headers dentro de um array associativo*/
+		$this->allHeaders = $this->setAllHeaders();	
 	}
-	/*Inicaliza todos os headers submetidos para o servidor*/
+	
 	private function setAllHeaders()
 	{
 		$arr = array();
@@ -59,13 +49,8 @@ class Request
 		}
 		return $arr;
 	}
-
-	public function getBody(){
-		return $this->body;
-	}
 	
-	/*Apaga as sessões de erros do sistema*/
-	public function deleteErrors() {
+	public function __destruct() {
          if($this->check == 1){
 			 if (!isset($_SESSION)) session_start();
 	         if(isset($_SESSION['np_errors'])){

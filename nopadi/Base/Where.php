@@ -61,7 +61,26 @@ class Where
 					} elseif ($op == 'bet' || $op == 'between') {
 						$where = $key . ' BETWEEN ' . $val . ' AND ' . $val2;
 					} else {
-						$where = $key . ' ' . $op . ' ' . $val;
+			            $val = str_ireplace('\'','',$val);
+						if($op == 'like')
+						{
+							$where = "{$key} LIKE '%{$val}%'";
+						}elseif($op == '.like')
+						{
+							$where = "{$key} LIKE '%{$val}'";
+						}
+						elseif($op == 'like.')
+						{
+							$where = "{$key} LIKE '{$val}%'";
+						}elseif($op == '.like.')
+						{
+							$where = "{$key} LIKE '{$val}'";
+						}
+						else{
+							$val = is_numeric($val) ? $val : "'{$val}'";
+							$where = $key . ' ' . $op . ' ' . $val;
+						}  
+						
 					}
 				} else {
 					if ($op == 'null') {
@@ -75,7 +94,25 @@ class Where
 					} elseif ($op == 'bet' || $op == 'between') {
 						$where .= ' ' . $key . ' BETWEEN ' . $val . ' AND ' . $val2 . ' ' . $type . ' ';
 					} else {
-						$where .= ' ' . $key . ' ' . $op . ' ' . $val . ' ' . $type . ' ';
+						$val = str_ireplace('\'','',$val);
+						if($op == 'like')
+						{
+							$where = "{$key} LIKE '%{$val}%' {$type} ";
+						}elseif($op == '.like')
+						{
+							$where .= "{$key} LIKE '%{$val}' {$type} ";
+						}
+						elseif($op == 'like.')
+						{
+							$where .= "{$key} LIKE '{$val}%' {$type} ";
+						}elseif($op == '.like.')
+						{
+							$where .= "{$key} LIKE '{$val}' {$type} ";
+						}
+						else{
+							$val = is_numeric($val) ? $val : "'{$val}'";
+							$where .= $key . ' ' . $op . ' ' . $val . ' ' . $type . ' ';
+						}  
 					}
 				}
 			}
@@ -87,6 +124,7 @@ class Where
 
 		return $where;
 	}
+
 
 	function getWhereOr()
 	{

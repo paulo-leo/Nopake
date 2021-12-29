@@ -176,7 +176,7 @@ class Json
 	  return $x;
   }
   
-  function revert_utf8($string,$r=false)
+  public function revert_utf8($string,$r=false)
   {
 	$c = array('À','Á','Ã','Â','É','Ê','Í','Ó','Õ','Ô','Ú','Ü','Ç','Ñ','à','á','ã','â','é','ê','í','ó','õ','ô','ú','ü','ç','ñ');
 	

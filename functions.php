@@ -37,6 +37,16 @@ if(!function_exists('getallheaders'))
       }
 }
 
+/*Renderiza um componet*/
+function component($component,$scope=null)
+{
+		  $component = 'np_'.str_ireplace('-','_',$component);
+		  if(function_exists($component))
+		  {
+			return call_user_func($component,$scope);
+		  }
+}
+
 /*Define um valor padrão para uma variável do tipo nula*/
 function isnull($var,$default){
 	return is_null($var) ? $default : $var;
@@ -881,6 +891,11 @@ function to_url($to = null)
 	$to = ($to == '/') ? null : $to;
 	$base = $base . $to;
 	header('Location:' . $base);
+}
+
+function param_first()
+{
+	return call_user_func('Nopadi\Http\Param::first');
 }
 
 /*Retorna os parâmetros das rotas*/
