@@ -13,12 +13,21 @@ use Modules\FileManager\Models\UploadModel;
 class FileIncludeController extends Controller
 {  
     public function getFiles()
-    {  
+    {  sleep(5);
 	  $files = new UploadModel;
 	  
-	  $files = $files->select(['*'])
-	  ->orderBy('id desc')
-	  ->paginate(20);
+	  $request = new Request;
+	  $search = $request->get('search');
+	  
+	  $files = $files->select(['*']);
+	  
+	  if(strlen($search) >= 2)
+	  {
+		$files = $files->where('description','like',$search);
+	  }
+	  //var_dump($files);
+	  
+	  $files = $files->orderBy('id desc')->paginate(10);
 	  
 	  $results = $files->results;
 	  $next = $files->next;
@@ -47,6 +56,7 @@ class FileIncludeController extends Controller
 		'previous'=>$previous,
 		'next'=>$next
 	  ));
+	  
     }
 	
 	public function getAttachments()

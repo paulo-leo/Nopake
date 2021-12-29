@@ -3,12 +3,14 @@
 
 $table_name = isset($table_name) ? $table_name : 0;
 $table_id = isset($table_id) ? $table_id : 0;
+$btn_text = isset($btn_text) ? $btn_text : 'Mídias';
+$btn_class = isset($btn_class) ? $btn_class : 'btn btn-primary';
 
-$html = "<button class='btn btn-primary' type='button' data-bs-toggle='offcanvas' data-bs-target='#offcanvasRightx' aria-controls='offcanvasRight'>Mídia</button>
+$html = "<button class='{$btn_class}' type='button' data-bs-toggle='offcanvas' data-bs-target='#offcanvasRightx' aria-controls='offcanvasRight'>{$btn_text}</button>
 
 <div class='offcanvas offcanvas-end' tabindex='-1' id='offcanvasRightx' aria-labelledby='offcanvasRightLabel'>
   <div class='offcanvas-header'>
-    <h4 id='offcanvasRightLabel'><i class='material-icons' style='position:relative;top:2px'>workspaces</i>Mídias</h4>
+    <h4 id='offcanvasRightLabel'><i class='material-icons' style='position:relative;top:2px'>workspaces</i>{$btn_text}</h4>
     <button type='button' class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></button>
   </div>
   <div class='offcanvas-body'>
@@ -38,7 +40,11 @@ $html = "<button class='btn btn-primary' type='button' data-bs-toggle='offcanvas
 
 
   <div class='tab-pane fade' id='home' role='tabpanel' aria-labelledby='home-tab'> 
-<div class='container py-2' align='center'>
+<div class=' py-2' align='center'>
+    <div class='row p-2'>
+      <input class='form-control col-8' id='np_fm_input_search' type='search' placeholder='Pesquisar'>
+    </div>
+
     <div id='render-files' class='row g-1'></div>
  </div> 
   </div>
@@ -76,12 +82,22 @@ $html = "<button class='btn btn-primary' type='button' data-bs-toggle='offcanvas
 </div>
 <script>
 $(function(){
-    let render = $('#render-files');
-   function np_fm_midia_load(url=null)
+     let render = $('#render-files');
+	
+	$('#np_fm_input_search').keypress(function(event) {
+    if(event.key === 'Enter')
+	  {
+        let value = $(this).val();      
+	    np_fm_midia_load(null,{search:value});
+      }
+    });
+	
+   function np_fm_midia_load(url=null,search=null)
    {
      let urlx = url == null ? '".url('files')."' : url;
      $.ajax({
 	    url:urlx,
+		data:search,
 		beforeSend:function(){
 		   let load = '<div class=\'col-12\'><div class=\'spinner-grow text-primary\'><span class=\'visually-hidden\'>Loading...</span></div>';
 		    load += '<div class=\'spinner-grow text-success\'><span class=\'visually-hidden\'>Loading...</span></div>';
@@ -93,25 +109,40 @@ $(function(){
 		{
 		  let files = '';
 		  
+		 
+		  
+		  if(response.results.length == 0)
+		  {
+		     files += '<p class=\'alert alert-danger\'>Mídia não encontrada.</p>';
+		  }else{
+		  
+		  $.each(response.results,function(i,v)
+		  {
+			 
+			  files += '<div class=\'col-lg-6 np-fm-file-div-'+v.id+'\'>';
+			  files += '<div class=\'card\'>';
+              files += '<img  src=\"'+v.path+'\" class=\'card-img-top\' alt=\'...\'>';
+              files += '<div class=\'card-body\'>';
+              files += '<p class=\'card-text\'>'+v.description+'</p>';
+              files += '<button id=\''+v.id+'\' class=\'btn btn-sm np-fm-clik-anexar btn-outline-primary\'>Anexar</button>';
+			  files += '</div></div></div>';
+			 
+          });
+		  }
+		  
+		  
 		  files += '<div class=\'col-12 py-2\'><div class=\'btn-group\'>';
 		  if(response.previous != null)
              files += '<a href=\''+response.previous+'\' class=\'btn np-fm-clik-previous btn-outline-primary\'>&laquo;</a>';
 			 
-		  files += '<a class=\'btn np-fm-clik-update btn-outline-primary\'>UP</a>';
+		  //files += '<a class=\'btn np-fm-clik-update btn-outline-primary\'>UP</a>';
 		  
 		  if(response.next != null)
                files += '<a href=\''+response.next+'\' class=\'btn np-fm-clik-next btn-outline-primary\'>&raquo;</a>';
 			   
 		  files += '</div></div>';
 		  
-		  $.each(response.results,function(i,v)
-		  {
-		     let img = v.path;
-             files += '<div class=\'col-lg-3 np-fm-file-div-'+v.id+' col-4\'><div class=\'p-1\'><a style=\'cursor:pointer\' id=\''+v.id+'\' class=\'np-fm-clik-anexar\'><img style=\'width:100%;height:80px\' src=\"'+img+'\"></a></div></div>';
-          });
-		  
 		  render.html(files);
-		  
 		}
 	 });
     }
@@ -154,7 +185,7 @@ $(function(){
 	   
 	   let id = $(this).attr('id');
 	   
-	   let confir_anex = true;//confirm('Anexar mídia a este registro?');
+	   let confir_anex = confirm('Anexar mídia a este registro?');
 	   
 	   if(confir_anex){
 	     
@@ -173,11 +204,10 @@ $(function(){
 			}
 		  }
 	    });
-		
 	   }
 	   return false;
 	});
-   
+    
     render.on('click','.np-fm-clik-previous',function(){
 	 np_fm_midia_load($(this).attr('href'));
      return false; 
@@ -191,8 +221,6 @@ $(function(){
 	 np_fm_midia_load();
      return false;
    });
-   
-    
    
     $('#np_fm_midia_form').submit(function(){
 	 
@@ -228,9 +256,6 @@ $(function(){
 
     return false;
   });
-   
-   
-
 });
 </script>
 ";
@@ -238,4 +263,78 @@ $(function(){
 return $html;
 
 @endtemplate
+
+
+
+@template(fs_show)
+
+$table_name = isset($table_name) ? $table_name : 0;
+$table_id = isset($table_id) ? $table_id : 0;
+$btn_class = isset($btn_class) ? $btn_class : 'btn btn-outline-primary';
+$btn_text = isset($btn_text) ? $btn_text : 'Anexos';
+
+$html = "<a class='{$btn_class}' href='#' id='btn-render-anexosxxx' data-bs-toggle='offcanvas' data-bs-target='#offcanvasRightxxx' aria-controls='offcanvasRight'>{$btn_text}</a>
+<a class='{$btn_class}' style='display:none' id='btn-render-anexosxxx2' href='#' data-bs-toggle='offcanvas' data-bs-target='#offcanvasRightxxx' aria-controls='offcanvasRight'>{$btn_text}</a>
+
+<div class='offcanvas offcanvas-end' tabindex='-1' id='offcanvasRightxxx' aria-labelledby='offcanvasRightLabel'>
+  <div class='offcanvas-header'>
+    <h4 id='offcanvasRightLabel'><i class='material-icons' style='position:relative;top:2px'>workspaces</i>Anexos</h4>
+    <button type='button' class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></button>
+  </div>
+  <div class='offcanvas-body'>
+     <div align='center' id='render-anexosxxx'></div>
+  </div>
+</div>
+<script>
+$(function(){
+	/*Anexos*/
+   function np_fm_midia_ax()
+   {
+     let renderAnexos = $('#render-anexosxxx');
+     let urlx = '".url('attachments')."';
+     $.ajax({
+	    url:urlx,
+		data:{table_name:'".$table_name."',table_id:".$table_id."},
+		beforeSend:function(){
+		   let load = '<div class=\'col-12\'><div class=\'spinner-grow text-primary\'><span class=\'visually-hidden\'>Loading...</span></div>';
+		    load += '<div class=\'spinner-grow text-success\'><span class=\'visually-hidden\'>Loading...</span></div>';
+		   load += '<div class=\'spinner-grow text-warning\'><span class=\'visually-hidden\'>Loading...</span></div></div>';
+		  renderAnexos.html(load);
+		
+		},
+		success:function(response)
+		{
+		  let files = '';
+          if(response.length == 0)
+		  {
+		     files += '<p class=\'alert alert-danger\'>Não há anexos para este registro.</p>';
+		  }else{
+		  
+		   files += '<ul class=\'list-group\'>';
+
+		  $.each(response,function(i,v)
+		  {
+		     let img = v.path;
+             files += '<li class=\'list-group-item\'><img style=\'width:100%;height:200px\' src=\''+img+'\'><div class=\'alert alert-info\' role=\'alert\'>'+v.description+'</div></li>';
+          });
+		  files += '</ul>';
+		}
+		renderAnexos.html(files);
+	   }
+	 });
+    }
+    
+	$('#btn-render-anexosxxx').click(function(){
+	    np_fm_midia_ax();
+		$('#btn-render-anexosxxx').hide();
+		$('#btn-render-anexosxxx2').show();
+	});
+	
+});
+</script>";
+
+return $html;
+
+@endtemplate
+
 
