@@ -1,18 +1,18 @@
 @include("@Painel/Views/header")
 
 @component('p_header_form',[
-'title'=>'Adicionar uma nova permissão',
-'route'=>'dashboard/settings/permissions/create'
+'title'=>'Adicionar uma nova função',
+'route'=>'dashboard/settings/roles/create'
 ])
 {{csrf_field()}}
 <div class="row container py-3">
 	<div class="col-3">
-      <label>Chave da permissão</label>
-      <input class="form-control" type="text" name="key" required>
+      <label>Nome da função</label>
+      <input class="form-control" type="text" name="name" required>
     </div>
 	
 	<div class="col-9">
-      <label>Descrição da permissão</label>
+      <label>Descrição da função</label>
       <input class="form-control" type="text" name="description" required>
     </div>
 	

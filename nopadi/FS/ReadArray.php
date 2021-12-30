@@ -32,7 +32,7 @@ class ReadArray
 	    }
   }
   
-    /*Faz um include de arquivo*/
+  /*Faz um include de arquivo*/
   public static function addFile($file){
 	  
 	  $uri = new URI();

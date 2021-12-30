@@ -12,6 +12,7 @@ class RoleController extends Controller
 {
 
    private $fileDir = 'config/access/roles.json';
+   private $fileDirPemission = 'config/access/permissions.json';
    private $instance;
    private $roles = array();
    private $msg_error;
@@ -46,7 +47,7 @@ class RoleController extends Controller
    
    public function roleEditPermissions()
    {
-	  $f = new Json('config/access/permissions.json');
+	  $f = new Json($this->fileDirPemission);
 	  $f = $f->gets(); 
 	  $acl = new ACL;
 	  $request = new Request;
@@ -104,6 +105,78 @@ class RoleController extends Controller
 	  }else{
 		   hello(alert('Erro ao tentar atualizar permissões.','danger'));
 	  }
+  }
+  
+  public function roleFormCreate()
+  {
+	  return view('@Painel/Views/settings/role-create');
+  }
+  
+  public function roleStore()
+  {
+	$request = new Request;
+	$roles = new Json($this->fileDir);  
+
+	$name = $request->get('name');
+	$description = $request->get('description');
+	$key = str_url($name);
+	
+	if(strlen($name) >= 2){
+		
+	if(!$roles->exists_key($key))
+	{
+		$roles->set($key,array(
+		'name'=>$name,
+		'description'=>$description,
+		'sub'=>'',
+		'status'=>'active'
+		));
+		
+		if($roles->save()){
+			 return alert("Função \"<b>{$name}</b>\" foi adicionada com sucesso.","success");
+		}else{
+			return alert('Arquivo não salvo','danger');
+		}
+		
+	}else{
+		
+		return alert('Essa função já existe!','danger');
+		
+	}
+	}else{
+		return alert('Nome da função é muito curto.','danger');
+	}
+  }
+  
+  public function rolePermissionsStore()
+  {
+	$request = new Request;
+	$roles = new Json($this->fileDirPemission);  
+
+	$key = $request->get('key');
+	$description = $request->get('description');
+	$key = str_url($key);
+	
+	if(strlen($key) >= 2){
+		
+	if(!$roles->exists_key($key))
+	{
+		$roles->set($key,$description);
+		
+		if($roles->save()){
+			 return alert("Permissão para <b>{$description}</b> registrada com sucesso. ","success");
+		}else{
+			return alert('Arquivo não salvo','danger');
+		}
+		
+	}else{
+		
+		return alert('Essa permissão já existe!','danger');
+		
+	}
+	}else{
+		return alert('Nome da permissão é muito curto.','danger');
+	}
   }
 } 
 

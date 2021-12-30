@@ -13,7 +13,7 @@ use Modules\FileManager\Models\UploadModel;
 class FileIncludeController extends Controller
 {  
     public function getFiles()
-    {  sleep(5);
+    {  
 	  $files = new UploadModel;
 	  
 	  $request = new Request;

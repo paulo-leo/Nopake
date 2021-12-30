@@ -65,6 +65,9 @@ class Painel extends Module
 	   */
 	   
 	   $roles = array(
+	       'get:dashboard/settings/roles/create'=>'roleFormCreate',
+		   'post:dashboard/settings/roles/create'=>'roleStore',
+		   'post:dashboard/settings/permissions/create'=>'rolePermissionsStore',
 		   'get:dashboard/settings/roles'=>'index',
 		   'get:dashboard/settings/roles/edit/permissions'=>'roleEditPermissions',
 		   'post:dashboard/settings/roles/update/permissions'=>'roleUpdatePermissions'

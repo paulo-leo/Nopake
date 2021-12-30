@@ -135,7 +135,7 @@ class Json
   /*Salva o arquivo com as alterações*/
   public function save($format=true)
   {  
-	 $filename = $this->filename; 
+	 $filename = $this->revert_utf8($this->filename,true); 
 	 /*Se format for true, o json será salvo de forma formatada*/
 	 if($format){
 		$data = json_encode($this->arr,JSON_PRETTY_PRINT|JSON_UNESCAPED_UNICODE);

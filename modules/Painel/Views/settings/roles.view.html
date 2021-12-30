@@ -1,5 +1,7 @@
 @include("@Painel/Views/header")
-{!painel_title('Funções de usuários')!}
+{!painel_title('Funções de usuários',[
+'dashboard/settings/roles/create'=>'Criar função'
+])!}
 
 @grid('container-fluid np-scroll')
 		@grid('row mt-4')
