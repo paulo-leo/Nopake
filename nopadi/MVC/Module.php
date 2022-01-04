@@ -10,7 +10,6 @@ use Nopadi\Http\Route;
 
 class Module
 {
-	
 	final public static function start()
 	{
 		 Route::module('Painel','Module');
@@ -29,20 +28,28 @@ class Module
 			    }
 			 }
 		  }
-	   }
+	 }
 	
-	
+	/*Este é método principal para execução do módulo enquanto ativo*/
 	public function main()
     {
 		
     }
 	
+	/*Este método será executado na ativação do módulo*/
 	public function active()
     {
         
     }
 	
+	/*Este método será executado na desativação do módulo*/
 	public function disabled()
+    {
+        
+    }
+	
+	/*Este método será executado na atualização do módulo*/
+	public function update()
     {
         
     }

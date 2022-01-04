@@ -69,8 +69,7 @@ class Json
 	  }
   }
   
-  
-   /*Retona todos os valores*/
+  /*Retona todos os valores*/
   public function gets()
   {
 	return $this->arr;  

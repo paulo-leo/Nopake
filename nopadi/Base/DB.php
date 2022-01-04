@@ -854,9 +854,10 @@ class DB extends Connection
 			return 0;
 	}
 	//Metodo do tipo booleano para montar e execultar uma query do tipo UPDATE
-	public function update($values, $id = null)
+	public function update($values, $id = null,$key_input=null)
 	{
 		$table = $this->table;
+		$key_input = is_null($key_input) ? $this->primary : $key_input;
 		//Sepera os indices pela chave e valor
 		foreach ($values as $key => $value) {
 			$value = str_ireplace('\\','\\\\',$value);
@@ -867,10 +868,16 @@ class DB extends Connection
 		if ($id == null) {
 			$w = null;
 		} elseif (is_numeric($id)) {
-			$w = "WHERE " . $this->primary . " = " . $id;
+			$w = "WHERE " . $key_input . " = " . $id;
 		} elseif (is_array($id)){
-			$id = implode(',',$id);
-			$w = "WHERE " . $this->primary . " IN(".$id.")";
+			$arrs = null;
+			foreach($id as $arr)
+			{
+				$arr = is_numeric($arr) ? $arr : "'{$arr}'";
+				$arrs .= "{$arr},";
+			}
+			$arrs = trim(substr($arrs,0, -1));
+			$w = "WHERE " . $key_input . " IN(".$arrs.")";
 		}else {
 			$w = " WHERE {$id}";
 		}
@@ -881,5 +888,4 @@ class DB extends Connection
 		else
 			return false;
 	}
-
 }
