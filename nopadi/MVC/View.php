@@ -262,7 +262,7 @@ class View extends Translation
 		$file = preg_replace($include, "<?php \$this->render($1,\$this->scope); ?>", $file);
 		
 		///////////////////////////////
-		$componet2 = "/@component\(({$this->all})\)/simU";
+		$componet2 = "/@component\(({$this->all})\)[^{][^\);]\s/simU";
 		$file = preg_replace($componet2, "<?php echo \$this->component($1); ?>", $file);	
 
 		/*Função para token contra ataque crsf*/

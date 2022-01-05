@@ -1,0 +1,302 @@
+@template(p_paginate)
+  
+	$datas = isset($rows) ? $rows : null;
+	$replace = isset($replace) ? $replace : array();
+	$options = isset($options) ? $options : null;
+	$checkbox = isset($options['checkbox']) && $options['checkbox'] == true ? true : false;
+	$view = isset($options['view']) && $options['view'] == true ? true : false;
+	$edit = isset($options['edit']) && $options['edit'] == true ? true : false;
+	$delete = isset($options['delete']) && $options['delete'] == true ? true : false;
+	
+	$view_uri = isset($options['view_uri']) ? $options['view_uri'] :null;
+	$edit_uri = isset($options['edit_uri']) ? $options['edit_uri'] :null;
+	$delete_uri = isset($options['delete_uri']) ? url($options['delete_uri']) : get_uri(false);
+	$count_cols = 0;
+	$headers = isset($header) ? $header : $headers;
+	
+	$tr = '<thead class=""><tr>';
+	$h = array();
+	$print = null;
+	
+	$action = (isset($options['edit']) || isset($options['view']) || isset($options['select'])) ? true : false;
+	
+	 if($checkbox){
+	 $count_cols++;
+	 $tr .= "<th><input class='form-check-input' type='checkbox' value='' id='np-table-select-all'></th>";
+	 
+	 }
+	
+	 if($action && $view)
+	 {    
+	      $count_cols++;
+	      $tr .= '<th class="np-hide-element"><i class="material-icons" style="position:relative;top:7px">visibility</i></th>';
+	 }
+	 
+	$count_header = count($headers);
+	
+	$print .= "<tr>";
+	foreach($headers as $header)
+	{
+		$legend = explode('|',$header);
+		$header = $legend[0];
+		$h[] = $header;
+	
+		$legend = isset($legend[1]) ? $legend[1] : $legend[0];
+		$legend = (substr($legend,0,1) == '!') ? substr($legend,1) : text(':'.$legend);
+		
+		$tr .= '<th>'.$legend.'</th>';
+		
+		$print .= '<th>'.$legend.'</th>';
+	}
+	$print .= "</tr>";
+	
+	
+	
+	if($action && $edit)
+	{
+	       $count_cols++;
+	      $tr .= '<th class="np-hide-element"><i class="material-icons" style="position:relative;top:7px">edit</i></th>';
+	}
+	 
+	 if($action && $delete)
+	 {
+	       $count_cols++;
+	      $tr .= '<th class="np-hide-element"><i class="material-icons" style="position:relative;top:7px">delete</i></th>';
+	 }
+	
+	$tr .= '</tr></thead><tbody>';
+	
+	
+	
+    
+    if(count($datas->results) > 0){
+    foreach($datas->results as $data){
+		$id = $data['id'];
+		$class_item = 'np-painel-item-'.$id;
+		$tr .= '<tr class="'.$class_item.'">';
+
+
+        if($checkbox)
+        $tr .= "<td><input class='form-check-input np-table-select' type='checkbox' value='{$id}' id='{$id}'></td>";
+		
+		$print .= "<tr>";
+		
+		
+	    if($action && isset($options['view']) && $options['view'] == true)
+		{
+		  $uriv = $view_uri ? url($view_uri.'/'.$id) : get_uri(false).'/'.$id;
+	      $tr .= '<td class="np-hide-element">
+		   <a href="'.$uriv.'" title="'.text(':'.'to_view').'" id="'.$id.'" href="#modal1"><i class="material-icons">remove_red_eye</i></a>'.$view_uri.'</td>';
+		}
+		
+		foreach($h as $row)
+		{
+			//href="'.get_uri(false).'/'.$id.'"
+			if(array_key_exists($row,$replace))
+			{
+			     if(is_callable($replace[$row]))
+				 {
+				     $data[$row] = call_user_func($replace[$row],$data[$row],$data);
+				 
+				 }else{
+				    $data[$row] = $replace[$row];
+				 }
+				 
+				 
+			
+				//$data[$row] = call_user_func($replace[$row], $data,$id);
+				//$data[$row] = 589;
+			}
+			
+			
+			$data[$row] = empty($data[$row]) && !is_numeric($data[$row]) ? '<span class="text-danger">------</span>' : $data[$row];
+			
+			
+			$print .= "<td>{$data[$row]}</td>";
+			
+			$tr .= "<td>{$data[$row]}</td>";
+			
+		}
+		
+		if($action && $edit){
+		
+		  $urie = $edit_uri ? url($edit_uri.'/'.$id.'/edit') : get_uri(false).'/'.$id.'/edit';
+		
+	      $tr .= '<td class="np-hide-element"><a title="'.text(':'.'edit').'" href="'.$urie.'"><i class="material-icons">edit</i></a></td>';
+		}
+		
+		if($action && $delete){
+	      $tr .= '<td class="np-hide-element"><a class="np-btn-delete-item" id="'.$id.'" title="'.text(':'.'delete').'" href="#"><i class="material-icons">delete</i></a></td>';
+		}
+		
+		$tr .= '</tr>';
+		$print .= "</tr>";
+		
+	}}else{
+		$tr .= '<td colspan="'.$count_header.'"><h6 class="red-text">Não há registros para mostrar.</h6></td></tr>';
+	}
+	
+	  //$print = htmlspecialchars($print, ENT_QUOTES);
+	  
+	  $paginate = '<div class="col-12">
+	  Total <span class="badge bg-primary">'.$datas->count.'</span>
+	  <span class="badge bg-secondary">Página: '.$datas->page.'/'.$datas->total.'</span>
+	  </div><hr>';
+	  
+	  if($datas->links)
+	  {
+	      $paginate .= '<div class="col-12">'.$datas->links.'</div>';
+	  }
+	  
+	  $paginate .= '<div class="col-12 py-4"></div>';
+	  
+      $tr .= '</tbody>';
+	  
+	  
+	  $print = "<table class='table'>{$print}</table>";
+	  
+	  $np_table_title = get_var('np_table_title','Tabela sem título');
+	  
+	  $user_name = user_name() ? user_name() : "Usuário anônimo";
+	  $print = "<h3>{$np_table_title}</h3><hr>{$print}<hr><span>Consulta gerada por: <b>{$user_name}</b>, às ".format(NP_DATETIME,'datetime').".</span>";
+	  
+	  $action_export = url('api/np/print/table');
+	  
+	  $tr .= "<form target='_blank' action='{$action_export}' method='post' id='np-form-export'>
+	             <textarea hidden id='np-value-export' name='content'>{$print}</textarea>
+			  </form>";
+	
+      $action_export = url('api/np/xls/table');	
+	  $tr .= "<form action='{$action_export}' method='post' id='np-form-xls'>
+	             <textarea hidden id='np-value-export' name='content'>{$print}</textarea>
+			  </form>";
+	  
+	 
+	  
+	  $tr .= '
+  <!-- Modal Structure -->
+      <style>
+	   @media (min-width: 993px){
+		  .modal-fixed-footer { width: 75% !important; } 
+	   }
+	   @media (max-width: 600px){
+		  .modal-fixed-footer { width: 100% !important; } 
+	   }
+	  </style>
+      <div id="modal1" class="modal modal-fixed-footer">
+         <div class="modal-content">
+            <div id="np-table-view-more"></div>
+         </div>
+       <div class="modal-footer">
+         <a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">'.lang('close').'</a>
+        </div>
+  </div>';
+  
+
+	  /*Script JavaScript para deletar item*/
+	 $tr .= '<script>
+	 let selectAll = $("#np-table-select-all");
+	  selectAll.click(function(){
+		 if ($(this).is(":checked") ){
+               $(".np-table-select").prop("checked", true);
+           }else{
+               $(".np-table-select").prop("checked", false);
+           } 
+	  });
+	  
+	 var loading = document.createElement("div");
+     loading.innerHTML = \'<div class="spinner-grow" role="status"><span class="visually-hidden">Loading...</span></div>\';
+	 
+	 /*Função para exportação de dados via PDF ou Excel*/
+	$("#np-btn-pdf").click(function()
+	{
+       $("#np-form-export").submit();
+	});
+	
+	$("#np-btn-xls").click(function()
+	{
+       $("#np-form-xls").submit();
+	});
+	
+	 $(function(){
+		$(".np-btn-view").click(function(){
+			var view = $(this).attr("id");
+			var url = "'.get_uri(false).'/"+view;
+			
+			$.ajax({
+					url : url,
+                    type :"GET",
+					dataType: "html",
+                    beforeSend : function(){ 
+                        $("#np-table-view-more").html(loading);  
+					},
+					success : function(data){ 
+                          $("#np-table-view-more").html(data); 
+					}
+				});
+		});
+		 
+        var btnDelete = $(".np-btn-delete-item");
+		btnDelete.click(function(){
+        var id = $(this).attr("id");
+		
+		 //Função para excluir
+		 function deleteItem(id)
+		 {
+			$.ajax({
+					url : "'.$delete_uri.'",
+                    type :"DELETE",
+                    data :{id:id},
+					dataType: "json",
+                    beforeSend : function(){ 
+                           //$(".np-progress").show();
+						    swal({
+                            content: loading,
+							title: "Por favor, aguarde...",
+                            button: false,
+                            closeOnClickOutside: false,
+                            closeOnEsc: false
+                            });
+					},
+					success : function(data){ 
+                              var type = data.type;
+							  var msg  = data.msg;
+							  if(type == "success"){
+								  swal("'.text(':success').'", msg, "success");
+								  $(".np-painel-item-"+id).hide("fast");
+							  }else if(type == "error"){
+								   swal("'.text(':error').'", msg, "error");
+							  }else{
+								 swal("'.text(':info').'", msg, "info") 
+							  }
+					},
+					complete : function(){ $(".np-progress").hide();  }
+				});
+		 }
+       
+		  swal({
+          title: "Deseja Excluir?",
+          icon: "warning",
+          buttons: [
+            "Cancelar",
+            "Excluir"
+          ],
+          dangerMode: true,
+        }).then(function(isConfirm) {
+          if (isConfirm) {
+          
+		      deleteItem(id)
+		  
+          } else {
+           
+          }
+        });
+					   
+			   });
+		 });
+	  </script>';
+	  
+	  
+	return '<div class="table-responsive"><table class="table table-sm table-hover">'.$tr.'</table>'.$paginate.'</div>';
+
+@endtemplate

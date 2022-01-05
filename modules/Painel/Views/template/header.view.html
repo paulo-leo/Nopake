@@ -1,5 +1,6 @@
-@import('@Painel/Views/template/components')
-@include("@FileManager/Views/midia")
+@import(['@Painel/Views/template/components',
+		 '@Painel/Views/template/paginate-components',
+		 '@FileManager/Views/midia'])	 
 @php
 $title = isset($title) ? $title : NP_NAME;
 $color_top = isset($color_top) ? 'bg-'.$color_top : 'bg-primary';
@@ -27,7 +28,6 @@ $title_app = isset($title_app) ?$title_app : NP_NAME;
 
     <link rel="shortcut icon" href="{{asset('favicon.png')}}" />
 </head>
-
 <body class="np-nav-fixed">
     <nav class="np-topnav navbar navbar-expand navbar-dark {{$color_top}}">
         <!-- Navbar Brand-->

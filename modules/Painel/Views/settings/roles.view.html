@@ -6,7 +6,7 @@
 @grid('container-fluid np-scroll')
 		@grid('row mt-4')
 			@grid('col-sm-12')
-<table class="table">
+<table class="table table-striped">
 	  
 <tr>
 <th>Nome</th> 
@@ -20,8 +20,8 @@
 	  {
 	     $url = url('dashboard/settings/roles/edit/permissions?role='.$key.'&name='.$val['name']);
 		 $table .= "<tr>"; 
-		        $table .= "<td>{$val['name']}</td>"; 
-				$table .= "<td>{$val['description']}</td>"; 
+		        $table .= "<td>".revert_utf8($val['name'],true)."</td>";  
+				$table .= "<td>".revert_utf8($val['description'],true)."</td>"; 
 				if($key != 'admin'){
 				$table .= "<td>
 				 <a href='{$url}' class='text-success'><i class='material-icons grey-text'>add_moderator</i></a></td>";

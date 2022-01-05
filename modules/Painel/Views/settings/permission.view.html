@@ -1,18 +1,22 @@
 @include("@Painel/Views/header")
 
 {!painel_title('Permissões',['dashboard/settings/permissions/create'=>'Adicionar permissão'])!}
-
-<table class="table">
+<div class="np-scroll container">
+<table class="table table-striped">
+<thead>
 <tr>
 		<td>Chave</td>
 		<td>Descriçao</td>
 </tr>
+</thead>
+<tbody>
 @foreach($permissions as $key=>$val)
 <tr>
-<td><i class="material-icons">key</i>{{$key}}</td>
-<td>{{$val}}</td>
+<td><i class="material-icons">key</i>{{revert_utf8($key,true)}}</td>
+<td>{{revert_utf8($val,true)}}</td>
 </tr>
 @endforeach
+</tbody>
 </table>
-
+</div>
 @include("@Painel/Views/footer")

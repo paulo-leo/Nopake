@@ -644,40 +644,38 @@ class DB extends Connection
 	/*Metodo para criar botões de paginação*/
 	public function links($config=null){
 		
-		$div_class = isset($config['div_class']) ? $config['div_class'] : 'pagination';
-		$btn_class = isset($config['btn_class']) ? $config['btn_class'] : 'waves-effect';
-		$btn_active_class = isset($config['btn_active_class']) ? $config['btn_active_class'] : 'active btn';
-		$previous = isset($config['previous_text']) ? $config['previous_text'] : '<i class="material-icons">chevron_left</i>';
-		$next = isset($config['previous_next']) ? $config['previous_next'] : '<i class="material-icons">chevron_right</i>';
+		$div_class = isset($config['pagination']) ? $config['pagination'] : 'pagination';
+		$item_class = isset($config['btn']) ? $config['btn'] : 'page-item';
+		$btn_class = isset($config['btn']) ? $config['btn'] : 'page-link';
+		$btn_active_class = isset($config['active']) ? $config['active'] : 'page-item active';
+		$previous = isset($config['previous_text']) ? $config['previous_text'] : '&laquo;';
+		$next = isset($config['previous_next']) ? $config['previous_next'] : '&raquo;';
 		
 		$links = $this->links;
 		$btns = null;
 		
-		if($links['previous'] || $links['btns'] || $links['next']){
-			$btns .= '<ul class="'.$div_class.'">';
-		}
+		$btns = '<nav aria-label="..."><ul class="'.$div_class.'">';
 		
 		if($links['previous']){
-			$btns .= '<a class="'.$btn_class.'" href="'.pag_filter($links['previous']).'">'.$previous.'</a>';
+			$btns .= '<li class="'.$item_class.'"><a class="'.$btn_class.'" href="'.pag_filter($links['previous']).'">'.$previous.'</a></li>';
 		}
 		
 		if($links['btns']){
 			foreach($links['btns'] as $key=>$val){
 			if($links['page'] != $key){
-				$btns .= '<li class="'.$btn_class.'"><a href="'.pag_filter($val).'">'.$key.'</a></li>';
+				$btns .= '<li class="'.$item_class.'"><a class="'.$btn_class.'" href="'.pag_filter($val).'">'.$key.'</a></li>';
 			}else{
-				$btns .= '<li class="'.$btn_active_class.'" href="'.pag_filter($val).'">'.$key.'</a></li>';
+				$btns .= '<li class="'.$btn_active_class.'"><a class="'.$btn_class.'" href="'.pag_filter($val).'">'.$key.'</a></li>';
 			   }
 			}
 		}
 		
 		if($links['next']){
-			$btns .= '<li class="'.$btn_class.'"><a href="'.pag_filter($links['next']).'">'.$next.'</a></li>';
+			$btns .= '<li class="'.$item_class.'"><a class="'.$btn_class.'" href="'.pag_filter($links['next']).'">'.$next.'</a></li>';
 		}
 		
-		if($links['previous'] || $links['btns'] || $links['next']){
-			$btns .= '</ul>';
-		}
+		
+		$btns .= '</ul></nav>';
 		
 		return $btns;
 	}

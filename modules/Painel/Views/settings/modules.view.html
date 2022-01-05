@@ -23,7 +23,7 @@ $i++;
     <div class="card text-center">
       <div class="card-body">
         <h5 class="card-title">
-        {{$name}}</h5>
+        {{revert_utf8($name,true)}}</h5>
 		 @php
 		     $btn_text = $status == 'disabled' ? 'Habilitar' : 'Desabilitar';
 		 @endphp
@@ -50,12 +50,12 @@ $i++;
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modalModuleLabel">{{$name}}</h5>
+        <h5 class="modal-title" id="modalModuleLabel">{{revert_utf8($name,true)}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
         <p>
-		  <span class="badge {{$btn_class}}">{{$btn_text}}</span> - {{$description}}
+		  <span class="badge {{$btn_class}}">{{$btn_text}}</span> - {{revert_utf8($description,true)}}
 		   <a href="{{url($url)}}" target="_blank">{{$url}}</a>
 		</p>
 		<ul class="list-group">

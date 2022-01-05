@@ -10,6 +10,7 @@ use Nopadi\Http\URI;
 use Nopadi\Http\Param;
 use Nopadi\Http\Auth;
 use Nopadi\FS\Json;
+use Nopadi\FS\ReadArray;
 use Nopadi\Http\Request;
 use Nopadi\Support\Translation;
 use Nopadi\Base\DB;
@@ -36,6 +37,44 @@ if(!function_exists('getallheaders'))
          return $headers;
       }
 }
+function permission($permissions)
+{
+	$permissions = !is_array($permissions) ? array($permissions) : $permissions;
+	$GLOBALS['np_permissions'] = $permissions;
+}
+
+/*Acesso do usuário via permissões*/
+function access($permissions=null)
+{
+	$check = false;
+	$role = user()->role;
+	$check = ($role == 'admin') ? true : false;
+	
+	if($role && $check == false)
+	{    
+      $file = 'config/access/access.php';
+	  $access = new ReadArray($file);
+	  $access = $access->get($role,false);
+	   if($access)
+	   {
+		 if(is_null($permissions) && isset($GLOBALS['np_permissions']))
+	     {
+		   $permissions = $GLOBALS['np_permissions'];
+	     }
+		 
+		foreach($permissions as $permission)
+		{
+			if(in_array($permission,$access))
+			{
+				$check = true;
+				break;
+			}
+		  }
+	   }
+	}
+	return $check;
+}
+
 
 /*Renderiza um componet*/
 function component($component,$scope=null)
@@ -1367,6 +1406,20 @@ function script($only = null)
 }
 
 /*Inicio das funções para formatação*/
+
+function revert_utf8($string,$r=false)
+{
+	$c = array('À','Á','Ã','Â','É','Ê','Í','Ó','Õ','Ô','Ú','Ü','Ç','Ñ','à','á','ã','â','é','ê','í','ó','õ','ô','ú','ü','ç','ñ');
+	
+    $s = array('xx1x','xx2x','xx3x','xx4x','xx5x','xx6x','xx7x','xx8x','xx9x','x1xx','x11x','x12x','x13x','x14x','x15x','x16x','x17x','x18x','x19x','x2xx','x21x','x22x','x23x','x24x','x25x','x26x','x27x','x28x');
+	
+	if($r){
+		$string = str_replace($s,$c,$string);
+	}else{
+		$string = str_replace($c,$s,$string);
+	}
+  	return $string;
+}
 
 /*Transforma uma string comum no formato URL*/
 function str_url($strTitle, $ignorePonto = true)

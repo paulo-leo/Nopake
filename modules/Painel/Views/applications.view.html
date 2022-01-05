@@ -15,12 +15,85 @@ foreach($modules as $module)
 ?>
 @include('@Painel/Views/template/header',['sidebar'=>$menu])
 <style>
-  .feature-icon{width:50px;height:50px;border-radius:10px}
+  @-webkit-keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(5px);
+        transform: translateX(5px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-5px);
+       transform: translateX(-5px);
+    } 
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+@keyframes swing
+{
+    15%
+    {
+        -webkit-transform: translateX(7px);
+        transform: translateX(7px);
+    }
+    30%
+    {
+        -webkit-transform: translateX(-7px);
+        transform: translateX(-7px);
+    }
+    50%
+    {
+        -webkit-transform: translateX(3px);
+        transform: translateX(3px);
+    }
+    65%
+    {
+        -webkit-transform: translateX(-3px);
+        transform: translateX(-3px);
+    }
+    80%
+    {
+        -webkit-transform: translateX(2px);
+        transform: translateX(2px);
+    }
+    100%
+    {
+        -webkit-transform: translateX(0);
+        transform: translateX(0);
+    }
+}
+
+
+  .feature-icon{width:60px;height:50px;border-radius:10px;margin:0 auto;}
   .feature-icon > .material-icons{font-size:50px;color:#fff;}
+
+  .feature-icon:hover{-webkit-animation: swing 1s ease;
+        animation: swing 1s ease;
+        -webkit-animation-iteration-count: 3;
+        animation-iteration-count: 3;}
   </style>
 
-  <div class="container px-4 py-2" id="featured-3">
-      <h2 class="pb-2 border-bottom col-12">Aplicativos</h2>
+  <div class="container px-4 py-2 np-scroll" id="featured-3">
+      <h3 class="pb-2 border-bottom col-12 text-uppercase">Central de aplicativos {{NP_NAME}}</h3>
       <div class="row g-3 py-2 row-cols-2 row-cols-lg-4">
 @php
 
@@ -47,13 +120,14 @@ $colors = array(
 	
 	$bg_color = array_key_exists($color,$colors) ? $colors[$color] : 'bg-secondary';
 	
-  $html = "<div class='feature col'>
+  $html = "<div class='feature col text-center'>
+    <a href='{$url}' class='text-justify'>
     <div class='feature-icon shadow-lg {$bg_color} bg-gradient'>
        <i class='material-icons'>{$icon}</i>
     </div>
-    <h3>{$name}</h3>
-    <p>{$description}</p>
-    <a href='{$url}' class='icon-link'>Acessar aplicativo</a>
+	</a>
+    <h4>{$name}</h4>
+    <p class='text-justify'>{$description}</p>
   </div>";
   
   hello($html);
@@ -67,4 +141,4 @@ $colors = array(
 
 
 
-@painel_footer()
+@include('@Painel/Views/footer')

@@ -22,7 +22,6 @@ body {
   padding-bottom: 40px;
   background-color: #f5f5f5;
 }
-
 .form-signin {
   width: 100%;
   max-width: 400px;
@@ -58,10 +57,6 @@ body {
    <a href="{{url()}}"><img class="mb-4" src="{{asset('logo.png')}}" alt="" width="100" height="80"></a>
    <h1 class="h3 mb-3 fw-normal">#login_account#</h3> 
 						
-     @if($logout)
-       <div class="alert alert-primary" role="alert">#session_closed_success#</div>
-	 @endif
-	
     <div class="form-floating">
       <input type="email" class="form-control" id="floatingInput" name="email" required placeholder="name@example.com">
       <label for="floatingInput">#email#</label>
@@ -76,7 +71,7 @@ body {
         <input type="checkbox" name="remember">#remember_login#
       </label>
     </div>
-   <button class="w-100 btn btn-lg btn-outline-primary" type="submit">#enter#</button>
+   <button class="w-100 btn btn-lg btn-outline-primary np-btn-submit" type="submit">#enter#</button>
    <button class="w-100 btn btn-lg btn-outline-primary np-btn-loading" style="display:none" type="button" disabled>
     Conectando
    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
@@ -84,7 +79,7 @@ body {
    <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
   </button>
   
-    <div class="np-local-alert py-4"></div>
+    <div class="np-local-alert py-2" style="height:60px"></div>
   
 	<div class="py-2">
 	<a class="btn" href="{{url('register')}}">#register#</a>
@@ -98,19 +93,25 @@ body {
 </html>
  <script>
       $(function(){ 
+	     let local = $('.np-local-alert');
+		 @if($logout)
+				  local.html('<div class="alert alert-info" role="alert">#session_closed_success#</div>');
+	     @endif
         $("#login").submit(function(){
 		
-          let local = $('.np-local-alert');
-          var vars = $(this).serialize();
-
+          
+            var vars = $(this).serialize();
+		  
             <?php
 			   $url = (isset($_SESSION['np_route_auth_login'])) ? $_SESSION['np_route_auth_login'] : url('dashboard'); 
 			?>
+			
             $.ajax({
             url : "{{url('login')}}",
             type : 'post',
             data : vars,
             beforeSend : function(){  
+			      $('.np-btn-submit').hide();
 			      local.html('');
 			      $('.np-btn-enter').hide();
                   $('.np-btn-loading').show();
@@ -137,7 +138,7 @@ body {
                 }
               }
                   $('.np-btn-loading').hide();
-                  $('.np-btn-enter').show();
+                  $('.np-btn-submit').show();
             }
             }); 
           

@@ -178,6 +178,11 @@ $title_modal = isset($title_modal) ? $title_modal : null;
         
         <div class='d-flex'>";
 		
+	 if(isset($title_html))
+	  {
+            $html .= $title_html; 
+	  }
+		
 	  if(!is_null($modal_content))
 	  {
             $html .= "<button  data-bs-toggle='modal' data-bs-target='#exampleModal' class='btn-filter'>
@@ -188,8 +193,8 @@ $title_modal = isset($title_modal) ? $title_modal : null;
 	  
 	  if(!is_null($btns))
 	  {
-          $html .= "<button  class='btn btn-primary dropdown-toggle py-1 p-2' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
-                  Ações
+          $html .= "<button title='Mais ações' class='btn btn-light dropdown-toggle py-1 p-2' href='#' role='button' id='dropdownMenuLink' data-bs-toggle='dropdown' aria-expanded='false'>
+                 <i class='material-icons' style='position:relative;top:5px'>more_vert</i>
 	          </button>";
 	  }
 
