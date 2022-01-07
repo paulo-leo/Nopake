@@ -1,3 +1,48 @@
+@template(p_select_two)
+
+$url = isset($url) ? url($url) : null;
+$name = isset($name) ? $name : null;
+$html = "
+<button style='display:none' id='np-painel-loading-select-{$select_name}-x' class='btn btn-outline-dark col-12' type='button' disabled>
+  <span class='spinner-grow text-success spinner-grow-sm' role='status' aria-hidden='true'></span>
+   <span class='spinner-grow text-primary spinner-grow-sm' role='status' aria-hidden='true'></span>
+    <span class='spinner-grow text-warning spinner-grow-sm' role='status' aria-hidden='true'></span>
+</button>
+<select name='{$name}' required id='np-painel-load-select-{$select_name}' class='form-select'></select>
+<script>
+function npLoadSelectById(id){
+	  let select = $('#np-painel-load-select-{$select_name}');
+	  $.ajax({
+	      url:'{$url}',
+          data:{{$select_name}:id},
+          type:'GET',
+          dataType: 'json',
+		  beforeSend:function(){
+		    $('#np-painel-load-select-{$select_name}').hide();
+		    $('#np-painel-loading-select-{$select_name}-x').show();
+		  },
+          success:function(data){
+		     let option = '';
+			 $.each(data, function(index, element)
+			 {
+                option += '<option value=\"'+element.id+'\">'+element.name+'</option>';   
+             });
+			 select.html(option);
+		    $('#np-painel-loading-select-{$select_name}-x').hide();
+			$('#np-painel-load-select-{$select_name}').show();
+		  }
+	  });
+	}
+	npLoadSelectById($('select[name=\"{$select_name}\"]').val());
+    $('select[name=\"{$select_name}\"]').change(function(){
+	     let id = $(this).val();
+		 npLoadSelectById(id);
+	});</script>";
+
+return $html;
+
+@endtemplate
+
 <!--Inputs-->
 @template(p_input)
 

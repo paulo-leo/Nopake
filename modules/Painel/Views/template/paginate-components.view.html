@@ -1,5 +1,5 @@
 @template(p_paginate)
-  
+
 	$datas = isset($rows) ? $rows : null;
 	$replace = isset($replace) ? $replace : array();
 	$options = isset($options) ? $options : null;
@@ -109,12 +109,12 @@
 			}
 			
 			
-			$data[$row] = empty($data[$row]) && !is_numeric($data[$row]) ? '<span class="text-danger">------</span>' : $data[$row];
+			$data[$row] = empty($data[$row]) && !is_numeric($data[$row]) ? '<b class="text-danger">---------</b>' : $data[$row];
 			
 			
-			$print .= "<td>{$data[$row]}</td>";
+			$print .= "<td class='word-break'>{$data[$row]}</td>";
 			
-			$tr .= "<td>{$data[$row]}</td>";
+			$tr .= "<td class='word-break'>{$data[$row]}</td>";
 			
 		}
 		
@@ -148,7 +148,7 @@
 	      $paginate .= '<div class="col-12">'.$datas->links.'</div>';
 	  }
 	  
-	  $paginate .= '<div class="col-12 py-4"></div>';
+	  $paginate .= '<div class="col-12 py-2"></div>';
 	  
       $tr .= '</tbody>';
 	  

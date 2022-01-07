@@ -267,7 +267,7 @@ return $html;
 
 
 @template(fs_show)
-
+$loop = isset($loop) ? $loop : false;
 $table_name = isset($table_name) ? $table_name : 0;
 $table_id = isset($table_id) ? $table_id : 0;
 $btn_class = isset($btn_class) ? $btn_class : 'btn btn-outline-primary';
@@ -288,13 +288,13 @@ $html = "<a class='{$btn_class}' href='#' id='btn-render-anexosxxx' data-bs-togg
 <script>
 $(function(){
 	/*Anexos*/
-   function np_fm_midia_ax()
+   function np_fm_midia_ax(id=".$table_id.")
    {
      let renderAnexos = $('#render-anexosxxx');
      let urlx = '".url('attachments')."';
      $.ajax({
 	    url:urlx,
-		data:{table_name:'".$table_name."',table_id:".$table_id."},
+		data:{table_name:'".$table_name."',table_id:id},
 		beforeSend:function(){
 		   let load = '<div class=\'col-12\'><div class=\'spinner-grow text-primary\'><span class=\'visually-hidden\'>Loading...</span></div>';
 		    load += '<div class=\'spinner-grow text-success\'><span class=\'visually-hidden\'>Loading...</span></div>';
@@ -330,10 +330,25 @@ $(function(){
 		$('#btn-render-anexosxxx2').show();
 	});
 	
+	$('.btn-loop-render-files').click(function(){
+	    let id = $(this).attr('id');
+	    np_fm_midia_ax(id);
+		$('#btn-render-anexosxxx').hide();
+		$('#btn-render-anexosxxx2').show();
+	});
+	
 });
 </script>";
 
 return $html;
+
+@endtemplate
+
+@template(fs_show_btn)
+$btn_text = isset($btn_text) ? $btn_text : 'Anexos';
+$btn_class = isset($btn_class) ? $btn_class : 'btn btn-sm btn-outline-primary';
+return "<button
+ class='btn-loop-render-files {$btn_class}' id='{$id}' data-bs-toggle='offcanvas' data-bs-target='#offcanvasRightxxx' aria-controls='offcanvasRight'>{$btn_text}</button>";
 
 @endtemplate
 
