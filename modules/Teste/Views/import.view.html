@@ -1,38 +1,51 @@
-@include('@Painel/Views/template/header',['sidebar'=>$menu])
-
+@include('@FileManager/Views/header')
 
 <div class="sticky-header container mt-2 ">
   <div class="d-flex align-items-center">
       <button class="btn-back" onclick="history.go(-1);"><i class="material-icons">chevron_left</i></button>
-      <h2 class="sticky-title">Alterar imagem de perfil</h2>
+      <h2 class="sticky-title">Importar imagem</h2>
   </div>
 </div>
 
-<div class="row">
-
-<div class="col-2"> 
-   <img id="np-image-loading"  style="width:120px;height:120px" src="{{user_image()}}" alt="..." class="rounded-circle">
-</div>
-
-<form class="col-10" enctype="multipart/form-data" action="{{url('profile/avatar')}}" method="post">
+<form enctype="multipart/form-data" action="{{url()}}store-image" method="post">
   <div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
-   {{form.token()}}
+  {{form.token()}}
+  @grid('container-fluid np-scroll')
+    @grid('row m-auto p-4_5')      
+    
+      @grid('col-md-8 mb-3')
+          {{form.label(['text'=>'Descrição', 'id'=>'description'])}}
+          {{form.textarea(['name'=>'description', 'id'=>'description'])}}
+		   <p>É importante informa a descrição do arquivo, pois ela será utilizada no campo de busca caso você deseja buscar um arquivo especificamente. </p>
+      @endgrid
 
-    <div class="col-md-6 mt-1 mb-3 p-2">
-        {{form.file(['name'=>'userfile','required'=>true])}}
-    </div>
-	
-	
+      @grid('col-md-4 mb-3')
+          {{form.label(['text'=>'Qualidade da imagem', 'id'=>'image-quality'])}}
+          {{form.select(['name'=>'image-quality', 'id'=>'image-quality', 'required'=>true],
+           [
+            '1'=>'Alta', 
+            '2'=>'Média', 
+            '3'=>"Baixo", 
+            '4'=>"Miniatura"
+           ])}}
+      @endgrid
 
+      @grid('col-md-6 mt-1 mb-3')
+        {{form.file(['name'=>'userfile'])}}
+      @endgrid
+
+    @endgrid
+  @endgrid
   <div class="submit-position">
-    <button id="create-title" class="btn btn-sticky fw-bold btn-primary btn-form-submit">Alterar imagem</button>
+    <button id="create-title" class="btn btn-sticky fw-bold btn-primary btn-form-submit">Importar</button>
     <button id="create-title-loading" class="btn btn-primary btn-form-loading" style="display:none;" type="button" disabled>
     <span class="spinner-grow spinner-grow-sm" role="status" aria-hidden="true"></span>
-      Atualizando imagem...
+      Importando...
     </button>
   </div>
 </form>
-</div>
+
+@painel_footer()
 
 <style scoped>
   .submit-position{
@@ -58,25 +71,12 @@
 </style>
 
 <script>
-  function loadImageAvatar()
-  {
-     $.ajax({
-       url: '{{url("profile/avatar")}}',
-       type: 'GET',
-	   success:function(data)
-	   {
-		  $('#np-image-loading').attr('src',data);
-	   }});
-  }
-
-  loadImageAvatar();
-
   $('form').submit(function(){
     let formData = new FormData(this);
     $('#create-title').hide();
     $('#create-title-loading').show();
     $.ajax({
-      url: '{{url("profile/avatar")}}',
+      url: '{{url()}}store-image',
       type: 'POST',
       data: formData,
       cache: false,      
@@ -93,7 +93,6 @@
         return myXhr;
       }
     }).done(function(data){
-	  loadImageAvatar();
       $('#create-title').show();
       $('#create-title-loading').hide();
       json = JSON.parse(data);
@@ -109,6 +108,3 @@
   });
 </script>
 
-
- 
-@painel_footer()

@@ -1,0 +1,59 @@
+@include('@FileManager/Views/header')
+
+{!painel_title($path,[
+   'filemanager?init=uploads'=>'Publico',
+   'filemanager?init=../storage'=>'Privado'  
+])!}
+
+<div class="container np-scroll">
+   <div class="row">
+          <ul class="list-group">
+              {!$html!}
+          </ul>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="modalEditFile" tabindex="-1" aria-labelledby="modalEditFileLabel" aria-hidden="true">
+  <div class="modal-dialog modal-fullscreen">
+    <div class="modal-content modal-fullscreen-sm-down">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalEditFileLabel">Código fonte</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+@painel_footer()
+
+
+<script>
+$(function(){
+
+   let file = $(".btn-edit-file");
+   
+   file.click(function(){
+   
+      file = $(this).attr("id");
+	  
+	  $.ajax({
+	    url:"{{url('filemanager/show/code')}}",
+		data:{file:file},
+		type:"get",
+		success:function(data){
+		   $(".modal-body").text(data);
+		}
+	  });
+   
+   });
+   
+});
+</script>
+

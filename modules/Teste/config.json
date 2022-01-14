@@ -1,0 +1,12 @@
+{
+        "name": "Teste",
+        "description": "Aplicativo para teste.",
+        "version": "0.1",
+		"author": "Paulo Leonardo | Onpaulo",
+        "license": "MIT",
+        "require": ["php7"],
+        "url": "www.onpaulo.com.br",
+		"icon": "folder",
+		"color":"info",
+		"route":"fteste"		
+}
