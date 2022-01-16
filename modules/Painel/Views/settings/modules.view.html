@@ -122,6 +122,9 @@ $(function(){
 					closeOnClickOutside: false,
 					closeOnEsc: false
 					});
+				},error:function(data){
+					swal.close();
+					console.log(data);
 				},
 				success:function(data){
 				$(".np-progress").hide();

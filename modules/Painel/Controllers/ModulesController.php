@@ -207,8 +207,8 @@ class='np-text np-tag'>{$description}</span></div>
 				$call = new RouteCallback;
 				$callback = $key.'@active';
 				$namespace = 'Modules\\'.$key.'\\';
-			    $params = array();
-			    $call = $call->execute($callback,$params, $namespace);
+			    $params = array(); 
+			    $call = $call->execute($callback, $namespace);
 				 
 	            $json->set($key,'status','active');
 				hello(alert("Módulo \"{$name}\" ativado com sucesso.","success"));  
@@ -234,7 +234,7 @@ class='np-text np-tag'>{$description}</span></div>
 			 }else{
 				 
 				 $call = new RouteCallback;
-				 $call = $call->execute($callback,$params, $namespace);
+				 $call = $call->execute($callback, $namespace, $params);
 				 $json->set($key,'status','disabled');
 				 hello(alert("Módulo \"{$name}\" desativado com sucesso.","success"));
 			 }

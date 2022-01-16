@@ -15,62 +15,107 @@ class FormValidate
 	$this->data = $data;  
   }
   
-  /*Obtem o type*/
-  private function getType($val)
-  {
-	 $val = explode('|',$val);
-	 
-	 if(in_array('number',$val)) return 'number';
-	 elseif(in_array('date',$val)) return 'date';
-	 elseif(in_array('datetime',$val)) return 'datetime';
-	 else return 'string';
-	
-  }
-  
-  private function checkType($key,$type)
-  {
-	 $value = $this->data[$key];
-	 $msg = null;
-	 
-     if($type == 'number')
-	 {
-		if(!is_numeric($value)) $msg = "O campo {$key} deve ser do tipo númerico.";  
-	 } 
-     elseif($type == 'datetime')
-	 {
-		if(!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) ([0-9]){2}:([0-9]){2}:([0-9]){2}$/",$value)) $msg = "O campo {$key} deve ser do tipo data e hora.";  
-	 }	
-	 elseif($type == 'date')
-	 {
-		if(!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$value)) $msg = "O campo {$key} deve ser do tipo data.";  
-	 }	
+   public function validate($validates)
+   {
+	  foreach($validates as $name=>$vals)
+	  {
+		  $vals = explode('|',$vals); 
+		  $type = $this->getType($vals);
+          $value = isset($this->data[$name]) ? $this->data[$name] : null;
 
-     return $msg;	 
-  }
-  
-  public function validate($arr)
-  {
-	foreach($arr as $key=>$val)
-	{
-		if(array_key_exists($key,$this->data))
+		if($this->getValue('required',$vals,true))
 		{
-			$value = $this->data[$key];
-			$type = $this->getType($val);
-			$type = $this->checkType($key,$type);
-			
-			if($type)
+		  if($this->getValue('min',$vals))
+		  {
+			if(!$this->getMin($value,$vals)) $this->errors[] = 'Não atende o mínimo.';
+		  }
+
+		  if($this->getValue('max',$vals))
+		  {
+			if(!$this->getMax($value,$vals)) $this->errors[] = 'O máximo de caracteres.';
+		  }
+		} 
+	  }
+   }
+
+   public function getErrors()
+   {
+	   return $this->errors;
+   }
+
+    /*Pega o minimo*/
+    private function getMin($value,$values)
+	{
+		$min = $this->getValue('min',$values);
+		$value = strlen($value);
+
+        return ($value >= $min) ? true : false;
+	}
+
+	/*Pega o maximo*/
+    private function getMax($value,$values)
+	{
+		$max = $this->getValue('max',$values);
+		$value = strlen($value);
+
+        return ($value <= $max) ? true : false;
+	}
+
+    /*Pega o tipo*/
+    private function getType($values)
+	{
+		$types = array(
+			'string',
+			'number',
+			'email',
+			'date',
+			'datetime',
+			'time');
+
+		$r = null;
+		foreach($types as $type)
+		{
+			if($this->getValue($type,$values,$type))
 			{
-			  $this->errors[$key] = $type;
+				$r = $type;
+				break;
+			} 
+		}
+		return $r;
+	}
+
+	private function checkType($key,$type)
+	{
+		$r = null;
+		$value = isset($this->data[$key]) ? $this->data[$key] : null;
+        if($value)
+		{
+			switch($type){
+				case 'email' : 
+					$r = filter_var($value, FILTER_VALIDATE_EMAIL);
+				break;
+				case 'number' : 
+					$r = !is_numeric($value) ? true : null;
+				break;
 			}
 			
-		}else
-		{
-			$this->errors[$key] = "O campo {$key} é obrigatório!";
 		}
-	}  
-  }
-  public function getErrors()
-  {
-	  return $this->errors;
-  }
+	}
+
+  	/*Retorna o valor pelo tipo de campo especificado*/
+	private function getValue($key,$values,$def=null)
+	{  
+	   $r = null;
+       foreach($values as $value)
+	   {
+		$value = explode(':',$value);
+		$value1 = $value[0];
+		$value2 = isset($value[1]) ? $value[1] : null;
+		if($key == $value1){
+           $r = is_null($def) ? $value2 : $def;
+		   break;
+		 }
+	   } 
+	   return $r;
+	}
 }

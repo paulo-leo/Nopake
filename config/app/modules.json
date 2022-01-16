@@ -1,7 +1,7 @@
 {
     "Painel": {
         "name": "Painel de Controle",
-        "description": "Painel de Controle ou simplesmente painel, é um módio nativo do Onpaulo. Esse módulo permiti gerenciar usuários e sessões, além de poder gerenciar outros módulos de forma intuitiva e simples. ",
+        "description": "Painel de Controle ou simplesmente painel, x19x um mx22xdio nativo do Onpaulo. Esse mx22xdulo permiti gerenciar usux16xrios e sessx23xes, alx19xm de poder gerenciar outros mx22xdulos de forma intuitiva e simples. ",
         "author": "Paulo Leonardo",
         "status": "active",
         "version": "0.1",
@@ -27,6 +27,22 @@
         ],
         "url": "www.onpaulo.com.br",
         "route": "filemanager",
+        "parent": "",
+        "color": "info",
+        "icon": "folder"
+    },
+    "Teste": {
+        "name": "Teste",
+        "description": "Aplicativo para teste.",
+        "author": "Paulo Leonardo | Onpaulo",
+        "status": "disabled",
+        "version": "0.1",
+        "license": "MIT",
+        "require": [
+            "php7"
+        ],
+        "url": "www.onpaulo.com.br",
+        "route": "fteste",
         "parent": "",
         "color": "info",
         "icon": "folder"
