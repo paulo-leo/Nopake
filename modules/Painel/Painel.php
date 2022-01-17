@@ -17,7 +17,8 @@ class Painel extends Module
         $login = array(
            'get:login'=>'showLoginForm',
 		   'post:login'=>'login',
-		   'get:logout'=>'logout'
+		   'get:logout'=>'logout',
+		   'post:api/jwt/login'=>'loginJWT'
        );
 	   
 	   $register = array(

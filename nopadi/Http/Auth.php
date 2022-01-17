@@ -182,7 +182,7 @@ class Auth
 
 		return self::login($credentials);
 	}
-    /*Faz somente por meio de e-mail e senha. Método recomendado para operar com a classe JWT*/
+    /*Faz login somente por meio de e-mail e senha. Método recomendado para operar com a classe JWT*/
     public static function loginJWT($email,$password){
 		$credentials = array(
 		  'email'=>$email,
@@ -235,6 +235,7 @@ class Auth
 				$lang = $user->lang;
 				$email = $user->email;
 				$image = $user->image;
+                $credit = $user->credit;
 				$hash = $user->password;
 				$theme = $user->theme;
 				$timezone = $user->timezone;
@@ -264,6 +265,7 @@ class Auth
 						'email' => $email,
 						'image' => $image,
 						'theme'=>$theme,
+						'credit'=>$credit,
 				        'timezone'=>$timezone);
 
 					/*inicia uma sesão de usuário logado*/
@@ -385,11 +387,11 @@ class Auth
 					);
 
 					if (!UserModel::model()->have('email', $email)) {
-
-						if (UserModel::model()->insert($values)) {
+                        $insert_new_user_id = UserModel::model()->insert($values);
+						if ($insert_new_user_id) {
 							/*Usuário cadastrado com sucesso*/
 							self::$status = 'success';
-							return true;
+							return $insert_new_user_id;
 						} else {
 							/*Erro ao cadastrar usuário no banco de dados*/
 							self::$status = 'error_server_db';

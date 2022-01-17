@@ -91,9 +91,9 @@ class JWT
 			if(array_key_exists('message',$payload)) unset($payload['message']); 
 			if(array_key_exists('created_in',$payload)) unset($payload['created_in']); 
 			
-			$this->response(array_merge($message,$payload));
+			return $this->response(array_merge($message,$payload));
 			
-		}else $this->response($message);
+		}else return $this->response($message);
     }
 
     /*verifica se o token JWT é válido, se for válido, irá retonar o token sem o prefix JWT, caso contário, retonará falso*/
@@ -146,7 +146,7 @@ class JWT
     /*Imprime a resposta da requisição com código e a mensagem no formato JSON*/
     final public function response($array2 = null)
     {
-       
+	    $header_code = isset($array2['code']) ? true : false;
         //Se o código for null será igual a 406
         $this->code = is_null($this->code) ? 406 : $this->code;
 
@@ -156,7 +156,10 @@ class JWT
         if (is_array($array2)) $array = array_merge($array, $array2);
 
         header('Content-Type: application/json;charset=' . $this->charset);
-        echo json_encode($array);
+		
+		if($header_code){ header("HTTP/1.1 {$array['code']} {$array['message']}"); }
+		
+        return json_encode($array);
     }
    
     /*Authorization: 'Bearer ' + varToken
