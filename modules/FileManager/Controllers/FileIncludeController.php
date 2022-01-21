@@ -12,12 +12,39 @@ use Modules\FileManager\Models\UploadModel;
 
 class FileIncludeController extends Controller
 {  
+    
+	/*Lista as imagens que es*/
+    public function getUploads()
+	{  sleep(10);
+		$request = new Request;
+		$id = $request->get('id');
+				
+		$file = false;
+		
+		if(is_numeric($id)){
+			$file = new UploadModel;
+			$file = $file->where('id',$id)->get('o');
+		}
+		
+		if($file){
+		   $file = [
+		    'code'=>'201', 
+		    'path'=>asset($file->path),
+			'description'=>$file->description
+		   ];
+		}else{
+			$file = array('code'=>'401');
+		}
+		json($file);
+	}
+	
     public function getFiles()
     {  
 	  $files = new UploadModel;
 	  
 	  $request = new Request;
 	  $search = $request->get('search');
+	  $type = $request->get('type');
 	  
 	  $files = $files->select(['*']);
 	  
@@ -25,6 +52,16 @@ class FileIncludeController extends Controller
 	  {
 		$files = $files->where('description','like',$search);
 	  }
+	  
+	  if(true){
+		  $files = $files->where('path','like.','uploads');
+	  }
+	  
+	  if($type)
+	  {
+		$files = $files->where('type',$type);
+	  }
+	  
 	  //var_dump($files);
 	  
 	  $files = $files->orderBy('id desc')->paginate(10);
@@ -32,6 +69,9 @@ class FileIncludeController extends Controller
 	  $results = $files->results;
 	  $next = $files->next;
 	  $previous = $files->previous;
+	  
+	  
+	  if($results){
 	  
       $results = np_map($results,'path',function($path){
 		  
@@ -50,6 +90,7 @@ class FileIncludeController extends Controller
 		 }
 		  
 	  });
+	  }
 	  
 	  json(array(
 	    'results'=>$results,

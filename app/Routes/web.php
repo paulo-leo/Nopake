@@ -16,17 +16,13 @@ Route::get('/',function(){ return view('welcome'); });
 
 
 function teste(){
-   
-  $r = new Request;  
-  $v = new FormValidate($r->all());
+  
+  
+  $r = response([
+    'url'=>'https://pokeapi.co/api/v2/ability',
+    'method'=>'get','array'=>true]);
 
-  $v->validate([
-     'name'=>'number|required|min:3|max:4',
-     'namex'=>'number|required|min:3|max:4'
-   ]);
-
- var_dump($v->getErrors());
-
+  var_dump($r->results);
 }
 
 

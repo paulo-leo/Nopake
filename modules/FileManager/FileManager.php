@@ -33,22 +33,19 @@ class FileManager extends Module
 		
 		$files = array(
 			'files'=>'getFiles',
+			'files/uploads'=>'getUploads',
 			'post:attachment'=>'addAttachment',
 			'attachments'=>'getAttachments'
 		);
-		
+		if(access(['admin_file'])){ 
         Route::controllers($files,'@FileManager/Controllers/FileIncludeController');
-
-       
 	    Route::resources('filemanager/folders','@FileManager/Controllers/FolderManagerController');
-
 		Route::controllers($fileManagement,'@FileManager/Controllers/FileManagerController');
-
-
 		Route::controllers($file,'@FileManager/Controllers/FileController');
 		Route::controllers($folder,'@FileManager/Controllers/FolderController');
 
 		//Route::resources('inventory/products','@inventory/Controllers/ProductController');
+		}
 
 	  }
 

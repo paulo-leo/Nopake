@@ -197,6 +197,7 @@ function response($args){
 			
 			$headers = isset($args['header']) ? $args['header'] : array();
 			$method =  isset($args['method']) ? $args['method'] : 'POST';
+			$method = strtoupper($method);
 			
 			$json_decode =  isset($args['array']) && is_bool($args['array']) ? $args['array'] : false;
 			$ignore_errors =  isset($args['ignore_errors']) && is_bool($args['ignore_errors']) ? $args['ignore_errors'] : true;
@@ -209,7 +210,7 @@ function response($args){
 				$body = isset($args['body']) ? $args['body'] : null;
 			}
 			
-            $header_values = null;
+            $header_values = "User-Agent:MyAgent/1.0\r\n";
             foreach($headers as $key=>$val)
 			{
 				$header_values .= "{$key}: {$val}\r\n";
@@ -224,10 +225,11 @@ function response($args){
                 )
              ));
 			
-            $contents = file_get_contents($http, null, $context); 
+            $contents = file_get_contents($http, false, $context); 
 			
             if($json_decode){ $contents = json_decode($contents, true); }			
             
+			$http_response_header = isset($http_response_header) ? $http_response_header : 'xxx';
 			
             return (object) array(
 			 'status'=>response_status_code($http_response_header),

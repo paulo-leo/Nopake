@@ -1,0 +1,267 @@
+<!--Componete para importação e inserção de mídia-->
+@template(fs_image_button)
+
+$name = isset($name) ? $name : 'image';
+$value = isset($value) ? $value : null;
+$btn_text = isset($btn_text) ? $btn_text : 'Imagem de destaque';
+$btn_class = isset($btn_class) ? $btn_class : 'btn btn-primary';
+
+return "<input type='hidden' name='{$name}' value='{$value}' id='npoffcanvasRightxImagemDestacadaid'/>
+<button class='{$btn_class}' type='button' data-bs-toggle='offcanvas' data-bs-target='#npoffcanvasRightxImagemDestacada' aria-controls='offcanvasRight'>{$btn_text}</button>";
+
+@endtemplate
+
+@template(fs_image)
+
+$table_name = isset($table_name) ? $table_name : 0;
+$table_id = isset($table_id) ? $table_id : 0;
+$btn_text = isset($btn_text) ? $btn_text : 'Imagem de destaque';
+$btn_class = isset($btn_class) ? $btn_class : 'btn btn-primary';
+
+$html = "
+<div class='offcanvas offcanvas-end' tabindex='-1' id='npoffcanvasRightxImagemDestacada' aria-labelledby='offcanvasRightLabel'>
+  <div class='offcanvas-header'>
+    <h4 id='offcanvasRightLabel'><i class='material-icons' style='position:relative;top:2px'>image</i>{$btn_text}</h4>
+    <button type='button' class='btn-close text-reset' data-bs-dismiss='offcanvas' aria-label='Close'></button>
+  </div>
+  <div class='offcanvas-body'>
+   
+   
+    <ul class='nav nav-tabs' id='myTab' role='tablist'>
+	
+  <li class='nav-item' role='presentation'>
+    <button class='nav-link active' id='anexos-tab' data-bs-toggle='tab' data-bs-target='#anexos' type='button' role='tab' aria-controls='anexos' aria-selected='true'>Destaque</button>
+  </li>
+	
+  <li class='nav-item' role='presentation'>
+    <button class='nav-link' id='home-tab' data-bs-toggle='tab' data-bs-target='#home' type='button' role='tab' aria-controls='home' aria-selected='false'>Imagens</button>
+  </li>
+  <li class='nav-item' role='presentation'>
+    <button class='nav-link' id='contact-tab' data-bs-toggle='tab' data-bs-target='#contact' type='button' role='tab' aria-controls='contact' aria-selected='false'>Importar</button>
+  </li>
+    
+</ul>
+<div class='tab-content' id='myTabContent'>
+  <!--Anexos-->
+  <div class='tab-pane fade show active' id='anexos' role='tabpanel' aria-labelledby='anexos-tab'> 
+     <div class='container py-2' align='center'>
+        <div id='render-anexos' class='row g-1'></div>
+     </div> 
+  </div>
+
+
+  <div class='tab-pane fade' id='home' role='tabpanel' aria-labelledby='home-tab'> 
+<div class=' py-2' align='center'>
+    <div class='row p-2'>
+      <input class='form-control col-8' id='np_fm_input_search' type='search' placeholder='Pesquisar'>
+    </div>
+
+    <div id='render-filesxxxx' class='row g-1'></div>
+ </div> 
+  </div>
+
+  <div class='tab-pane fade' id='contact' role='tabpanel' aria-labelledby='contact-tab'>
+  
+  <div class='row justify-content-center align-items-center g-2'>
+  
+    <form class='py-4' id='np_fm_midia_form'>	
+	<input type='hidden' name='_token' value='".csrf_token()."'>
+	<div class='mb-3'>
+      <input type='text' name='description' class='form-control' placeholder='Descrição do arquivo'>
+    </div>
+	
+	<div class='mb-3'>
+      <input class='form-control' name='userfile' required type='file'>
+    </div>
+	<div class='d-grid gap-2'>
+    <button type='submit' class='btn btn-outline-primary np_fm_midia_btn_submit'>Importar arquivo</button>
+	<button class='btn btn-outline-primary np_fm_midia_btn_loading' style='display:none' type='button' disabled>
+      <span class='spinner-border spinner-border-sm' role='status' aria-hidden='true'></span>
+      <span>Importando arquivo...</span>
+    </button>
+	   <div class='py-2 np_fm_midia_form_message'></div>
+	</div>
+	</form>
+  </div>
+  
+  
+  </div>
+</div>
+   
+   
+  </div> 
+</div>
+<script>
+$(function(){
+     let image = $('#npoffcanvasRightxImagemDestacadaid');
+     let render = $('#render-filesxxxx');
+	 
+	
+	$('#np_fm_input_search').keypress(function(event) {
+    if(event.key === 'Enter')
+	  {
+        let value = $(this).val();      
+	    np_fm_midia_load(null,{search:value,type:'img'});
+      }
+    });
+	
+   function np_fm_midia_load(url=null,search=null)
+   {
+     let urlx = url == null ? '".url('files')."' : url;
+     $.ajax({
+	    url:urlx,
+		data:search,
+		beforeSend:function(){
+		   let load = '<div class=\'col-12\'><div class=\'spinner-grow text-primary\'><span class=\'visually-hidden\'>Loading...</span></div>';
+		    load += '<div class=\'spinner-grow text-success\'><span class=\'visually-hidden\'>Loading...</span></div>';
+		   load += '<div class=\'spinner-grow text-warning\'><span class=\'visually-hidden\'>Loading...</span></div></div>';
+		  render.html(load);
+		
+		},
+		success:function(response)
+		{
+		  let files = '';
+		  
+		  if(response.results.length == 0)
+		  {
+		     files += '<p class=\'alert alert-danger\'>Nenhuma imagem encontrada.</p>';
+		  }else{
+		  
+		  $.each(response.results,function(i,v)
+		  {
+			  files += '<div class=\'col-lg-6 np-fm-file-div-'+v.id+'\'>';
+			  files += '<div class=\'card\'>';
+              files += '<img  src=\"'+v.path+'\" class=\'card-img-top\' alt=\'...\'>';
+              files += '<div class=\'card-body\'>';
+              files += '<p class=\'card-text\'>'+v.description+'</p>';
+			  
+			  if(v.id != image.val()){
+			  
+              files += '<button id=\''+v.id+'\' class=\'btn btn-sm np-fm-clik-anexar btn-outline-primary\'>Definir destaque</button>';
+			  
+			  }
+			  
+			  files += '</div></div></div>';
+			 
+          });
+		  }
+		  
+		  
+		  files += '<div class=\'col-12 py-2\'><div class=\'btn-group\'>';
+		  if(response.previous != null)
+             files += '<a href=\''+response.previous+'\' class=\'btn np-fm-clik-previous btn-outline-primary\'>&laquo;</a>';
+			 
+		  //files += '<a class=\'btn np-fm-clik-update btn-outline-primary\'>UP</a>';
+		  
+		  if(response.next != null)
+               files += '<a href=\''+response.next+'\' class=\'btn np-fm-clik-next btn-outline-primary\'>&raquo;</a>';
+			   
+		  files += '</div></div>';
+		  
+		  render.html(files);
+		}
+	 });
+    }
+
+	/*Anexos*/
+   function np_fm_midia_anexos()
+   {
+      let renderAnexos = $('#render-anexos');
+	  let imageId = image.val();
+	  
+	 $.ajax({
+	     url:'".asset('files/uploads')."',
+		 method:'GET',
+		 dataType:'json',
+		 data:{id:imageId},
+		 beforeSend:function(){
+		   let load = '<div class=\'col-12\'><div class=\'spinner-grow text-primary\'><span class=\'visually-hidden\'>Loading...</span></div> ';
+		    load += '<div class=\'spinner-grow text-success\'><span class=\'visually-hidden\'>Loading...</span></div> ';
+		   load += '<div class=\'spinner-grow text-warning\'><span class=\'visually-hidden\'>Loading...</span></div></div>';
+		  renderAnexos.html(load);
+		
+		},
+		 success:function(response){
+
+		      if(response.code == 201){
+		        renderAnexos.html('<img src=\"'+response.path+'\"><hr><p>'+response.description+'</p>');
+			  }else{
+			   renderAnexos.html('<p class=\"alert alert-info\">Nenhuma imagem de destaque foi definida para este registro.</p>');
+			  }
+		  }
+	    });
+    }
+	
+	np_fm_midia_anexos();
+	np_fm_midia_load();
+	
+	render.on('click','.np-fm-clik-anexar',function(){
+	   
+	   let id = $(this).attr('id');
+	   
+	   let confir_anex = confirm('Tem certeza que deseja definir essa imagem como destaque?');
+	   
+	   if(confir_anex){
+	     
+		 image.val(id);
+		 np_fm_midia_anexos();
+	   }
+	   return false;
+	});
+    
+    render.on('click','.np-fm-clik-previous',function(){
+	 np_fm_midia_load($(this).attr('href'));
+     return false; 
+   });
+   render.on('click','.np-fm-clik-next',function(){
+	 np_fm_midia_load($(this).attr('href'));
+     return false;
+   });
+   
+   render.on('click','.np-fm-clik-update',function(){
+	 np_fm_midia_load();
+     return false;
+   });
+   
+    $('#np_fm_midia_form').submit(function(){
+	 
+	$('.np_fm_midia_btn_submit').hide();
+	$('.np_fm_midia_btn_loading').show();
+	
+    let formData = new FormData(this);
+    $.ajax({
+      url: '".url('store-file')."',
+      type: 'POST',
+      data: formData,
+      cache: false,      
+      processData: false,
+      contentType: false,
+      xhr: function() { // Custom XMLHttpRequest
+        let myXhr = $.ajaxSettings.xhr();
+        if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+          myXhr.upload.addEventListener('progress', function() {
+            /* faz alguma coisa durante o progresso do upload */            
+          }, false);
+        }
+
+        return myXhr;
+      }
+    }).done(function(data){
+      json = JSON.parse(data);
+	   $('.np_fm_midia_btn_loading').hide();
+	   $('.np_fm_midia_btn_submit').show();
+	  let className = json.type == 'success' ? 'alert-success' : 'alert-danger';
+	  $('.np_fm_midia_form_message').html('<div class=\'alert '+className+'\' role=\'alert\'>'+json.msg+'</div>');
+      np_fm_midia_load();
+    });
+
+    return false;
+  });
+});
+</script>
+";
+
+return $html;
+
+@endtemplate
+

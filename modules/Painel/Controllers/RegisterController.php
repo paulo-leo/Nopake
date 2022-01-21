@@ -139,6 +139,7 @@ class RegisterController extends Controller
    
    public function code()
    {
+	 sleep(3);
 	 $request = new Request;
 	 $email = $request->getEmail('email');
 	 
