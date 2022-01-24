@@ -18,7 +18,9 @@ class FileController extends Controller
 	public function storeFile()
 	{
 		$request = new Request;
+		
 		$public = $request->getBit('public');
+		
 		$name_random = $request->getBool('name_random');
 		$file_write = $request->getBool('file_write');
 		$file_version = $request->getBool('file_version');
