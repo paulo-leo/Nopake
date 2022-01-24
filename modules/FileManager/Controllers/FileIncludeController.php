@@ -15,7 +15,7 @@ class FileIncludeController extends Controller
     
 	/*Lista as imagens que es*/
     public function getUploads()
-	{  sleep(10);
+	{  
 		$request = new Request;
 		$id = $request->get('id');
 				
