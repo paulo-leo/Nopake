@@ -94,6 +94,12 @@ class Controller
         $this->objectWriteNot("up");
     }
 	
+	/* Recurso para deletar pelo id */
+    public function del()
+    {
+        $this->objectWriteNot("del");
+    }
+	
 	/* Recurso para pagar pelo id */
 
     public function down()

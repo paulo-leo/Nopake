@@ -199,7 +199,6 @@ class Route extends RouteCollection
 		
 	   }
 		
-		
 		/*Rota especifica para editar um recurso*/
         self::get($route.'/{id}/edit', $callback.'@edit', $args);
 	
@@ -209,14 +208,14 @@ class Route extends RouteCollection
         self::post($route, $callback.'@store', $args);
 		
 		/*Rota para atualiza um recurso*/
-        self::put($route, $callback.'@update', $args);
+         self::put($route, $callback.'@update', $args);
 		/*Rota para atualiza um recurso pelo id*/
-        //self::put($route.'/{id}', $callback.'@up', $args);
+        self::put($route.'/{id}', $callback.'@up', $args);
 		
 		/*Rota para apaga um recurso*/
         self::delete($route, $callback.'@destroy', $args);
 		/*Rota para apaga um recurso pelo id*/
-		//self::delete($route.'/{id}', $callback.'@down', $args);
+		self::delete($route.'/{id}', $callback.'@del', $args);
     }
 	
     /*Redireciona o usuário*/

@@ -143,9 +143,23 @@ class JWT
 
     }
 
+    /*Modifica código do método response*/
+	final public function setCode($code)
+	{
+		$this->code = $code;
+	}
+	
+	/*Modifica mensagem do método response*/
+	final public function setMessage($message)
+	{
+		$this->message = $message;
+	}
+
     /*Imprime a resposta da requisição com código e a mensagem no formato JSON*/
     final public function response($array2 = null)
     {
+		$array2 = is_object($array2) ? (array) $array2 : $array2;
+		
 	    $header_code = isset($array2['code']) ? true : false;
         //Se o código for null será igual a 406
         $this->code = is_null($this->code) ? 406 : $this->code;
