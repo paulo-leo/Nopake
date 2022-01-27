@@ -15,7 +15,6 @@ foreach($modules as $module)
 ?>
 @include('@Painel/Views/template/header',['sidebar'=>$menu])
 
-@import('@FileManager/Views/image') 
 
 <style>
   @-webkit-keyframes swing
@@ -140,9 +139,6 @@ $colors = array(
    @endphp
       </div>
     </div>
-
-@component('fs_image') 
-@component('fs_image_button') 
 
 
 @include('@Painel/Views/footer')

@@ -426,7 +426,7 @@ class DB extends Connection
 		if (is_null($where) && !is_null($whereOr)) {
 			$whereOr = (is_null($where)) ? ' WHERE ' . $whereOr : null;
 		} elseif (!is_null($where) && !is_null($whereOr)) {
-			$whereOr = ' AND ' . $whereOr;
+			$whereOr = ' ' . $whereOr;
 		}
 		
 		

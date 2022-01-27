@@ -19,6 +19,12 @@ class Model extends DB
 	{
 		$this->data[$key] = $value;
 	}
+	
+	/*Retorna o nome da tabela que está sendo usada no modelo*/
+	final public function getTable($a=null)
+	{
+		return !is_null($a) ? "{$this->table} {$a}" : $this->table;
+	}
 
 	/*salva ou atualiza no banco de dados um registro*/
 	/*OBS: a atualização acontece quando é informado um id no parametro ou no objeto da classe*/

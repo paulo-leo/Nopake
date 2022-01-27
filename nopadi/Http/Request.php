@@ -20,6 +20,16 @@ class Request
 	  $this->values = array();
 	  $this->files = array();
 	  $this->check = 1;
+	  
+	  /*Salva todos os headers dentro de um array associativo*/
+	  $this->allHeaders = $this->setAllHeaders();
+	  
+	  if($this->getHeader('Content-type') == 'application/json')
+	  {
+		   $_REQUEST_NOPADI = json_decode(file_get_contents('php://input'), true);
+		   $this->all = isset($_REQUEST_NOPADI) ? $_REQUEST_NOPADI : array();
+	  }else{
+	  
       switch ($_SERVER['REQUEST_METHOD']) 
 	  {
            case 'GET':
@@ -34,12 +44,9 @@ class Request
 				parse_str($_REQUEST_NOPADI, $_REQUEST_NOPADI);
 				$this->all = isset($_REQUEST_NOPADI) ? $_REQUEST_NOPADI : array();
 				break;
-		}
-		
-		/*Salva todos os headers dentro de um array associativo*/
-		$this->allHeaders = $this->setAllHeaders();	
+		}	
+	 }
 	}
-	
 	private function setAllHeaders()
 	{
 		$arr = array();
@@ -60,7 +67,7 @@ class Request
     }
 	
 	/*Salva os erros em um array de sessão*/
-	private function setError($name,$message)
+	public function setError($name,$message)
 	{
 	  $this->check *= 0; 
 
