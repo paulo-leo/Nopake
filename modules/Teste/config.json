@@ -1,12 +1,12 @@
 {
-        "name": "Teste",
-        "description": "Aplicativo para teste.",
+        "name": "Módulo de teste",
+        "description": "Este módulo serve como base na construção de um novo módulo ou para aplicar determinados testes.",
         "version": "0.1",
-		"author": "Paulo Leonardo | Onpaulo",
+		"author": "Paulo Leonardo",
         "license": "MIT",
         "require": ["php7"],
         "url": "www.onpaulo.com.br",
-		"icon": "folder",
+		"icon": "settings",
 		"color":"info",
-		"route":"fteste"		
+		"route":"np/teste"		
 }

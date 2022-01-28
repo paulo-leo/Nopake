@@ -201,17 +201,14 @@ class Route extends RouteCollection
 		
 		/*Rota especifica para editar um recurso*/
         self::get($route.'/{id}/edit', $callback.'@edit', $args);
-	
 	    /*Rota especifica para envio de arquivos*/
         self::post($route.'/upload', $callback.'@upload', $args);
 		/*Rota especifico para criar um recurso*/
         self::post($route, $callback.'@store', $args);
-		
 		/*Rota para atualiza um recurso*/
          self::put($route, $callback.'@update', $args);
 		/*Rota para atualiza um recurso pelo id*/
         self::put($route.'/{id}', $callback.'@up', $args);
-		
 		/*Rota para apaga um recurso*/
         self::delete($route, $callback.'@destroy', $args);
 		/*Rota para apaga um recurso pelo id*/

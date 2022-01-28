@@ -8,6 +8,7 @@ use Nopadi\Http\Param;
 use Nopadi\Http\Request;
 use Nopadi\MVC\Controller;
 use Nopadi\Http\RouteCallback;
+use ZipArchive;
 
 
 class ModulesController extends Controller
@@ -28,6 +29,36 @@ class ModulesController extends Controller
 	  }
 	  
 	  return view('@Painel/Views/settings/modules',['list'=>$list,'page_title_type'=>$title]);
+   }
+   
+   public function import()
+   {
+	  
+	  return view('@Painel/Views/settings/import-module');
+   }
+   
+   public function importModule()
+   {  
+	   $request = new Request;
+	   $file = $request->getFile('userfile','name');
+	   
+	      if($file){
+		   $arquivo = $request->getFile('userfile','tmp_name');
+           $destino = '../modules';
+		   
+    
+           $zip = new ZipArchive;
+           $zip->open($arquivo);
+           if($zip->extractTo($destino) == TRUE)
+           {
+             return "<p class='alert alert-primary' role='alert'>Módulo importado e descompactado com sucesso.</p>";
+           }
+          else
+          {
+            return "<p class='alert alert-danger' role='alert'>O Arquivo não pode ser descompactado.</p>";
+          }
+          $zip->close();
+	      }
    }
    
    public function apps()

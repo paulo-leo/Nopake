@@ -54,6 +54,8 @@ class Painel extends Module
 	   
 	   $modules = array(
 		   'get:dashboard/settings/modules'=>'index',
+		   'get:dashboard/settings/modules/import'=>'import',
+		   'post:dashboard/settings/modules/import'=>'importModule',
 		   'get:dashboard/settings/modules/apps'=>'apps',
 		   'post:dashboard/settings/modules'=>'update',
 		   'post:dashboard/settings/modules/update'=>'updateJson'
