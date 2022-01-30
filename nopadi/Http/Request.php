@@ -11,11 +11,14 @@ class Request
 	private $check;
 	private $files;
 	private $erros;
+	private $erros_person;
 	private $values;
 	private $allHeaders;
+	private $request;
 
 	public function __construct()
 	{
+	  $this->erros_person = array();
 	  $this->erros = array();
 	  $this->values = array();
 	  $this->files = array();
@@ -33,10 +36,10 @@ class Request
       switch ($_SERVER['REQUEST_METHOD']) 
 	  {
            case 'GET':
-				$this->all = isset($_GET) ? $_GET : array();
+				$this->all = $_GET;
 				break;
 			case 'POST':
-				$this->all = isset($_POST) ? $_POST : array();
+				$this->all = $_POST;
 				$this->files = isset($_FILES) ? $_FILES : array();
 				break;
 			default:
@@ -45,8 +48,31 @@ class Request
 				$this->all = isset($_REQUEST_NOPADI) ? $_REQUEST_NOPADI : array();
 				break;
 		}	
-	 }
+	  }
 	}
+
+   /*Retorna um array com a listagem de todos os valores passados via checkbox*/
+    public function getList($name,$min=0)
+	{ 
+       $request = $this->all();
+	   $list = array();
+
+	   if(array_key_exists($name,$request))
+	   {
+		$request = $request[$name];
+        $list = !is_array($request) ? array($request) : $request;
+	   }
+
+	   $count = (count($list) >= $min) ? true : false;
+	  
+	   if(!$count)
+	   {
+		  $message = 'Não atende a seleção mínima.';
+          $this->setError($name,$message);
+	   }
+	   return $list;
+	}
+
 	private function setAllHeaders()
 	{
 		$arr = array();
@@ -100,17 +126,44 @@ class Request
 	  }}
 	  return $message;
 	}
-	
-	/*Retorna um array com todas as mensagens de erro*/
+
+	/*Define as mensagens de erros peronalizadas*/
+	public function setMessages($messages)
+	{
+		$this->erros_person = $messages;
+	}
+
+	/*Retorna todas as mensagens de erros*/
+	public function getMessages()
+	{
+		return $this->errors();
+	}
+    
+	/*Checa se todas as validações estão certas*/
+	public function checkMessages()
+	{
+		return $this->checkError();
+	}
+
+	/*Retorna um array com todas as mensagens de errors de validação*/
 	public function errors()
 	{
 	  $message = array();
-	  if(count($this->erros) >= 1){
-	  foreach($this->erros as $name=>$value)
+	  if(count($this->erros) >= 1)
 	  {
-		 $name = ucfirst($name);
-		 $message[] = $name.' '.$value;
-	  }}
+	    foreach($this->erros as $name=>$value)
+	    {
+           if(array_key_exists($name,$this->erros_person))
+		   {
+			$message[] = $this->erros_person[$name];
+		   }
+		   else
+		   {
+			$name = ucfirst($name);
+			$message[] = $name.' '.$value;
+		   }
+	     }
+	  }
 	  return $message;
 	}
 	
@@ -262,11 +315,37 @@ class Request
 		return $x;
 	}
 	
+	public function getPattern($x,$pattern,$dafault = null)
+	{
+         $value = $this->get($x,$dafault);
+
+		 if(preg_match("/^{$pattern}$/",$value)){
+			 $this->setValue($x,$value);
+			 return $value;
+		 }else{
+			 $msg = ' não atende ao padrão esperado.';
+			 $this->setError($x,$msg);	
+		 }  
+	}
+
 	private function setValue($name,$value=null)
 	{
 		$this->values[$name] = $value;
 	}
 	
+	public function delValues($keys)
+	{
+		$total = 0;
+		foreach($keys as $key)
+		{
+          if(array_key_exists($key,$this->values))
+		  {
+			$total++;
+			unset($this->values[$key]);
+		  }
+		}
+		return $total;
+	}
 	
 	public function getValues()
 	{
