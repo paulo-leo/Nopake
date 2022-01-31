@@ -134,9 +134,21 @@ class Request
 	}
 
 	/*Retorna todas as mensagens de erros*/
-	public function getMessages()
+	public function getMessages($string=false,$br='<br>')
 	{
-		return $this->errors();
+		if($string){
+			$x = null;
+			foreach($this->errors() as $m)
+			{
+			   $x .= $br.$m;	
+			}
+			return $x;
+		}else{
+			
+			return $this->errors();
+			
+		}
+		
 	}
     
 	/*Checa se todas as validações estão certas*/
