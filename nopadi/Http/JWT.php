@@ -156,7 +156,7 @@ class JWT
 	}
 
     /*Imprime a resposta da requisição com código e a mensagem no formato JSON*/
-    final public function response($array2 = null)
+    final public function response($array2 = null,$use_code=false)
     {
 		$array2 = is_object($array2) ? (array) $array2 : $array2;
 		
@@ -172,6 +172,10 @@ class JWT
         header('Content-Type: application/json;charset=' . $this->charset);
 		
 		if($header_code){ header("HTTP/1.1 {$array['code']} {$array['message']}"); }
+		
+		if($use_code){
+			header("HTTP/1.1 {$this->code} {$this->message}");
+		}
 		
         return json_encode($array);
     }

@@ -538,7 +538,6 @@ class Auth
 	/*Altera a imagem de perfil usuário de forma manual*/
 	public static function imageUpdate($image, $id)
 	{
-
 		$id = filter_var($id, FILTER_SANITIZE_STRING);
 		$image = filter_var($image, FILTER_SANITIZE_STRING);
 		$image = UserModel::model()->update(['image' => $image], $id);

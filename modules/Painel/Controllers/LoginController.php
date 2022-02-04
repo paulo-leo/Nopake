@@ -33,12 +33,6 @@ class LoginController extends Controller
      if(Auth::destroy())
 	 return view("@Painel/Views/login",['logout'=>true]); 
    }
-   
-   public function teste(){
-	   
-	   return view("@Painel/Views/users/form");	   
-	   
-    }
 } 
 
 

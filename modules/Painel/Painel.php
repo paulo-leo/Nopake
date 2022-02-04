@@ -20,6 +20,11 @@ class Painel extends Module
 		   'get:logout'=>'logout'
        );
 	   
+	   $login_jwt = array(
+	     'post:api/jwt/register'=>'Register',
+	     'post:api/jwt/login'=>'Login'
+	   );
+	   
 	   $register = array(
 	      'get:register'=>'registerNow',
 		  'get:register/{token}'=>'registerNowCheck',
@@ -112,6 +117,8 @@ class Painel extends Module
 	   Route::controllers($password,'@Painel/Controllers/ForgotPasswordController');
 	   
 	   Route::controllers($login,'@Painel/Controllers/LoginController');
+	   Route::controllers($login_jwt,'@Painel/Controllers/LoginJWTController');
+	   
 	   Route::controllers($profile,'@Painel/Controllers/ProfileController');
 	   
 	   Route::resources('dashboard/settings','@Painel/Controllers/SettingController');
