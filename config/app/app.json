@@ -16,5 +16,6 @@
     "strong_password": "off",
     "member_privacy": "public",
     "new_member_default": "edit",
-    "key_api": "30cd2115144f63db5b6f96ed0eeed04d"
+    "key_api": "30cd2115144f63db5b6f96ed0eeed04d",
+	"active_api": "off"
 }

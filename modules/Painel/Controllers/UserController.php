@@ -132,11 +132,10 @@ class UserController extends Controller
 	       'find'=>$find]);
 	   
 	  }else return view('@Painel/Views/404');
-		
 	}
    
     public function show()
-   { 
+    { 
 	  if(Auth::check(['admin'])){
 	  //Busca pelo usuário por meio do ID
 	  $find = UserModel::model()->find($this->id());
@@ -236,8 +235,6 @@ class UserController extends Controller
 	   }else{
 		    hello(alert('Senhas não conferem ou não atendem a quantidade mínima de carcteres(6).','danger'));
 	   }
-	  
-	   
    }
    
    /*Apagar um usuário*/
@@ -262,10 +259,7 @@ class UserController extends Controller
 		];
 		
 		return  is_null($name) ? $langs : $langs[$name];
-
 	}
-   
-   
    
    /*busca uma filial*/
    public function search()

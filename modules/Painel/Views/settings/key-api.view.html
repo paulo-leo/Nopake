@@ -8,7 +8,7 @@
 			@grid('col-md-6 col-sm-12')
 				<h6>Segurança da chave</h6>
 				<p>As chaves API geralmente não são consideradas seguras. Normalmente, elas são acessíveis aos clientes, facilitando o roubo de uma delas. Se a chave for roubada, ela não tem expiração, assim pode ser usada indefinidamente, a menos que o dono do projeto a revogue ou gere a chave novamente. Ainda que as restrições que você pode definir em uma chave de API atenuem isso, há abordagens melhores para a autorização.</p>
-				{{form.label(['text'=>'Chave da aplicação', 'id'=>'inputEmailpass'])}}
+				{{form.label(['text'=>'Chave da aplicação (app-key)', 'id'=>'inputEmailpass'])}}
 				{{form.text(['name'=>'key', 'value'=>NP_KEY_API])}}
 			@endgrid
 			

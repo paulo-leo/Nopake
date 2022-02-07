@@ -20,7 +20,7 @@ class LoginJWTController extends Controller
    {
 	   $request = new Request;
 	   $jwt = new JWT;
-	   if($request->getHeader('app-key') == NP_KEY_API){
+	   if($request->getHeader('app-key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
 		   
 		   $name = $request->getString('name','5:100');
 		   $email = $request->getEmail('email');
@@ -69,7 +69,7 @@ class LoginJWTController extends Controller
 	 $request = new Request;
 	 $jwt = new JWT;
 	 
-	 if($request->getHeader('app-key') == NP_KEY_API){
+	 if($request->getHeader('app-key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
 	 
 	 $login = $request->getEmail('login');
 	 $password = $request->getString('password','4:100');
@@ -85,7 +85,7 @@ class LoginJWTController extends Controller
 		 
 		if($login){
 			
-			return $jwt->login($login,true);
+			return $jwt->login($login);
 			
 		}else{
 			$jwt->setCode(401);

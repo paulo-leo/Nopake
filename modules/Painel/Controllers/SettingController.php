@@ -71,6 +71,7 @@ class SettingController extends Controller
 		$new_member_default = $request->get('new_member_default');
 		$new_members = $request->get('new_members','off');
 		$accept_terms = $request->get('accept_terms','off');
+		$active_api = $request->get('active_api','off');
 
 		
 		$check = null;
@@ -106,6 +107,7 @@ class SettingController extends Controller
 			 $json->set('new_members',$new_members);
 			 $json->set('accept_terms',$accept_terms);
 			 $json->set('strong_password',$strong_password);
+			 $json->set('active_api',$active_api);
 			 
 			 
 			 if($json->save()){

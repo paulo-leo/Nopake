@@ -27,6 +27,7 @@ define('NP_NEW_MEMBER_DEFAULT',$app->get('new_member_default'));
 define('NP_CHARSET',$app->get('charset'));
 define('NP_KEY_API',$app->get('key_api'));
 define('NP_MAX_EXECUTION',$app->get('max_execution'));
+define('NP_ACTIVE_API',$app->get('active_api'));
 
 define('NP_DATETIME',date('Y-m-d H:i:s'));
 define('NP_DATE',date('Y-m-d'));
