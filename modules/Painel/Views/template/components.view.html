@@ -536,3 +536,40 @@ return $select;
 	  
 	  return $form;
 @endtemplate
+
+@template(p_accordion)
+
+ return "<div class='accordion' id='p_accordion-xxx'>";
+
+@endtemplate
+
+
+@template(p_accordion_item)
+  $show = isset($show) && is_bool($show) ? 'show' : null;
+  $id = 'xxxxxx-'.str_url($title);
+
+  
+  return "<div class='accordion-item'>
+    <h2 class='accordion-header' id='headingTwo'>
+      <button class='accordion-button collapsed' type='button' data-bs-toggle='collapse' data-bs-target='#{$id}' aria-expanded='false' aria-controls='{$id}'>
+        <b>{$title}</b>
+      </button>
+    </h2>
+    <div id='{$id}' class='accordion-collapse collapse {$show}' aria-labelledby='headingTwo' data-bs-parent='#accordionExample'>
+      <div class='accordion-body'>";
+
+@endtemplate
+
+
+@template(p_accordion_item_end)
+
+  return "</div></div></div>";
+
+@endtemplate
+
+@template(p_accordion_end)
+
+  return "</div>";
+
+@endtemplate
+

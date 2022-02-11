@@ -20,7 +20,7 @@ class LoginJWTController extends Controller
    {
 	   $request = new Request;
 	   $jwt = new JWT;
-	   if($request->getHeader('app-key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
+	   if($request->get('app_key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
 		   
 		   $name = $request->getString('name','5:100');
 		   $email = $request->getEmail('email');
@@ -29,7 +29,6 @@ class LoginJWTController extends Controller
 		   $theme = $request->get('theme','black');
 		   $accept_terms = $request->getOn('accept_terms');
 		   $email_marketing = $request->getOn('email_marketing');
-		   
        
 		   $data = array(
 		    'name'=>$name,
@@ -69,7 +68,7 @@ class LoginJWTController extends Controller
 	 $request = new Request;
 	 $jwt = new JWT;
 	 
-	 if($request->getHeader('app-key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
+	 if($request->get('app_key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
 	 
 	 $login = $request->getEmail('login');
 	 $password = $request->getString('password','4:100');
@@ -84,6 +83,8 @@ class LoginJWTController extends Controller
 		$login = Auth::loginJWT($login,$password);
 		 
 		if($login){
+			
+			$login['image'] = url($login['image']);
 			
 			return $jwt->login($login);
 			

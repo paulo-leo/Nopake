@@ -20,9 +20,6 @@ class FileManager extends Module
 			'filemanager/import-image'=>'importImage',
             'filemanager/import-file'=>'importFile'			
        	);	
-
-        		
-	 
 		$folder = array(
 			'post:open-folder'=>'openFolder'
 		);

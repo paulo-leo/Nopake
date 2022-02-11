@@ -184,9 +184,13 @@ class JWT
 	Pega o header com o name "authorization" caso o argumento passado seja "null"*/
     final public function auth($token=null)
     {
-
+        $request = new Request;
+        if(is_null($token))
+		{
+           $token = $request->has('_authorization') ? $request->get('_authorization') : null;
+		}
+        
         if(is_null($token)){
-			$request = new Request;
 	        $token = $request->getHeader('Authorization');
 		}
 

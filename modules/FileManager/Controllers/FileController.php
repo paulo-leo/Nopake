@@ -65,10 +65,6 @@ class FileController extends Controller
 		 }else{
 			 return alert($uploads->getErrorMessage(),'error');
 		 }
-		 
-       
-		
-
 	}
 	
 	public function storeImage()
@@ -76,9 +72,6 @@ class FileController extends Controller
         $request = new Request();
         $quality_opt = $request->getInt('image-quality');
         $description = $request->get('description');
-
-        //Variavel que armazena a path da pasta raiz
-        $root = 'uploads/';
         
         switch($quality_opt)
         {
@@ -98,43 +91,25 @@ class FileController extends Controller
                 $resolution_x = 640;
                 $resolution_y = 360; 
             break;
+			
+			default :
+                $resolution_x = 640;
+                $resolution_y = 360;
         }        
 
-        //Pego o nome de todas as pastas e arquivos da root e aramazeno em um array
-        $folders = @scandir($root);
-        
-        /*  
-            Verifico se uma destas pastas possui o nome do ano atual
-            se não tiver eu crio ela e dentro dela uma
-            outra com o mês atual.                  
-         */
-        if(@in_array(date('Y'), $folders))
-        {
-            @mkdir($root.'year-'.date('Y'));
-            @mkdir($root.'year-'.date('Y').'/'.date('m').'/');            
-        }
-        /*
-            Se já existir umas pasta com o nome deste ano eu verifico 
-            se dentro dela possui uma pasta que possui o nome do mês atual
-            se não tiver eu crio uma.
-        */
-        else
-        {            
-            $folders = @scandir($root.date('Y').'/');
-            
-            if(@in_array(date('m'), $folders))
-            {
-                @mkdir($root.date('Y').'/'.date('m').'/');                        
-            }
-        }                
-        
-        $folder = $root.date('Y').'/'.date('m').'/';
+
+		 $public = 'uploads/'.date('Y/m');
+		 $public = str_ireplace('//','/',$public);
+		 if(!file_exists($public))
+		 {
+			  mkdir($public, 0777,true);
+		 }
 
         $upload_image = new UploadImage(array(
             'height'=>$resolution_x,
             'width'=>$resolution_y,
             'name'=>'userfile',
-            'folder'=>$folder
+            'folder'=>$public
         ));
 
         if($request->checkError()){ 

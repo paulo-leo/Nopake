@@ -49,24 +49,19 @@
 	
    
 
-      <div class="col-3">
+      <div class="col-4">
 	  <label>#situation#</label>
 	    {{form.select(['name'=>'status','value'=>$find->status],$statusOptions)}}
      </div>
   
-      <div class="col-3">
+      <div class="col-4">
 	  <label>#lang#</label>
 	    {{form.select(['name'=>'lang','value'=>$find->lang],$langOptions)}}
      </div>
 	   
-	  <div class="col-3">
+	  <div class="col-4">
 	  <label>#role#</label>
 	    {{form.select(['name'=>'role','value'=>$find->role],$roleOptions)}}
-     </div>
-	   
-	 <div class="col-3">
-	  <label>#sector#</label>
-	    {{form.select(['name'=>'sector','value'=>$find->sector],$sectorOptions)}}
      </div>
 @endgrid
 @endgrid

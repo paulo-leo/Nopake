@@ -3,12 +3,10 @@
 @component('p_header_form',[
    'title'=>'Atualizar perfil',
    'url'=>'profile/update'
-])
+]) 
 
-
-
-@component('p_csrf')
-@component('p_hidden',['id'=>$find->id])
+@component('p_csrf') 
+@component('p_hidden',['id'=>$find->id]) 
 
         <div class="row  px-4">
             <div class="breadcrumbs-inline pt-3 pb-1" id="breadcrumbs-wrapper">

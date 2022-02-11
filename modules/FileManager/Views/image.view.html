@@ -69,6 +69,16 @@ $html = "
 	<div class='mb-3'>
       <input type='text' name='description' class='form-control' placeholder='Descrição do arquivo'>
     </div>
+	
+	<div class='mb-3'>
+      <select name='image-quality' class='form-control'>
+	     <option value='4'>Mínima - 640 X 360</option>
+		 <option value='3'>Pequena - 960 X 540</option>
+		  <option value='2'>Média - 1280 X 720</option>
+		   <option value='1'>Grande - 1920 X 1080</option>
+	  </select>
+    </div>
+	
 	<input type='hidden' name='public' value='1' />
 	<input type='hidden' name='name_random' value='1' />
 	<div class='mb-3'>
@@ -231,7 +241,7 @@ $(function(){
 	
     let formData = new FormData(this);
     $.ajax({
-      url: '".url('store-file')."',
+      url: '".url('store-image')."',
       type: 'POST',
       data: formData,
       cache: false,      

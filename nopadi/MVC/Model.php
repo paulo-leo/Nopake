@@ -28,14 +28,14 @@ class Model extends DB
 
 	/*salva ou atualiza no banco de dados um registro*/
 	/*OBS: a atualização acontece quando é informado um id no parametro ou no objeto da classe*/
-	public function save($id = null)
+	public function save($id = null,$input=null)
 	{
 		if (array_key_exists($this->primary, $this->data) || !is_null($id)) {
 
 			$id = !is_null($id) ? $id : $this->primary;
 			$values = $this->data;
 			unset($values[$this->primary]);
-			return $this->update($values, $id);
+			return $this->update($values, $id,$input);
 		} else {
 			$values = $this->data;
 			return $this->insert($values);
