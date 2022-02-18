@@ -10,7 +10,6 @@ class FileManager extends Module
 {
 	public function main()
 	{
-
 	   if(Auth::check('admin')){
 
 	   	$fileManagement = array(
@@ -26,14 +25,16 @@ class FileManager extends Module
 
 		$file = array(
 			'post:store-image'=>'storeImage',
-			'post:store-file'=>'storeFile'
+			'post:store-file'=>'storeFile',
+			'post:store-file-one'=>'storeFileOne'
 		);
 		
 		$files = array(
 			'files'=>'getFiles',
 			'files/uploads'=>'getUploads',
 			'post:attachment'=>'addAttachment',
-			'attachments'=>'getAttachments'
+			'attachments'=>'getAttachments',
+			'file'=>'getFileUpload'
 		);
 		if(access(['admin_file'])){ 
         Route::controllers($files,'@FileManager/Controllers/FileIncludeController');

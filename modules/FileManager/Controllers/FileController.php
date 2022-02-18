@@ -15,16 +15,23 @@ use Modules\FileManager\Models\UploadModel;
 
 class FileController extends Controller
 {
-	public function storeFile()
+	private $path;
+	/*Faz o upload e inserção do arquivo na base de dados*/
+	public function storeFile($r=false)
 	{
 		$request = new Request;
 		
 		$public = $request->getBit('public');
-		
 		$name_random = $request->getBool('name_random');
 		$file_write = $request->getBool('file_write');
 		$file_version = $request->getBool('file_version');
 		$description = $request->get('description');
+		
+		if($r)
+		{
+			$public = 0;
+		    $name_random = 1;
+		}
 		
 		$uploads = new Upload;
 		
@@ -54,7 +61,9 @@ class FileController extends Controller
 	     if($file)
 		 {
 			 $path =  $uploads->getFilePath();
-			 $description = strlen($description) < 2 ?  $uploads->getFileName() : $description;
+			 $description = strlen($description) < 3 ?  $uploads->getFileName() : $description;
+			 
+			 $this->path = $path;
 			 
 			 $model = new UploadModel;
 			 $model = $model->insertUpload($path,$description);
@@ -65,6 +74,19 @@ class FileController extends Controller
 		 }else{
 			 return alert($uploads->getErrorMessage(),'error');
 		 }
+	}
+	
+	public function storeFileOne()
+	{
+		
+		return alert('Chegou!');
+		
+	}
+	
+	/*Retorna o endereço*/
+	public function getPath()
+	{
+		return $this->path;
 	}
 	
 	public function storeImage()

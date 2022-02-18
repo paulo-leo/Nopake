@@ -12,7 +12,6 @@ use Modules\FileManager\Models\UploadModel;
 
 class FileIncludeController extends Controller
 {  
-    
 	/*Lista as imagens que es*/
     public function getUploads()
 	{  
@@ -38,6 +37,35 @@ class FileIncludeController extends Controller
 		json($file);
 	}
 	
+	/*Pega o caminho de um arquivo especifico via ID*/
+    public function getFileUpload()
+	{  
+		$request = new Request;
+		$id = $request->get('id');
+		
+		$msg_error = "<h2>Nenhum arquivo foi vinculado ou localizado.</h2>";
+
+		if(is_numeric($id)){
+			$file = new UploadModel;
+			$file = $file->where('id',$id)->get('o');
+			if($file){
+				
+				$file = $file->path;
+				$file = str_ireplace('../storage/','storage/',$file);
+				
+				 $uri = new URI();
+	             $file = $uri->local($file);
+				//return $file;
+				return "<embed src='{$file}' width='100%' height='100%'>";
+			}else{
+				return $msg_error;
+			}
+		}else{
+			return $msg_error;
+		}
+		
+	}
+	
     public function getFiles()
     {  
 	  $files = new UploadModel;
@@ -53,7 +81,7 @@ class FileIncludeController extends Controller
 		$files = $files->where('description','like',$search);
 	  }
 	  
-	  if(true){
+	  if(false){
 		  $files = $files->where('path','like.','uploads');
 	  }
 	  
@@ -87,9 +115,8 @@ class FileIncludeController extends Controller
 		 }
 		 else{
 			 return asset($path); 
-		 }
-		  
-	  });
+		 } 
+	   });
 	  }
 	  
 	  json(array(
@@ -132,14 +159,12 @@ class FileIncludeController extends Controller
 		 else{
 			 return asset($path); 
 		 }
-		  
 	  });
 	 
 	  json($results);
 	 
     }
-	
-	
+
 	/*Faz anexo do arquivo caso ele não exista no registro*/
 	public function addAttachment()
 	{
@@ -173,8 +198,5 @@ class FileIncludeController extends Controller
 		   
 		   return alert('Esse arquivo já foi anexado.','danger');
 	   }
-	   
-	   
-	}
-	
+	}	
 } 
