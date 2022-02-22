@@ -1,3 +1,23 @@
+@template(p_checkbox_array)
+
+$name = isset($name) ? $name : null;
+$arr1 = isset($values) ? $values : array();
+$arr2 = isset($keys) ? $keys: array();
+
+$html = "<div class='col-12'>";
+
+foreach($arr1 as $key=>$val)
+{
+   $checked = in_array($key, $arr2) ? 'checked' : null;
+   $html .= "<div class='form-check'>
+     <input name='{$name}[]' class='form-check-input' type='checkbox' value='{$key}' id='flexCheckDefault{$key}' {$checked}>
+     <label class='form-check-label' for='flexCheckDefault{$key}'>{$val}</label></div>";
+}
+
+return $html."</div>";
+
+@endtemplate
+
 @template(p_select_two)
 
 $url = isset($url) ? url($url) : null;
