@@ -818,11 +818,28 @@ class DB extends Connection
 			else return true;
 		} else return false;
 	}
+    /*Método para inserir vários ao mesmo tempo*/
+    public function insertMultiple($multiples)
+	{
+       $ids = array();
+       foreach($multiples as $values)
+	   {
+          $insert = $this->insert($values);
+		  if($insert) $ids[] = $insert;
+	   }
+       return $ids;
+	}
+
+
 	/*Metodo para deletar*/
 	public function delete($id = null)
 	{
 		$table = $this->table;
 		$w = null;
+
+	if(is_null($this->where)){
+		
+	
 		if(is_numeric($id)) 
 		{
 			$w = "WHERE " . $this->primary . " = " . $id;
@@ -842,7 +859,9 @@ class DB extends Connection
 			/*Esse código mantém a compatibilidade com a versão anterior do sistema de eliminação de dados*/
 			if(is_string($id)) $w = "WHERE {$id}";
 		}
-		
+	   }else{
+		$w = "WHERE {$this->where}";  
+	   }
 		//Monta a query
 		$sql = trim("DELETE FROM {$table} {$w}");
 		//Retornar V ou F 
@@ -862,7 +881,8 @@ class DB extends Connection
 			$t[] = htmlspecialchars($key, ENT_QUOTES) . " = '" . htmlspecialchars($value, ENT_QUOTES) . "'";
 		}
 		$t = implode(", ", $t);
-		//Monta a condição de atualização da tabela
+
+        if(is_null($this->where)){
 		if ($id == null) {
 			$w = null;
 		} elseif (is_numeric($id)) {
@@ -879,6 +899,10 @@ class DB extends Connection
 		}else {
 			$w = " WHERE {$id}";
 		}
+	   }else{
+		 $w = " WHERE {$this->where}";
+	   }
+
 		//Monta a query
 		$sql = trim("UPDATE {$table} SET {$t}{$w}");
 		if ($this->execute($sql))
