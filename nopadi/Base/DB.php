@@ -450,14 +450,14 @@ class DB extends Connection
 		if (!is_null($where)) $where = ' WHERE ' . $where;
 		if (is_null($where) && !is_null($whereOr)) {
 			$whereOr = (is_null($where)) ? ' WHERE ' . $whereOr : null;
-		} elseif (!is_null($where) && !is_null($whereOr)) {
+		} elseif (!is_null($where) && !is_null($whereOr)){
 			$whereOr = ' ' . $whereOr;
 		}
 		
 		
 	if(is_null($this->firstQuery)){
 		
-		$sql = 'SELECT ' . $select . ' FROM ' . $table . ' ' . $join .' '. $left .' '. $right . $where . $whereOr . $groupBy . $having . $orderBy . $limit;
+		$sql = 'SELECT ' . $select . ' FROM ' . $table . ' ' . $join .' '. $left .' '. $right .' '.$where .' '. $whereOr .' '.$groupBy .' '. $having .' '. $orderBy .' '. $limit;
 		
 		$sql = str_ireplace('  ',' ',$sql);
 		$sql = str_ireplace('WHERE AND','WHERE',$sql);
@@ -467,7 +467,7 @@ class DB extends Connection
 		$mounted = $this->sql;
 		
 	   }else{
-		  $mounted = $this->firstQuery . $join . $left . $right . $where . $whereOr . $groupBy . $having . $orderBy . $limit;
+		  $mounted = $this->firstQuery . $join .' '. $left.' '. $right .' '. $where .' '.$whereOr .' '.$groupBy.' '. $having .' '. $orderBy .' '. $limit;
 	   }
 	   
 	   $mounted = str_ireplace('  ','',$mounted);
@@ -487,7 +487,7 @@ class DB extends Connection
 	/*Prioriza uma query fora da tabela*/
 	public function setFirstQuery($sql)
 	{
-	   $this->firstQuery = $sql;
+	   $this->firstQuery = strtoupper($sql);
 	   return $this;
 	}
 	
@@ -522,6 +522,7 @@ class DB extends Connection
 	{
 		return self::getConn(null);
 	}
+	
 	public static function myQuery($sql, $re = null)
 	{
 		$query = new DB;
@@ -592,6 +593,31 @@ class DB extends Connection
 		} else {
 			return false;
 		}
+	}
+	
+	/*Método aprimorado para paginação*/
+	public function ipaginate($total=10,$btn_numbers=true)
+	{
+		$obj = $this->paginate($total, true,true);
+		$obj = (array) $obj;
+		
+		if(!$btn_numbers){ 
+		     unset($obj['numbers']); }
+		else{
+			$btns = $obj['numbers'];
+			$btn_numbers = array();
+			foreach($btns as $btn)
+			{
+				$btn_numbers[] = pag_filter($btn);
+			}
+			$obj['numbers'] = $btn_numbers;
+		}
+		
+		$obj['next'] = $obj['next'] ? pag_filter($obj['next']) : $obj['next'];
+		$obj['previous'] = $obj['previous'] ? pag_filter($obj['previous']) : $obj['previous'];
+
+		unset($obj['links']);		
+		return (array) $obj;	
 	}
 	
 	/*Metodo para paginação. O primeiro parametro é um inteiro que reperesenta a quantidade de registros a ser exibidos por páginas, o segundo parametro é se o botões de links de paginação serão exibidos, e o terceiro parametro é se terá retorno dos objetos de botões para paginação*/
