@@ -459,7 +459,7 @@ class DB extends Connection
 		
 		$sql = 'SELECT ' . $select . ' FROM ' . $table . ' ' . $join .' '. $left .' '. $right .' '.$where .' '. $whereOr .' '.$groupBy .' '. $having .' '. $orderBy .' '. $limit;
 		
-		$sql = str_ireplace('  ',' ',$sql);
+		$sql = str_ireplace('  ','',$sql);
 		$sql = str_ireplace('WHERE AND','WHERE',$sql);
 
 		$this->sql = trim($sql . ' ' . $this->union);
@@ -472,6 +472,14 @@ class DB extends Connection
 	   
 	   $mounted = str_ireplace('  ','',$mounted);
 	   $mounted = str_ireplace("AND or = '' AND","OR",$mounted);
+
+	   $mounted = str_ireplace('LEFT JOIN',' LEFT JOIN',$mounted);
+	   $mounted = str_ireplace('INNER JOIN',' INNER JOIN',$mounted);
+	   $mounted = str_ireplace('RIGHT JOIN',' RIGHT JOIN',$mounted);
+	   $mounted = str_ireplace('descLIMIT','desc LIMIT',$mounted);
+	   $mounted = str_ireplace('ascLIMIT','asc LIMIT',$mounted);
+	   $mounted = str_ireplace('LIMIT',' LIMIT',$mounted);
+	   
 	   return trim($mounted);
 	   
 	}
@@ -487,7 +495,7 @@ class DB extends Connection
 	/*Prioriza uma query fora da tabela*/
 	public function setFirstQuery($sql)
 	{
-	   $this->firstQuery = strtoupper($sql);
+	   $this->firstQuery = $sql;
 	   return $this;
 	}
 	
@@ -596,7 +604,7 @@ class DB extends Connection
 	}
 	
 	/*Método aprimorado para paginação*/
-	public function ipaginate($total=10,$btn_numbers=true)
+	public function ipaginate($total=10,$btn_numbers=false)
 	{
 		$obj = $this->paginate($total, true,true);
 		$obj = (array) $obj;
