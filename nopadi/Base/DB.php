@@ -92,6 +92,32 @@ class DB extends Connection
 		return $this;
 	}
 	
+	
+    public function swicth($name,$array)
+	{
+		$case = "CASE {$name} ";
+		$size = count($array);
+		$i = 0;
+	    foreach($array as $cond=>$value)
+		{
+			$i++;
+			$case .= "WHEN {$cond} THEN '{$value}' ";
+			
+			if($i == $size)
+			{
+			  $case .= "ELSE '{$value}' ";
+			}
+		}
+		
+		$name = str_ireplace('.','',$name);
+		$case .= "END AS swicth_{$name}"; 
+		
+		$this->select($case);
+		
+		return $this;
+	}
+	
+	
 	/*Aplica um filtro de clasula "where" personalizado na montagem da query*/
 	public function person($where)
 	{
@@ -146,7 +172,6 @@ class DB extends Connection
 		}else{
 			$this->innerJoin =  $drive->getJoin();
 		}
-		
 		return $this;
 	}
 	/*Faz a junção de tabelas com a clasula left join*/
@@ -432,18 +457,23 @@ class DB extends Connection
 		
 	if(is_null($this->firstQuery)){
 		
-		$sql = 'SELECT ' . $select . ' FROM ' . $table . ' ' . $join . $left . $right . $where . $whereOr . $groupBy . $having . $orderBy . $limit;
+		$sql = 'SELECT ' . $select . ' FROM ' . $table . ' ' . $join .' '. $left .' '. $right . $where . $whereOr . $groupBy . $having . $orderBy . $limit;
 		
 		$sql = str_ireplace('  ',' ',$sql);
 		$sql = str_ireplace('WHERE AND','WHERE',$sql);
 
 		$this->sql = trim($sql . ' ' . $this->union);
       
-		return $this->sql;
+		$mounted = $this->sql;
 		
 	   }else{
-		   return trim($this->firstQuery . $join . $left . $right . $where . $whereOr . $groupBy . $having . $orderBy . $limit);
+		  $mounted = $this->firstQuery . $join . $left . $right . $where . $whereOr . $groupBy . $having . $orderBy . $limit;
 	   }
+	   
+	   $mounted = str_ireplace('  ','',$mounted);
+	   $mounted = str_ireplace("AND or = '' AND","OR",$mounted);
+	   return trim($mounted);
+	   
 	}
 	
 	/*Prioriza uma query fora da tabela*/
