@@ -479,6 +479,7 @@ class DB extends Connection
 	   $mounted = str_ireplace('descLIMIT','desc LIMIT',$mounted);
 	   $mounted = str_ireplace('ascLIMIT','asc LIMIT',$mounted);
 	   $mounted = str_ireplace('LIMIT',' LIMIT',$mounted);
+	   $mounted = str_ireplace('ORDER BY',' ORDER BY',$mounted);
 	   
 	   return trim($mounted);
 	   

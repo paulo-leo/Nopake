@@ -88,7 +88,7 @@ class Route extends RouteCollection
         self::add($type, $route, $args);
     }
 	
-    /*Pemite o acesso total a aplicaçãox*/
+    /*Pemite o acesso total a aplicação*/
     public static function access($access='*')
     {
       header("Access-Control-Allow-Origin: {$access}");
