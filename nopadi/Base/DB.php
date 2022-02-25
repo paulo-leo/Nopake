@@ -625,7 +625,7 @@ class DB extends Connection
 		$obj['previous'] = $obj['previous'] ? pag_filter($obj['previous']) : $obj['previous'];
 
 		unset($obj['links']);		
-		return (array) $obj;	
+		return (object) $obj;	
 	}
 	
 	/*Metodo para paginação. O primeiro parametro é um inteiro que reperesenta a quantidade de registros a ser exibidos por páginas, o segundo parametro é se o botões de links de paginação serão exibidos, e o terceiro parametro é se terá retorno dos objetos de botões para paginação*/
