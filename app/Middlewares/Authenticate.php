@@ -11,7 +11,6 @@ class Authenticate extends Middleware
 	 public function handle($role)
 	 {
 		 $redirect = 'login';
-         $role = trim($role);
 
          if(substr($role,0,1) == '@' && strlen($role) >= 2)
 		 {
