@@ -124,13 +124,20 @@ class RegisterController extends Controller
 		 $msg = Auth::status();
 		  
 	  }else{
+
 		 $msg = "passwords_do_not_match"; 
+
 	  }  
 	  
-	  if($register){ hello('success'); }else{
-		  hello(':'.$msg,'danger');
+	  if($register){ 
+
+		  return alert($register,'success'); 
+
+		}else{
+
+		return alert($msg,'danger');
+
 	  }
-	  
    }
    public function showRegistrationFormCode()
    {
@@ -201,8 +208,3 @@ class RegisterController extends Controller
 	 
    }
 } 
-
-
-
-
-

@@ -11,7 +11,6 @@ use Nopadi\MVC\Controller;
 
 class LoginController extends Controller
 {
-	
    /*Exibe o formulário de login*/
    public function showLoginForm()
    {
@@ -34,8 +33,3 @@ class LoginController extends Controller
 	 return view("@Painel/Views/login",['logout'=>true]); 
    }
 } 
-
-
-
-
-
