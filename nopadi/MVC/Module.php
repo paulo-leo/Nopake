@@ -35,17 +35,27 @@ class Module
     {
 		
     }
+
+	public function on()
+	{
+
+	}
 	
+	public function off()
+	{
+
+	}
+
 	/*Este método será executado na ativação do módulo*/
 	public function active()
     {
-        
+        $this->on();
     }
 	
 	/*Este método será executado na desativação do módulo*/
 	public function disabled()
     {
-        
+        $this->off();
     }
 	
 	/*Este método será executado na atualização do módulo*/

@@ -34,7 +34,7 @@ class Table
 		}
 		return DB::executeSql($sql);
 	}
-	/*Elimina uma ou mais tabelas*/
+	/*Elimina uma ou mais tabelas */
     public function drop($tables)
 	{
 		$tables = is_string($tables) ? array($tables) : $tables;
@@ -93,6 +93,12 @@ class Table
 			$default = !$default ? "DEFAULT '0'" : $default;
 			$r = "FLOAT(15,2) {$null} {$default}";
 			$r = trim(str_replace('  ',' ',$r));
+		}elseif($type == 'text'){
+			$r = "TEXT {$null} {$default}";
+		}elseif($type == 'mediumtext'){
+			$r = "MEDIUMTEXT {$null} {$default}";
+		}elseif($type == 'longtext'){
+			$r = "LONGTEXT {$null} {$default}";
 		}else{
 			$size = $this->getValue('size',$array);
 			$size = ($type == 'varchar' && is_null($size)) ? 250 : $size;

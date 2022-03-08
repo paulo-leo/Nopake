@@ -32,9 +32,9 @@
         "icon": "folder"
     },
     "Teste": {
-        "name": "Teste",
-        "description": "Aplicativo para teste.",
-        "author": "Paulo Leonardo | Onpaulo",
+        "name": "Mx22xdulo de teste",
+        "description": "Este mx22xdulo serve como base na construx27xx17xo de um novo mx22xdulo ou para aplicar determinados testes.",
+        "author": "Paulo Leonardo",
         "status": "disabled",
         "version": "0.1",
         "license": "MIT",
@@ -42,9 +42,25 @@
             "php7"
         ],
         "url": "www.onpaulo.com.br",
-        "route": "fteste",
+        "route": "np/teste",
         "parent": "",
         "color": "info",
-        "icon": "folder"
+        "icon": "settings"
+    },
+    "Book": {
+        "name": "Book",
+        "description": "Este mx22xdulo serve como base na construx27xx17xo de um novo mx22xdulo ou para aplicar determinados testes.",
+        "author": "Paulo Leonardo",
+        "status": "active",
+        "version": "0.1",
+        "license": "MIT",
+        "require": [
+            "php7"
+        ],
+        "url": "www.onpaulo.com.br",
+        "route": "dashboard/books",
+        "parent": "",
+        "color": "info",
+        "icon": "book"
     }
 }
