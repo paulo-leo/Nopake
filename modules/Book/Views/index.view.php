@@ -14,6 +14,8 @@
     <script src="https://unpkg.com/vue@next"></script>
 
     <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+	
+	<script src="{{asset('painel/js/np-table.js')}}"></script>
 
 
     <title>Book</title>
@@ -65,7 +67,7 @@
 
 
            <div id="app-render"></div>
-
+		  
      
            @component('modal-create-book')        
 
@@ -77,115 +79,67 @@
 
    <script>
      $(function(){
-       
-       function renderTable(params)
-       {
-        var renderLocal = $('#app-render');
-        var array = params.rows;
-        var url = params.url;
-        var data = params.data;
-        var legends = params.legends;
-        var filters = params.filters;
-        var loading = '<div class="p-4 text-center"><div class="spinner-border" role="status" style="width: 3rem; height: 3rem;"><span class="visually-hidden">Loading...</span></div></div>';
-
-        $.ajax({
-          method:'get',
-          url:url,
-          data:data,
-          dataType: 'json',
-          beforeSend:function(){
-            renderLocal.html(loading);
-          },
-          success:function(data)
-          {
-             let render = '<table class="table">';
-             render += '<tread>';
-             for (let i = 0; i < array.length; i++)
-             {     
-                    let nameHead = legends[array[i]] != undefined ? legends[array[i]] : array[i];
-                    render += '<td>'+nameHead+'</td>';
-             }
-             render += '</tread><tbody>';
-             $.each(data.results,function(index,value){
-                render += '<tr>';
-                for (let i = 0; i < array.length; i++)
-                {    
-                    if(filters[array[i]] != undefined){
-                      render += '<td>'+ filters[array[i]](value[array[i]]) +'</td>';
-                    }else{
-                      render += '<td>'+value[array[i]]+'</td>';
-                    }
-                    
-                }
-                render += '</tr>';
-             }); 
-             
-             render += '<tr><td colspan="'+array.length+'">';
-             render += '<nav><ul class="pagination justify-content-center">';
-
-             if(data.previous)
-             {
-               render += '<li class="page-item"><a class="page-link" href="'+data.previous+'">&laquo;</a></li>';
-             }
-
-             if(data.numbers != undefined)
-             {
-                let numberPage = 1;
-                for (let i = 0; i < data.numbers.length; i++)
-                { 
-                  var classActive = (data.page == numberPage) ? 'active' : '';
-                    render += '<li class="page-item '+classActive+'"><a class="page-link" href="'+data.numbers[i]+'">'+numberPage+'</a></li>';
-                 
-                  numberPage++;
-                }
-             }
-
-
-             if(data.next)
-             {
-               render += '<li class="page-item"><a class="page-link" href="'+data.next+'">&raquo;</a></li>';
-             }
-
-             render += '</ul></nav>';
-             render += '<button type="button" class="btn btn-sm btn-primary position-relative">';
-             render += data.page+'/'+data.total;
-             render += '<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">';
-             render += data.count;
-             render += '</span></button>';
-             
-             render += '</td></tr>';
-
-             render += '</tbody></table>';
-             renderLocal.html(render);
-          }
-          });
-
-          renderLocal.on('click','table > tbody > tr > td > nav > ul > li > a',function(event){
-             event.preventDefault();
-             var link = $(this).attr('href');
-             renderTable({
-               url:link,
-               rows:array,
-               legends:legends
-             });
-          });
-       }
-
-        renderTable({
+        let render = '#app-render';
+		
+	   $(render).npClick('.btn-view',function(){
+		   
+		   let id = $(this).attr('id');
+		   
+		   
+		   $('#render-view').html('Olá mundo '+id);
+		   
+	   });
+	  
+        var obj = {
          url:'{{url('dashboard/books')}}',
          rows:['name','status','privacy'],
          legends:{name:'Nome do livo',status:'Situação do livro',privacy:'Compartilhamento'},
+		 btn:function(e){
+			 
+			 
+			 
+			 return "<button id='"+e.id+"' data-bs-toggle='offcanvas' data-bs-target='#offcanvasRight' aria-controls='offcanvasRight' class='btn btn-view btn-sm btn-primary'>Editar</button>";
+			 
+			 
+			 
+		 },
+		 view:function(e){
+			 return "<a class='btn btn-sm btn-danger' href='"+e.name+"'>Visualizar</a>";
+		 },
          filters:{
           privacy:function(e){
-             if(e == 1) return 'Publico';
+             if(e.privacy == 1) return 'Publico';
              else return 'Privado';
+             
+           },
+		  status:function(e){
+             if(e.status == 1) return '<span class="badge bg-success">Ativo</span>';
+             else return 'Não';
              
            }
          }
-        });
+        };
 
+        $(render).npTable(obj);
+		
+		
+		
      });
    </script>
+   
+   
+   <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
+  <div class="offcanvas-header">
+    <h5 id="offcanvasRightLabel">Offcanvas right</h5>
+    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <div id="render-view"></div>
+  </div>
+</div>
+   
 
   </body>
 </html>
