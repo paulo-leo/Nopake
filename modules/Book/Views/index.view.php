@@ -79,16 +79,36 @@
 
    <script>
      $(function(){
+
+       var objeto = {};
+       var x = 0;
+       $('#btn-teste').click(function(){
+         x++;
+        objeto['mais'+x] = 'um'+x;
+        var texto = JSON.stringify(objeto);
+
+          $('#btn-teste-tx').text(texto);
+
+       });
+
+
         let render = '#app-render';
 		
-	   $(render).npClick('.btn-view',function(){
+	   $(render).npTableClick('.btn-view',function(){
 		   
 		   let id = $(this).attr('id');
 		   
+      
 		   
-		   $('#render-view').html('Olá mundo '+id);
+		   $('#render-view').npView({
+         url:'{{url("dashboard/books/teste")}}',
+         content:function(data){
+            return '<h1>'+data.name+'</h1>';
+         }
+       });
 		   
 	   });
+
 	  
         var obj = {
          url:'{{url('dashboard/books')}}',
@@ -128,7 +148,7 @@
    </script>
    
    
-   <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">Toggle right offcanvas</button>
+   <button id="btn-teste">Click</button><h1 id="btn-teste-tx"></h1>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasRight" aria-labelledby="offcanvasRightLabel">
   <div class="offcanvas-header">

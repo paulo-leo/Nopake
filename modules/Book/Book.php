@@ -17,6 +17,17 @@ class Book extends Module
 
          Route::controllers($books,'@Book/Controllers/DocumentationController');
 		 Route::resources('dashboard/books','@Book/Controllers/BookController');
+
+		 Route::get('dashboard/books/teste',function(){
+
+          $arr = array(
+			  'name'=>'Paulo',
+			  'phone'=>'54154'
+		  );
+
+		  json($arr);
+
+		 });
         
 
 
