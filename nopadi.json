@@ -1,6 +1,7 @@
 {
    "info":"nopadi/CLI/info.php",
-   "create":"nopadi/CLI/create.php"
+   "create":"nopadi/CLI/create.php",
+   "mvc":"nopadi/CLI/mvc.php"
 }
 
 
