@@ -1,0 +1,12 @@
+{
+         "name": "Nome do módulo",
+         "description": "Descrição do módulo",
+         "version": "0.1",
+         "author": "Nome do autor/dev do módulo",
+         "license": "MIT",
+         "require": ["php7"],
+         "url": "url do módulo",
+         "icon": "link",
+         "color":"info",
+         "route":"dashboard/xxxxxxxx"
+         }
