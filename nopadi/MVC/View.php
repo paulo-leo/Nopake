@@ -186,6 +186,7 @@ class View extends Translation
 
 		$view = str_ireplace('.', '/', $view);
 
+		$view_file_vh = $this->local($this->path . '/' . $view . '.vh');
 		$view_file = $this->local($this->path . '/' . $view . '.php');
 		$view_php = $this->local($this->path . '/' . $view . '.view.php');
 		$view_html = $this->local($this->path . '/' . $view . '.view.html');
@@ -194,7 +195,10 @@ class View extends Translation
 
 		if (file_exists($view_file)) {
 			include($view_file);
-		} elseif (file_exists($view_html)) {
+		} 
+		elseif (file_exists($view_file_vh)) {
+			$this->create($view_file_vh, $this->scope,true);
+		}elseif (file_exists($view_html)) {
 			$this->create($view_html, $this->scope);
 		} elseif (file_exists($view_php)) {
 			$this->create($view_php, $this->scope);
@@ -209,7 +213,7 @@ class View extends Translation
 	}
 
 	/*cria um arquivo de visualização*/
-	private function create($mfile, $scope = null)
+	private function create($mfile, $scope = null,$vh=false)
 	{
 		if (is_array($scope)) extract($scope, EXTR_PREFIX_SAME, "np");
 
@@ -226,7 +230,7 @@ class View extends Translation
 		} else {
 			$content = file_get_contents($view);
 
-			$content =  $this->transform($content);
+			$content =  $vh ? $this->transformVH($content) : $this->transform($content);
 
 			if (file_put_contents($com, $content))
 				include($com);
@@ -239,7 +243,35 @@ class View extends Translation
 		
 		foreach($imports as $view)
 		{
-			$this->render($view);
+             $ext = substr($view,-3,3);
+             $ext2 = substr($view,-4,4);
+
+             if($ext == '.js' || $ext2 == '.css')
+			 {
+                if(substr($view,0,1) == '@'){
+			
+					$view = ucfirst(substr($view,1));
+					$this->path = 'modules';
+		
+				}else{
+					$this->path = 'app/Views';
+				}
+
+				$view = $this->local($this->path . '/' . $view);
+
+				if(file_exists($view) && $ext == '.js')
+				{
+                   echo "<script src=\"{$view}\"></script>\n";
+				}
+
+				if(file_exists($view) && $ext2 == '.css')
+				{
+                   echo "<link href=\"{$view}\" rel=\"stylesheet\">\n";
+				}
+
+			 }else{
+                $this->render($view);
+			 }
 		}
 		
 	}
@@ -293,10 +325,6 @@ class View extends Translation
 		
 		$componet23 = "/@template\(({$this->all})\)/simU";
 		$file = preg_replace($componet23, '<?php function np_$1($scope=null){ if(is_array($scope)) extract($scope);', $file);
-		
-		
-   
-		
 
         ///////////////////////////////
     
@@ -337,9 +365,9 @@ class View extends Translation
 		
 		$echox = "/@\{{2}{$this->all}\}{2}/imU";
 		$file = preg_replace($echox, "(___$1___)", $file);
-
+ 
 		$file = preg_replace($echo, "<?php echo htmlspecialchars(trim($1), ENT_QUOTES); ?>", $file);
-
+        
 		$file = preg_replace($echoFilter, "<?php echo htmlspecialchars($2(trim($1)), ENT_QUOTES); ?>", $file);
 
 		$file = preg_replace($echoHTML, "<?php echo html_entity_decode(trim($1)); ?>", $file);
@@ -478,6 +506,93 @@ class View extends Translation
 		$content = $this->dir_echo($content);
 		$content = $this->dir_if($content);
 		$content = preg_replace("/: \?>\)/simU", "): ?>", $content);
+		return $content;
+	}
+    
+
+	private function echoVH($file)
+	{
+		$echo = "/\{{2}{$this->all}\}{2}/imU";
+
+		$echoFilter = "/\{{2}{$this->all}\|{$this->all}\}{2}/imU";
+		
+		$file = preg_replace($echoFilter, "<?php echo htmlspecialchars($2(trim($1)), ENT_QUOTES); ?>", $file);
+
+		$file = preg_replace($echoFilter, "<?php echo htmlspecialchars($2(trim($1)), ENT_QUOTES); ?>", $file);
+
+		$file = preg_replace($echo, "<?php echo htmlspecialchars(trim($1), ENT_QUOTES); ?>", $file);
+
+		return $file;
+	}
+
+	private function phpVH($file)
+	{
+
+		/*Include de templates*/
+		$import = "/{import ({$this->all})}/simU";
+		$file = preg_replace($import, "<?php \$this->importx($1); ?>", $file);
+
+        $include = "/{include ({$this->all})}/simU";
+		$file = preg_replace($include, "<?php \$this->render($1,\$this->scope); ?>", $file);
+
+		$file = str_ireplace('{php}', "<?php ", $file);
+		$file = str_ireplace('{/php}', " ?>", $file);
+		return $file;
+	}
+     /*Inicio do VH*/
+      private function ifVH($file)
+	  {
+        /*If, ElseIf, Else e Switch*/
+		$if = "/{if ({$this->all})}/simU";
+		$case = "/{case ({$this->all})}/simU";
+        $elseif = "/{elseif ({$this->all})}/simU";
+		$switch = "/{switch ({$this->all})}/simU";
+
+		$file = preg_replace($if, "<?php if($1): ?>", $file);
+		$file = preg_replace($case, "<?php case $1: ?>", $file);
+		$file = preg_replace($elseif, "<?php elseif($1): ?>", $file);
+	    $file = preg_replace($switch, "<?php switch($1): ?>", $file);
+
+		$file = str_ireplace('{/case}', "<?php break; ?>", $file);
+		$file = str_ireplace('{else}', "<?php else: ?>", $file);
+	    $file = str_ireplace('{/if}', "<?php endif; ?>", $file);
+		$file = str_ireplace('{/switch}', "<?php endswitch; ?>", $file);
+		$file = str_ireplace('{default}', "<?php default: ?>", $file);
+
+		return $file;
+	  }
+
+
+	  private function forVH($file)
+	  {
+        /*If, ElseIf, Else e Switch*/
+		$for = "/{for ({$this->all})}/simU";
+		$foreach = "/{foreach ({$this->all})}/simU";
+		$while = "/{while ({$this->all})}/simU";
+		$in = "/{in ({$this->all})}/simU";
+
+		$file = preg_replace($in, "<?php foreach($1 as \$np_items_in): extract(\$np_items_in); ?>", $file);
+
+		$file = preg_replace($for, "<?php for($1): ?>", $file);
+		$file = preg_replace($while, "<?php while($1): ?>", $file);
+		$file = preg_replace($foreach, "<?php for($1): ?>", $file);
+		$file = str_ireplace('{/for}', "<?php endfor; ?>", $file);
+		$file = str_ireplace('{/foreach}', "<?php endforeach; ?>", $file);
+		$file = str_ireplace('{/in}', "<?php endforeach; ?>", $file);
+		$file = str_ireplace('{/while}', "<?php endwhile; ?>", $file);
+
+		return $file;
+	  }
+
+	/*Transforma tudo em algo legivel para o PHP*/
+	public function transformVH($content)
+	{
+		$content = $this->phpVH($content);
+		$content = $this->forVH($content);
+		$content = $this->echoVH($content);
+		
+		$content = $this->ifVH($content);
+		
 		return $content;
 	}
 }
