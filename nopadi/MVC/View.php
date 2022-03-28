@@ -190,6 +190,7 @@ class View extends Translation
 		$view_file = $this->local($this->path . '/' . $view . '.php');
 		$view_php = $this->local($this->path . '/' . $view . '.view.php');
 		$view_html = $this->local($this->path . '/' . $view . '.view.html');
+		$view_html_vh = $this->local($this->path . '/' . $view . '.vh.html');
 
 		$filename = $view_php;
 
@@ -198,6 +199,8 @@ class View extends Translation
 		} 
 		elseif (file_exists($view_file_vh)) {
 			$this->create($view_file_vh, $this->scope,true);
+		}elseif (file_exists($view_html_vh)) {
+			$this->create($view_html_vh, $this->scope,true);
 		}elseif (file_exists($view_html)) {
 			$this->create($view_html, $this->scope);
 		} elseif (file_exists($view_php)) {
@@ -513,12 +516,16 @@ class View extends Translation
 	private function echoVH($file)
 	{
 		$echo = "/\{{2}{$this->all}\}{2}/imU";
+		
+		$echox = "/\{{1}\!{$this->all}\!\}{1}/imU";
 
 		$echoFilter = "/\{{2}{$this->all}\|{$this->all}\}{2}/imU";
 		
 		$file = preg_replace($echoFilter, "<?php echo htmlspecialchars($2(trim($1)), ENT_QUOTES); ?>", $file);
 
 		$file = preg_replace($echoFilter, "<?php echo htmlspecialchars($2(trim($1)), ENT_QUOTES); ?>", $file);
+
+        $file = preg_replace($echox, "<?php echo $1; ?>", $file);
 
 		$file = preg_replace($echo, "<?php echo htmlspecialchars(trim($1), ENT_QUOTES); ?>", $file);
 
@@ -527,6 +534,8 @@ class View extends Translation
 
 	private function phpVH($file)
 	{
+      
+         
 
 		/*Include de templates*/
 		$import = "/{import ({$this->all})}/simU";
@@ -564,12 +573,16 @@ class View extends Translation
 
 
 	  private function forVH($file)
-	  {
+	  {  
         /*If, ElseIf, Else e Switch*/
 		$for = "/{for ({$this->all})}/simU";
 		$foreach = "/{foreach ({$this->all})}/simU";
 		$while = "/{while ({$this->all})}/simU";
 		$in = "/{in ({$this->all})}/simU";
+
+         $file = str_ireplace("{csrf_field}", '<input type="hidden" name="_token" value="<?php echo csrf_token(); ?>"/>', $file);
+		 $file = str_ireplace("{csrf_token}", '<?php echo csrf_token(); ?>', $file);
+
 
 		$file = preg_replace($in, "<?php foreach($1 as \$np_items_in): extract(\$np_items_in); ?>", $file);
 
@@ -583,15 +596,38 @@ class View extends Translation
 
 		return $file;
 	  }
+	  
+	 private function templateVH($file)
+	 {
+		$file = str_ireplace('{/template}','} ?>',$file);
+		
+		$for = "/{template ({$this->all})}/simU";
+		
+		$file = preg_replace($for, '<?php function np_$1($scope=null){ if(is_array($scope)) extract($scope);', $file);
+		
+		
+		$forx = "/{component ({$this->all})}/simU";
+		$file = preg_replace($forx, "<?php echo \$this->component($1); ?>", $file);	
+		
+		return $file;
+	 }
 
 	/*Transforma tudo em algo legivel para o PHP*/
 	public function transformVH($content)
 	{
+		$content = $this->templateVH($content);
+		
+		$content = str_ireplace('!{', '___x__xx__xx', $content);
+		
+		
 		$content = $this->phpVH($content);
 		$content = $this->forVH($content);
 		$content = $this->echoVH($content);
 		
 		$content = $this->ifVH($content);
+		
+		$content = str_ireplace('___x__xx__xx', '{', $content);
+
 		
 		return $content;
 	}
