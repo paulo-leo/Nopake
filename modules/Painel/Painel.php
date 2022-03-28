@@ -67,6 +67,13 @@ class Painel extends Module
        );
 	   
 	   
+	   
+	   Route::get('api/teste',function(){
+		   
+		   json(['hello'=>'Chegou!']);
+		   
+	   },['middleware'=>['AJWT']]);
+	   
 	   /*
 	    Funções e permissões
 	   */

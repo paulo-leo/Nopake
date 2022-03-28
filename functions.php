@@ -37,6 +37,14 @@ if(!function_exists('getallheaders'))
          return $headers;
       }
 }
+
+/*Encontra um determinado resultado na string*/
+function contains($str,$search,$i=false)
+{
+	$i = $i ? null : 'i';
+	return (preg_match("/{$search}/{$i}", $str)) ? true : false;
+}
+
 function permission($permissions)
 {
 	$permissions = !is_array($permissions) ? array($permissions) : $permissions;
@@ -197,7 +205,6 @@ function response($args){
 			
 			$headers = isset($args['header']) ? $args['header'] : array();
 			$method =  isset($args['method']) ? $args['method'] : 'POST';
-			$method = strtoupper($method);
 			
 			$json_decode =  isset($args['array']) && is_bool($args['array']) ? $args['array'] : false;
 			$ignore_errors =  isset($args['ignore_errors']) && is_bool($args['ignore_errors']) ? $args['ignore_errors'] : true;
@@ -210,7 +217,7 @@ function response($args){
 				$body = isset($args['body']) ? $args['body'] : null;
 			}
 			
-            $header_values = "User-Agent:MyAgent/1.0\r\n";
+            $header_values = null;
             foreach($headers as $key=>$val)
 			{
 				$header_values .= "{$key}: {$val}\r\n";
@@ -225,11 +232,10 @@ function response($args){
                 )
              ));
 			
-            $contents = file_get_contents($http, false, $context); 
+            $contents = file_get_contents($http, null, $context); 
 			
             if($json_decode){ $contents = json_decode($contents, true); }			
             
-			$http_response_header = isset($http_response_header) ? $http_response_header : 'xxx';
 			
             return (object) array(
 			 'status'=>response_status_code($http_response_header),
@@ -801,14 +807,17 @@ function pag_filter($pag)
 	$uri = isset($uri[1]) ? $uri[1] : false;
 	
 	$arr1 = array('&0','&1','&2','&3','&4','&5','&6','&7','&8','&9');
-
+    $link = null;
 	if ($uri)
 	{
 		$uri = preg_replace("/(page=[0-9]+)/simU", '', $uri);
 		$uri = str_ireplace(['&&&', '&&'], '&', $pag . '&' . $uri);
 		$uri = str_ireplace($arr1, '',$uri);
-		return $uri;
-	} else return $pag;
+		$link = $uri;
+	} else{ $link = $pag; }
+	
+	if(substr($link,-1) == '&'){ $link = substr($link,0,-1); }
+	return $link;
 }
 /*Obtem a URI atual da página ou rota*/
 function get_uri($query=true)

@@ -63,18 +63,22 @@ class LoginJWTController extends Controller
    }
 	
    /*Realiza o login e retorna um token JWT*/
-   public function Login()
+   public function login($login=null,$callback=null,$r=false)
    {
 	 $request = new Request;
 	 $jwt = new JWT;
 	 
-	 if($request->get('app_key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
+	 if($request->getHeader('App-Key') == NP_KEY_API && NP_ACTIVE_API == 'on'){
 	 
-	 $login = $request->getEmail('login');
+	 
+	 $login = is_null($login) ? $request->getEmail('login') : $login;
+	 
+	 
+	 
 	 $password = $request->getString('password','4:100');
      
 	 $request->setMessages([
-	  'login'=>'E-mail inválido!',
+	  'login'=>'Login inválido!',
 	  'password'=>'Senha inválido!'
 	 ]);
 	 
@@ -86,7 +90,13 @@ class LoginJWTController extends Controller
 			
 			$login['image'] = url($login['image']);
 			
-			return $jwt->login($login);
+			if(is_callable($callback))
+			{
+				$login = call_user_func($callback, $login); 	
+			}
+			
+		
+			return $jwt->login($login,$r);
 			
 		}else{
 			$jwt->setCode(401);

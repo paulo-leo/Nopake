@@ -1,7 +1,7 @@
 <?php
 return [
     'host'=>'localhost',
-    'name'=>'np2',
+    'name'=>'np2-teste',
     'user'=>'root',
 	'pass'=>'',
 	'sgbd'=>'mysql',

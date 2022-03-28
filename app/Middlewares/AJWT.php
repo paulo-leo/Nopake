@@ -18,7 +18,6 @@ class AJWT extends Middleware
 			return $jwt->response();
             exit;
 		}else{
-          
 		  $GLOBALS['ajwt'] = $jwt->all();
 		}
 	 }
