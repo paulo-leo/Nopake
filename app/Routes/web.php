@@ -9,7 +9,3 @@ use Nopadi\Http\Route;
 
 Route::get('*',function(){ return view('404'); });
 Route::get('/',function(){ return view('welcome'); });
-
-Route::get('teste',function(){ 
-    return view('teste'); 
-});

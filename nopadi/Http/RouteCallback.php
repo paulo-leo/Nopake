@@ -6,6 +6,13 @@ use Nopadi\Support\ServiceProvider;
 
 class RouteCallback
 {
+	private $stop = false;
+	
+	public function stop()
+	{
+		$this->stop = true;
+	}
+	
     public function before($middleware,$method='handle'){
 		 if(is_array($middleware)){
 			foreach($middleware as $val){
@@ -47,8 +54,10 @@ class RouteCallback
 
 				if($rc->isInstantiable() && $rc->hasMethod($method))
 				{
-					echo call_user_func_array(array(new $controller, $method), array_values($params));
-					
+					if(!$this->stop())
+					{
+					   echo call_user_func_array(array(new $controller, $method), array_values($params));
+					}
 				} else {
 
 					throw new \Exception("Nopadi: Erro ao execultar callback: controller não pode ser instanciado, ou método não exite");				

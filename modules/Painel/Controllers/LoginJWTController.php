@@ -16,7 +16,7 @@ class LoginJWTController extends Controller
    /*Realiza o cadastro de um novo usuário*/
    
    
-   public function Register()
+   public function register($callback=null)
    {
 	   $request = new Request;
 	   $jwt = new JWT;
@@ -43,11 +43,19 @@ class LoginJWTController extends Controller
 		   $user_id = Auth::create($data);
 		   
 		   if($user_id){
+			   
 			  $jwt->setCode(201);
 			  $jwt->setMessage('User_registered_successfully');
+			  
 			  $data = array(
 			  'user_id'=>$user_id
 			  );
+			  
+			  if(is_callable($callback))
+			  {
+				 $data = call_user_func($callback, $data); 	
+			  }
+			  
 			  return $jwt->response($data,true);  
 			   
 		   }else{

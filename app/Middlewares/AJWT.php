@@ -15,8 +15,8 @@ class AJWT extends Middleware
 		
 		if(!$jwt->auth())
 		{
-			return $jwt->response();
-            exit;
+			  echo $jwt->response();
+              exit;
 		}else{
 		  $GLOBALS['ajwt'] = $jwt->all();
 		}

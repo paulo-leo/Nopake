@@ -22,7 +22,7 @@ class Painel extends Module
 	   
 	   $login_jwt = array(
 	     'post:api/jwt/register'=>'Register',
-	     'post:api/jwt/login'=>'Login'
+	     'post:api/jwt/login'=>'login'
 	   );
 	   
 	   $register = array(
@@ -65,14 +65,7 @@ class Painel extends Module
 		   'post:dashboard/settings/modules'=>'update',
 		   'post:dashboard/settings/modules/update'=>'updateJson'
        );
-	   
-	   
-	   
-	   Route::get('api/teste',function(){
-		   
-		   json(['hello'=>'Chegou!']);
-		   
-	   },['middleware'=>['AJWT']]);
+	  
 	   
 	   /*
 	    Funções e permissões

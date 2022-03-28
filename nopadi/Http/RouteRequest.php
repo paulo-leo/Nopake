@@ -37,9 +37,16 @@ class RouteRequest extends RouteCollection
 					$execute = new RouteCallback();
 
 					$execute->before($middleware);
+					
+					if(http_response_code() == 401)
+					{ 
+					   $execute->stop();  $this->code = 401; 
+					}else{
+						$this->code = 200;
+					}
 
 					$execute->execute($callback, $namespace, $params);
-					$this->code = 200;
+					
 				}
 			}
 		}

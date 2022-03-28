@@ -173,7 +173,8 @@ class JWT
 		
 		if($header_code){ header("HTTP/1.1 {$array['code']} {$array['message']}"); }
 		
-		if($use_code){
+		if($use_code)
+		{
 			header("HTTP/1.1 {$this->code} {$this->message}");
 		}
 		
@@ -185,14 +186,12 @@ class JWT
     final public function auth($token=null)
     {
         $request = new Request;
+        
         if(is_null($token))
 		{
-           $token = $request->has('_authorization') ? $request->get('_authorization') : null;
-		}
-        
-        if(is_null($token)){
 	        $token = $request->getHeader('Authorization');
 		}
+
 
         if ($token) {
 
