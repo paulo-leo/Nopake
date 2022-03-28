@@ -2,7 +2,8 @@
    "info":"nopadi/CLI/info.php",
    "create":"nopadi/CLI/create.php",
    "mvc":"nopadi/CLI/mvc.php",
-   "make":"nopadi/CLI/make.php"
+   "make":"nopadi/CLI/make.php",
+   "cdn":"nopadi/CLI/cdn.php"
 }
 
 
