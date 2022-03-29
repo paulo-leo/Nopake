@@ -1,47 +1,9 @@
-!{include 'header'}
-
-!{if}
-
-!{/if}
-
-<h1>{{NP_NAME | strtoupper }}</h1>
-
-{php}
-
-  function xxx()
-  {
-     return "<a href='xxxx'>Link</a>";
-  }
-
-{/php}  
-
-
-{!xxx()!}
-
-
-
-{template ola}
-  
-   return "<h1>Hello Wold!</h1>";
-
-{/template}
-
-{{$h}}
-
-
-{component 'ola'}
+{cdn.css ['bootstrap']}
 
 
 !{csrf_field}
 !{csrf_token}
 
-
-
-{cdn.js [
-'xxx'
-]}
- 
-{cdn.css []}
 
 
 

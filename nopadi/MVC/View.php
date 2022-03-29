@@ -534,8 +534,11 @@ class View extends Translation
 
 	private function phpVH($file)
 	{
-      
-         
+         $cdnjs = "/{cdn\.js ({$this->all})}/simU";
+		 $file = preg_replace($cdnjs, "<?php echo \$this->importCDN('js',$1); ?>", $file);
+		 
+		 $cdncss = "/{cdn\.css ({$this->all})}/simU";
+		 $file = preg_replace($cdncss, "<?php echo \$this->importCDN('css',$1); ?>", $file);
 
 		/*Include de templates*/
 		$import = "/{import ({$this->all})}/simU";
@@ -571,7 +574,8 @@ class View extends Translation
 		return $file;
 	  }
 
-
+      
+       
 	  private function forVH($file)
 	  {  
         /*If, ElseIf, Else e Switch*/
@@ -611,10 +615,34 @@ class View extends Translation
 		
 		return $file;
 	 }
-
+     
+	 public function importCDN($path,$files)
+	 {
+		 $files = is_string($files) ? array($files) : $files;
+		 $cdns = null;
+		 foreach($files as $file)
+		 {
+			$file = str_ireplace('.js','',$file);
+			$file = str_ireplace('.css','',$file);
+			
+			if($path == 'js')
+			{
+				$file = asset("cdn/js/{$file}.js");
+				$cdns .= "<script src=\"{$file}\"></script>\n";
+			}elseif($path == 'css')
+			{
+				$file = asset("cdn/css/{$file}.css"); 
+				$cdns .= "<link href=\"{$file}\" rel=\"stylesheet\">\n";
+			}else{
+				
+			}
+		 }
+		 return $cdns;
+	 }
+	 
 	/*Transforma tudo em algo legivel para o PHP*/
 	public function transformVH($content)
-	{
+	{		
 		$content = $this->templateVH($content);
 		
 		$content = str_ireplace('!{', '___x__xx__xx', $content);
