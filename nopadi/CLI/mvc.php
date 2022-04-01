@@ -130,19 +130,7 @@ if(substr($arg1,0,1) == '@')
     
         }
       }
-
    }
-
-}else{
-
-
-   if($arg1 == 'controller')
-   {
-
-     echo $arg2;
-
-   }
-
 }
 
 ?>

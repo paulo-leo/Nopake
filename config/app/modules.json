@@ -62,5 +62,21 @@
         "parent": "",
         "color": "info",
         "icon": "book"
+    },
+    "Admin": {
+        "name": "Painel administrativo",
+        "description": "Painel de Controle para administrax27xx17xo de aplicativos e usux16xrios.",
+        "author": "Paulo Leonardo",
+        "status": "active",
+        "version": "0.1",
+        "license": "MIT",
+        "require": [
+            "php7"
+        ],
+        "url": "www.nopake.com",
+        "route": "admin/dashboard",
+        "parent": "",
+        "color": "info",
+        "icon": "dashboard"
     }
 }

@@ -1441,18 +1441,21 @@ function str_url($strTitle, $ignorePonto = true)
 
 	if ($ignorePonto == true) $strTitle = str_ireplace($arrEncontrar, $arrSubstituir, $strTitle);
 
-	/* Caracteres minúsculos */
-	$strTitle = strtolower($strTitle);
 	/* Remove os acentos */
 	$acentos = array("á", "Á", "ã", "Ã", "â", "Â", "à", "À", "é", "É", "ê", "Ê", "è", "È", "í", "Í", "ó", "Ó", "õ", "Õ", "ò", "Ò", "ô", "Ô", "ú", "Ú", "ù", "Ù", "û", "Û", "ç", "Ç", "º", "ª");
 	$letras = array("a", "A", "a", "A", "a", "A", "a", "A", "e", "E", "e", "E", "e", "E", "i", "I", "o", "O", "o", "O", "o", "O", "o", "O", "u", "U", "u", "U", "u", "U", "c", "C", "o", "a");
 	$strTitle = str_ireplace($acentos, $letras, $strTitle);
-	$strTitle = preg_replace("/[^a-zA-Z0-9._$, ]/", "", $strTitle);
+	
 	$strTitle = iconv("UTF-8", "UTF-8//TRANSLIT", $strTitle);
 	/* Remove espaços em branco*/
 	$strTitle = strip_tags(trim($strTitle));
 	$strTitle = str_ireplace(" ", "-", $strTitle);
+	$strTitle = str_ireplace(array("_____", "____", "___", "__"), "_", $strTitle);
 	$strTitle = str_ireplace(array("-----", "----", "---", "--"), "-", $strTitle);
+	
+	/* Caracteres minúsculos */
+	$strTitle = strtolower($strTitle);
+	
 	return $strTitle;
 }
 function to_datetime($string,$final=true){
@@ -1510,7 +1513,23 @@ function validate_cpf($cpf) {
         }
     }
     return true;
-
+}
+/*Retira as máscara/formatação de uma string*/
+function not_mask($str)
+{
+	$str = str_ireplace(' ','',$str);
+	$str = str_ireplace('.','',$str);
+	$str = str_ireplace(':','',$str);
+	$str = str_ireplace('|','',$str);
+	$str = str_ireplace(',','',$str);
+	$str = str_ireplace(';','',$str);
+	$str = str_ireplace(']','',$str);
+	$str = str_ireplace('[','',$str);
+	$str = str_ireplace('\\','',$str);
+	$str = str_ireplace('/','',$str);
+	$str = str_ireplace('-','',$str);
+	$str = str_ireplace('_','',$str);
+	return trim($str);
 }
 
 /*Validar CNPJ*/

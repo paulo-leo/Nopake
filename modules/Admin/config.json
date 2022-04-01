@@ -1,0 +1,12 @@
+{
+        "name": "Painel administrativo",
+        "description": "Painel de Controle para administração de aplicativos e usuários.",
+        "version": "0.1",
+		"author": "Paulo Leonardo",
+        "license": "MIT",
+        "require": ["php7"],
+        "url": "www.nopake.com",
+		"icon": "dashboard",
+		"color":"info",
+		"route":"admin/dashboard"		
+}
