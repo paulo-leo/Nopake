@@ -44,14 +44,14 @@ function contains($str,$search,$i=false)
 	$i = $i ? null : 'i';
 	return (preg_match("/{$search}/{$i}", $str)) ? true : false;
 }
-
+/*Define permissões de usuário para um aplicativo*/
 function permission($permissions)
 {
 	$permissions = !is_array($permissions) ? array($permissions) : $permissions;
 	$GLOBALS['np_permissions'] = $permissions;
 }
 
-/*Acesso do usuário via permissões*/
+/*Dá acesso ao usuário caso ele tenha permissões*/
 function access($permissions=null)
 {
 	$check = false;
@@ -84,7 +84,7 @@ function access($permissions=null)
 }
 
 
-/*Renderiza um componet*/
+/*Renderiza um componente dentro de um template*/
 function component($component,$scope=null)
 {
 		  $component = 'np_'.str_ireplace('-','_',$component);
@@ -481,7 +481,7 @@ function get_info_modules($statusx='active')
 	return $menus;
 }
 
-/*Função para concatenat texto para exportação em PDF*/
+/*Função para concatenar texto para exportação em PDF*/
 function np_pdf_start(){
 	if(!isset($_SESSION)) session_start();
 	if(!isset($_SESSION['np_pdf_export'])) $_SESSION['np_pdf_export'] = array();
@@ -493,7 +493,7 @@ function np_pdf_set($key,$value=null){
 		$_SESSION['np_pdf_export'][$key] = $value;
 	}
 }
-
+/*Transofma string do tipo date em um inteiro*/
 function intdate($date=null)
 {
    $date = is_null($date) ? date('Ymd') : $date;
@@ -639,7 +639,7 @@ function get_instance()
 	return $GLOBALS['np_instance_of_request'];
 }
 
-/*Função para retornar todos os índices de request. Se infomado uma chave, a função só retonará a chave informada no parametro*/
+/*Função para retornar todos os índices de request. Se informado uma chave, a função só retornará a chave informada no parâmetro.*/
 function request($key = null)
 {
 	return is_null($key) ? get_instance()->all() : get_instance()->get($key);
@@ -1432,6 +1432,55 @@ function revert_utf8($string,$r=false)
   	return $string;
 }
 
+
+/*Transforma um id inteiro em código de letras fixo: OBS o número deve ser inteiro sem zero na frente*/
+function id_to_code($code,$size=10)
+{
+	$code = (int) $code;
+	$size_code = strlen($code);
+	$zero_total =  $size - $size_code;
+	$code = $code.'j'.str_repeat("0",$zero_total);
+	
+	$n = array('0','1','2','3','4','5','6','7','8','9');
+	$l = array('f','g','b','z','h','s','w','q','n','k');
+	
+	$code = str_ireplace($n,$l,$code);
+	return strtoupper($code);	
+}
+
+/*Transforma um "id code" em inteiro*/
+function code_to_id($code)
+{
+	$code = strtoupper($code);
+	$code = explode('J',$code);
+	$code = $code[0];
+	$l = array('f','g','b','z','h','s','w','q','n','k');
+	$n = array('0','1','2','3','4','5','6','7','8','9');
+	$code = str_ireplace($l,$n,$code);
+	return (int) $code;	
+}
+
+/*Transforma em código para chaves em caracteres especiais*/
+function str_code($strTitle,$m=false)
+{
+	 $acentos = array("á", "Á", "ã", "Ã", "â", "Â", "à", "À", "é", "É", "ê", "Ê", "è", "È", "í", "Í", "ó", "Ó", "õ", "Õ", "ò", "Ò", "ô", "Ô", "ú", "Ú", "ù", "Ù", "û", "Û", "ç", "Ç", "º", "ª");
+	 $letras = array("a", "A", "a", "A", "a", "A", "a", "A", "e", "E", "e", "E", "e", "E", "i", "I", "o", "O", "o", "O", "o", "O", "o", "O", "u", "U", "u", "U", "u", "U", "c", "C", "o", "a");
+	 
+	  $strTitle = str_ireplace($acentos, $letras, $strTitle);
+	 
+	  $strTitle = str_ireplace(' ','-', $strTitle);
+	  $strTitle = str_ireplace('  ','-', $strTitle);
+	  $strTitle = str_ireplace('-_','-', $strTitle);
+	  $strTitle = str_ireplace('_-','_', $strTitle);
+	  $strTitle = str_ireplace('__','_', $strTitle);
+	  $strTitle = str_ireplace('___','_', $strTitle);
+	  $strTitle = str_ireplace('--','-', $strTitle);
+	  $strTitle = str_ireplace('---','-', $strTitle);
+	  
+	  return $m ? strtoupper($strTitle) : strtolower($strTitle);
+}
+
+
 /*Transforma uma string comum no formato URL*/
 function str_url($strTitle, $ignorePonto = true)
 {
@@ -1441,23 +1490,21 @@ function str_url($strTitle, $ignorePonto = true)
 
 	if ($ignorePonto == true) $strTitle = str_ireplace($arrEncontrar, $arrSubstituir, $strTitle);
 
+	/* Caracteres minúsculos */
+	$strTitle = strtolower($strTitle);
 	/* Remove os acentos */
 	$acentos = array("á", "Á", "ã", "Ã", "â", "Â", "à", "À", "é", "É", "ê", "Ê", "è", "È", "í", "Í", "ó", "Ó", "õ", "Õ", "ò", "Ò", "ô", "Ô", "ú", "Ú", "ù", "Ù", "û", "Û", "ç", "Ç", "º", "ª");
 	$letras = array("a", "A", "a", "A", "a", "A", "a", "A", "e", "E", "e", "E", "e", "E", "i", "I", "o", "O", "o", "O", "o", "O", "o", "O", "u", "U", "u", "U", "u", "U", "c", "C", "o", "a");
 	$strTitle = str_ireplace($acentos, $letras, $strTitle);
-	
+	$strTitle = preg_replace("/[^a-zA-Z0-9._$, ]/", "", $strTitle);
 	$strTitle = iconv("UTF-8", "UTF-8//TRANSLIT", $strTitle);
 	/* Remove espaços em branco*/
 	$strTitle = strip_tags(trim($strTitle));
 	$strTitle = str_ireplace(" ", "-", $strTitle);
-	$strTitle = str_ireplace(array("_____", "____", "___", "__"), "_", $strTitle);
 	$strTitle = str_ireplace(array("-----", "----", "---", "--"), "-", $strTitle);
-	
-	/* Caracteres minúsculos */
-	$strTitle = strtolower($strTitle);
-	
 	return $strTitle;
 }
+
 function to_datetime($string,$final=true){
 	if(strlen($string) == 10)
 	{
