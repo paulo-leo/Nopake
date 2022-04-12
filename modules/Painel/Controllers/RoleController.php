@@ -119,7 +119,7 @@ class RoleController extends Controller
 
 	$name = $request->get('name');
 	$description = $request->get('description');
-	$key = str_url($name);
+	$key = str_to_code($name);
 	
 	if(strlen($name) >= 2){
 		
@@ -155,7 +155,7 @@ class RoleController extends Controller
 
 	$key = $request->get('key');
 	$description = $request->get('description');
-	$key = str_url($key);
+	$key = str_to_code($key);
 	
 	if(strlen($key) >= 2){
 		

@@ -22,6 +22,19 @@ $GLOBALS['np_instance_of_json_mods'] = new Json('config/app/modules.json');
 $GLOBALS['np_instance_of_request'] = new Request;
 $GLOBALS['np_instance_of_translater'] = new Translation;
 
+
+function gets($name=null,$value=null)
+{
+    $values= null;
+	if(!is_null($name))
+	{
+		$values = isset($_GET[$name]) ? $_GET[$name] : $value;
+	}else{
+		$values = $_GET;
+	}
+	return $values;
+}
+
 if(!function_exists('getallheaders'))
 {
        function getallheaders()
@@ -1461,7 +1474,7 @@ function code_to_id($code)
 }
 
 /*Transforma em código para chaves em caracteres especiais*/
-function str_code($strTitle,$m=false)
+function str_to_code($strTitle,$m=false)
 {
 	 $acentos = array("á", "Á", "ã", "Ã", "â", "Â", "à", "À", "é", "É", "ê", "Ê", "è", "È", "í", "Í", "ó", "Ó", "õ", "Õ", "ò", "Ò", "ô", "Ô", "ú", "Ú", "ù", "Ù", "û", "Û", "ç", "Ç", "º", "ª");
 	 $letras = array("a", "A", "a", "A", "a", "A", "a", "A", "e", "E", "e", "E", "e", "E", "i", "I", "o", "O", "o", "O", "o", "O", "o", "O", "u", "U", "u", "U", "u", "U", "c", "C", "o", "a");

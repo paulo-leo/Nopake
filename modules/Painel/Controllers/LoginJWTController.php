@@ -14,8 +14,6 @@ class LoginJWTController extends Controller
 {
   
    /*Realiza o cadastro de um novo usuário*/
-   
-   
    public function register($callback=null)
    {
 	   $request = new Request;
@@ -121,8 +119,3 @@ class LoginJWTController extends Controller
 	 }
    }
 } 
-
-
-
-
-

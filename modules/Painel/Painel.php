@@ -22,7 +22,7 @@ class Painel extends Module
 	   
 	   $login_jwt = array(
 	     'post:api/jwt/register'=>'Register',
-	     'post:api/jwt/login'=>'login'
+	     'post:api/jwt/login'=>'Login'
 	   );
 	   
 	   $register = array(
@@ -65,7 +65,7 @@ class Painel extends Module
 		   'post:dashboard/settings/modules'=>'update',
 		   'post:dashboard/settings/modules/update'=>'updateJson'
        );
-	  
+	   
 	   
 	   /*
 	    Funções e permissões
