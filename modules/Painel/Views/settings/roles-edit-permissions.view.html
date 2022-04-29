@@ -1,4 +1,7 @@
 @include("@Painel/Views/header")
+<style>
+.cursor-pointer > input:hover{ cursor:pointer }
+</style>
 
 {{form.header([
   'title'=>'Atualizar permissões para a função de <b class="text-danger">'.$name.'</b>',

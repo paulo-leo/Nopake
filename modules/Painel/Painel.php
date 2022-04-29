@@ -77,7 +77,8 @@ class Painel extends Module
 		   'post:dashboard/settings/permissions/create'=>'rolePermissionsStore',
 		   'get:dashboard/settings/roles'=>'index',
 		   'get:dashboard/settings/roles/edit/permissions'=>'roleEditPermissions',
-		   'post:dashboard/settings/roles/update/permissions'=>'roleUpdatePermissions'
+		   'post:dashboard/settings/roles/update/permissions'=>'roleUpdatePermissions',
+		   'post:dashboard/settings/roles/delete'=>'removeRole'
        );
 	   
 	   $access = array(
@@ -86,7 +87,8 @@ class Painel extends Module
 
        $permissions = array(
 		'dashboard/settings/permissions/create'=>'create',
-		'dashboard/settings/permissions'=>'getPermissions'
+		'dashboard/settings/permissions'=>'getPermissions',
+		'post:dashboard/settings/permissions/remove'=>'remove'
 	   );
 
 

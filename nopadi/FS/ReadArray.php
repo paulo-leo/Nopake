@@ -71,6 +71,12 @@ class ReadArray
 	  }
   }
   
+  
+  public function getKeys()
+  {
+	  return array_keys($this->arr);
+  }
+  
   /*Retorna um valor por meio da chave especifica*/
   public function get($key,$default=null){
 	  
@@ -124,9 +130,3 @@ class ReadArray
 	  return file_put_contents($filename,$data,FILE_TEXT); 
   }
 }
-
-
-
-
-
-

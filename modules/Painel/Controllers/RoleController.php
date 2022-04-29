@@ -7,6 +7,7 @@ use Nopadi\Http\Request;
 use Nopadi\Support\ACL;
 use Nopadi\MVC\Controller;
 use Nopadi\FS\ReadArray;
+use Modules\Painel\Models\UserModel;
 
 class RoleController extends Controller
 {
@@ -23,6 +24,40 @@ class RoleController extends Controller
 	   $this->roles = $this->instance->gets();  
    }
 
+   /*Apaga um role*/
+   public function removeRole()
+   {
+	   $request = new Request;
+	   $role = $request->get('role');
+	   $no = array('admin','edit','author','subscriber','collaborator');
+	   
+	   if(!in_array(strtolower($role),$no))
+	   {
+		 
+		  if($this->instance->exists_key($role))
+		  {
+
+			$user = new UserModel;
+			
+			$user->where('role',$role)
+			->update(['role'=>'subscriber']);
+            
+             $this->instance->del($role);
+			 $this->instance->save();
+             
+			 return alert('Função de usuário excluída permanentemente do sistema. Todos os usuários vinculados a essa função foram atualizados para usuários com funções de assinantes (subscriber). ','success');
+
+		  }else
+		  {
+			return alert('Chave de função não localizada.','danger');
+		  }
+ 
+		 
+	   }else{
+		   return alert('Essa função não pode ser excluída, pois é uma função nativa do sistema.','danger'); 
+	   }
+	   
+   }
 
    public function getRoles()
    {
@@ -65,10 +100,10 @@ class RoleController extends Controller
 		   $checked = $acl->check($key,$role) ? 'checked="checked"' : " ";
 		   
 		    $form .= "
-			<div class='form-check form-switch'>
-             <label>
+			<div class='form-check form-switch card m-2'>
+             <label class='p-2 cursor-pointer'>
               <input type='checkbox' name='perm[]' value='{$key}' class='form-check-input' role='switch' id='{$key}' {$checked}/>
-             <label class='form-check-label' for='{$key}'>{$val}</label>
+             <label class='form-check-label' for='{$key}'><b class='badge bg-primary'>{$key}</b> {$val}</label>
             </div>";
 			
 	   }
@@ -81,6 +116,7 @@ class RoleController extends Controller
       return view('@Painel/Views/settings/roles-edit-permissions',$data);
 
    }
+   
   public function roleUpdatePermissions()
   {
 	  

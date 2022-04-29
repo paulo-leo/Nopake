@@ -22,7 +22,7 @@ class LoginController extends Controller
    /*Faz o login do usuário*/
    public function login()
    {
-        Auth::post();
+      Auth::post();
 	    return Auth::status();
    }
    
@@ -30,6 +30,6 @@ class LoginController extends Controller
    public function logout()
    {
      if(Auth::destroy())
-	 return view("@Painel/Views/login",['logout'=>true]); 
+	   return view("@Painel/Views/login",['logout'=>true]); 
    }
 } 

@@ -198,14 +198,33 @@ class UserController extends Controller
    {
 	   $request = new Request();
 	   
-	   $id = $request->get('id');
-	   $values = $request->all('id');
+	   $id = $request->get('id');	   
+	   $email = $request->getEmail('email');
+	   $name = $request->getString('name','5:50');
+	   $status = $request->get('status');
+	   $role = $request->getString('role','3:50');
 	   
-	   $query = UserModel::model()->update($values,$id);
+	   $request->setMessages([
+	   'name'=>'O nome do usuário deve conter entre 5 e 50 caracteres'
+	   ]);
 	   
-	   if($query) hello(alert(':user.update.success','success'));
-	   else hello(alert(':user.update.error','danger'));
-	   
+	   $values = array(
+	     'email'=>$email,
+	     'name'=>$name,
+	     'status'=>$status,
+	     'role'=>$role
+	   );
+	   if($request->checkError())
+	   {
+		  $query = UserModel::model()->update($values,$id);
+		  if($query)return alert(':user.update.success','success');
+	      else return alert(':user.update.error','danger');
+		  
+	   }else
+	   {
+		  return alert($request->getMessages(true),'danger'); 
+	   }
+	  
    }
    
    /*Atuliza senha do usuário*/

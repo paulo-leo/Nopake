@@ -76,6 +76,10 @@ function access($permissions=null)
       $file = 'config/access/access.php';
 	  $access = new ReadArray($file);
 	  $access = $access->get($role,false);
+	  
+	  
+	  
+	  
 	   if($access)
 	   {
 		 if(is_null($permissions) && isset($GLOBALS['np_permissions']))
@@ -83,16 +87,22 @@ function access($permissions=null)
 		   $permissions = $GLOBALS['np_permissions'];
 	     }
 		 
+		$permissions = is_string($permissions) ? array($permissions) : $permissions;
+		$permissions = is_null($permissions) ? array() : $permissions;
+		
+		$qtd = 0;
 		foreach($permissions as $permission)
 		{
 			if(in_array($permission,$access))
 			{
-				$check = true;
-				break;
+				$qtd++;
 			}
-		  }
+		 }
+		 
+		  $check = $qtd > 0 ? true : false;
 	   }
 	}
+	
 	return $check;
 }
 
@@ -1479,6 +1489,7 @@ function str_to_code($strTitle,$m=false)
 	 $acentos = array("á", "Á", "ã", "Ã", "â", "Â", "à", "À", "é", "É", "ê", "Ê", "è", "È", "í", "Í", "ó", "Ó", "õ", "Õ", "ò", "Ò", "ô", "Ô", "ú", "Ú", "ù", "Ù", "û", "Û", "ç", "Ç", "º", "ª");
 	 $letras = array("a", "A", "a", "A", "a", "A", "a", "A", "e", "E", "e", "E", "e", "E", "i", "I", "o", "O", "o", "O", "o", "O", "o", "O", "u", "U", "u", "U", "u", "U", "c", "C", "o", "a");
 	 
+	  $strTitle = trim($strTitle);
 	  $strTitle = str_ireplace($acentos, $letras, $strTitle);
 	 
 	  $strTitle = str_ireplace(' ','-', $strTitle);

@@ -11,17 +11,22 @@
 <tr>
 <th>Nome</th> 
 <th>Descrição</th>
+<td><i class='material-icons black-text'>delete</i></td>
 <td><i class='material-icons black-text'>lock</i></td>
 </tr>
 	  
 @php
 	  $table = null;
+	  $no = array('admin','edit','author','subscriber','collaborator');
+
 	  foreach($roles as $key=>$val)
 	  {
+		$class_bg = in_array(strtolower($key),$no) ? 'bg-danger' : 'bg-primary';
 	     $url = url('dashboard/settings/roles/edit/permissions?role='.$key.'&name='.$val['name']);
-		 $table .= "<tr>"; 
-		        $table .= "<td>".revert_utf8($val['name'],true)."</td>";  
+		 $table .= "<tr class='np-permi-{$key}'>"; 
+		        $table .= "<td>".revert_utf8($val['name'],true)." <b class='badge {$class_bg}'>".$key."</b></td>";  
 				$table .= "<td>".revert_utf8($val['description'],true)."</td>"; 
+				$table .= "<td><a href='#' id='{$key}' class='btn-delete'><i class='material-icons text-danger'>delete</i></a></td>"; 
 				if($key != 'admin'){
 				$table .= "<td>
 				 <a href='{$url}' class='text-success'><i class='material-icons grey-text'>add_moderator</i></a></td>";
@@ -44,3 +49,53 @@
        @endgrid
            @endgrid
 @include("@Painel/Views/footer")
+
+
+
+<script>
+$(function(){
+
+ $(".btn-delete").click(function(){
+ 
+    let role = $(this).attr("id");
+	
+	
+	 swal({
+       title: "Excluir função?",
+       text: "Ao excluir essa função ("+role+") todos os usuários vinculados a ela serão automaticamente atualizados para função de assinante. Essa ação não poderá ser desfeita.",
+       iconx: "warning",
+       buttons: true,
+       dangerMode: true,
+    }).then((willDelete) => {
+      if(willDelete) {
+    
+	    $.ajax({
+		 data:{role:role,_token:"{{csrf_token()}}"},
+		 url:"{{url('dashboard/settings/roles/delete')}}",
+		 method:"post",
+		 dataType: 'json',
+		 success:function(data){
+		     swal({
+			    text:data.msg,
+				icon: data.type
+			 });
+			 
+			 if(data.type == 'success')
+			 {
+			    $('.np-permi-'+role).hide('slow');
+			 }
+		 }
+		});
+	
+	
+    }
+  });
+	
+	
+	
+ 
+ });
+
+});
+</script>
+

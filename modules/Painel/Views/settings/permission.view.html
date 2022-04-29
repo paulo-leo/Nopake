@@ -11,8 +11,13 @@
 </thead>
 <tbody>
 @foreach($permissions as $key=>$val)
-<tr>
-<td><i class="material-icons">key</i>{{revert_utf8($key,true)}}</td>
+<tr class="np-permi-{{revert_utf8($key,true)}}">
+<td><h5><b class="badge bg-primary">{{revert_utf8($key,true)}}</b></h5>
+<button id="{{revert_utf8($key,true)}}" class="btn my-2 btn-sm btn-outline-primary btn-copy">Copiar</button>
+
+<button id="{{revert_utf8($key,true)}}" class="btn my-2 btn-sm btn-outline-danger btn-remove">Excluir</button>
+
+</td>
 <td>{{revert_utf8($val,true)}}</td>
 </tr>
 @endforeach
@@ -20,3 +25,67 @@
 </table>
 </div>
 @include("@Painel/Views/footer")
+
+
+<script>
+$(function(){
+
+ $(".btn-copy").click(function(){
+    
+	  let key = $(this).attr("id");
+	  navigator.clipboard.writeText(key);
+	  
+	  $(".btn-copy").text("Copiar");
+	  $(".btn-copy").removeClass("btn-success");
+	  $(".btn-copy").addClass("btn-outline-primary");
+	  
+	  $(this).text("Chave copiada...");
+	  $(this).removeClass("btn-outline-primary");
+	  $(this).addClass("btn-success");
+	  
+ 
+ });
+ 
+ $(".btn-remove").click(function(){
+ 
+    let key = $(this).attr("id");
+	
+	 swal({
+       title: "Excluir permissão",
+       text: "A permissão  de chave: "+key+" será removida permanentemente do sistema. Sendo necessário recadastrará novamente. ",
+       iconx: "warning",
+       buttons: true,
+       dangerMode: true,
+    }).then((willDelete) => {
+      if(willDelete) {
+    
+	    $.ajax({
+		 data:{key:key,_token:"{{csrf_token()}}"},
+		 url:"{{url('dashboard/settings/permissions/remove')}}",
+		 method:"post",
+		 dataType: 'json',
+		 success:function(data){
+		     swal({
+			    text:data.msg,
+				icon: data.type
+			 });
+			 
+			 if(data.type == 'success')
+			 {
+			    $('.np-permi-'+key).hide('slow');
+			 }
+		 }
+		});
+	
+	
+    }
+  });
+ 
+ });
+
+});
+</script>
+
+
+
+
