@@ -1,0 +1,42 @@
+@painel_header()
+
+@php
+    /*Função para formatação do status numérico para texto*/
+     function format_status($status)
+    {
+        return $status == 1 ? '<strong class="text-success">Ativo</strong>' : '<strong class="text-danger">Inativo</strong>';
+    }  
+@endphp
+
+{!painel_title('Tomador - '.$find->nome.' (<small>cod. '.$find->codigo.'</small>) ', [   
+   '#np-btn-pdf'=>'Exportar em PDF',
+   '#np-btn-xls'=>'Exportar em XLS'
+])!}
+
+@grid('container-fluid px-5 np-scroll')
+
+	@grid('1')
+		{!painel_view([
+			'Nome'=>$find->nome,
+			'CNPJ'=>$find->cnpj,
+			'Status'=>format_status($find->status),
+			'Valor Mensal'=>format_money($find->valor_mensal),
+			'Valido até'=>$find->valido_ate,
+			'Limite de funcionarios'=>$find->limite_funcionarios,
+            'Descrição'=>$find->descricao,
+            'Benefício Salarial'=>format_status($find->salario_status),
+            'Benefício Vale Diaria'=>format_status($find->diaria_status),
+            'Benefício Férias'=>format_status($find->ferias_status),
+            'Benefício Vale Transporte'=>format_status($find->vt_status),
+            'Benefício Vale Alimentação'=>format_status($find->va_status),
+            'Benefício Vale Refeição'=>format_status($find->vr_status),
+            'Benefício Vale Rescisão'=>format_status($find->rescisao_status),
+            'Benefício Vale FGTS'=>format_status($find->fgts_status),            
+            'Criado por'=>$find->created_by,
+            'Ultima vez atualizado por'=>$find->updated_by         
+		])!}
+	@endgrid	
+		
+@endgrid
+
+@painel_footer()

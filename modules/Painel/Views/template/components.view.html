@@ -74,10 +74,12 @@ $help = isset($help) ? $help : false;
 $min = isset($min) ? $min : null;
 $max = isset($max) ? $max : null;
 $required = isset($required) && is_bool($required) && $required == true ? 'required' : null;
+$disabled = isset($disabled) && is_bool($disabled) && $disabled == true ? 'disabled' : null;
 $placeholder = isset($placeholder) ? $placeholder : null;
 
 $html = "<label for='id-{$name}' class='form-label'>$text</label>
-<input type='{$type}' name='{$name}' class='form-control' id='id-{$name}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required}>";
+<input type='{$type}' name='{$name}' class='form-control' id='id-{$name}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required} {$disabled}>";
+
 
 if($help) $html .= "<div id='help-{$name}' class='form-text'>$help</div>";
 
@@ -231,6 +233,10 @@ $btns = isset($btns) ? $btns : null;
 $modal_content = isset($modal_content) ? $modal_content : null;
 $title_modal = isset($title_modal) ? $title_modal : null;
 
+$btns_person = isset($btns_person) ? $btns_person : null;
+
+$btns = $btns_person ? ['x'=>'y'] : $btns;
+
     if(is_string($scope)){ $title = $scope; }
 
     set_var('np_table_title',$title);
@@ -286,7 +292,9 @@ $title_modal = isset($title_modal) ? $title_modal : null;
 		      $btn_item .= "<li><a target='{$target}' id='{$id}' class='dropdown-item' href='{$url}'>{$text}</a></li>";
 			} 
 		 }
-              
+          
+         $btn_item = $btns_person ? $btns_person : $btn_item;
+		 
          $html .= "<ul class='dropdown-menu' aria-labelledby='dropdownMenuLink'>
 		            {$btn_item}
                 </ul>

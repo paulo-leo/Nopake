@@ -1,0 +1,83 @@
+@include('@Dpfin/Views/header')
+<div class="row p-4 np-scroll">
+
+<div class="col-4">
+    <div class="card p-4">
+      <div class="card-content">
+        <h3>Importação de folha em lote</h3>
+		  <p>Importação de pagamentos em lote são todos os relatórios de pagamentos onde cada funcionário no relatório irá gerar um título de pagamento independente para rastreabilidade e controle.</p>
+         <a href="{{url('dpfin/folha/import?type=2')}}" class="btn btn-primary">Folha</a>
+		 <a href="{{url('dpfin/folha')}}" class="btn btn-primary">Listagem</a>
+      </div>
+    </div>
+</div>
+
+
+    <div class="col-4">
+      <div class="card p-4">
+        <div class="card-content">
+          <h3>Importação de benefícios em lote</h3>
+          <p>Importação de benefícios em lote são todos os relatórios de pagamentos onde cada funcionário no relatório irá gerar um título de pagamento independente para rastreabilidade e controle.</p>
+        </div>
+        <div class="card-action">
+          <a href="{{url('dpfin/folha/import?type=3')}}" class="btn btn-primary">VT</a>
+          <a href="{{url('dpfin/folha/import?type=4')}}" class="btn btn-primary">VA</a>
+          <a href="{{url('dpfin/folha/import?type=5')}}" class="btn btn-primary">VR</a>
+          <a href="{{url('dpfin/folha')}}" class="btn btn-primary">Listagem</a>
+        </div>
+      </div>
+    </div>
+
+	
+  	<div class="col-4">
+      <div class="card p-4 bg-info">
+        <div class="card-content">
+          <h3>Registrar diárias</h3>
+          <p>O registro de diárias é uma forma de manter o controle e a segurança dos dados enviados para o departamento de pessoal, uma vez que os dados serão centralizados. </p>
+        </div>
+        <div class="card-action">
+         <a href="{{url('dpfin/diaria/create')}}" class="btn btn-outline-primary">Registrar</a>
+         <a href="{{url('dpfin/diaria')}}" class="btn btn-outline-primary">Listar</a>
+        </div>
+      </div>
+    </div>
+
+ <div class="col-12 dropdown-divider"></div>
+
+ <div class="col-4">
+      <div class="card p-4">
+        <div class="card-content">
+          <h4>Rescisão</h4>
+        </div>
+        <div class="card-action">
+          <a href="{{url('dpfin/payment_title')}}" class="btn btn-sm btn-outline-primary">Adicionar</a>
+      </div>
+    </div>
+ </div>
+ 
+ 
+  <div class="col-4">
+      <div class="card p-4">
+        <div class="card-content">
+          <h4>Férias</h4>
+        </div>
+        <div class="card-action">
+          <a href="{{url('dpfin/payment_title')}}" class="btn btn-sm btn-outline-primary">Adicionar</a>
+      </div>
+    </div>
+ </div>
+
+  <div class="col-4">
+      <div class="card p-4">
+        <div class="card-content">
+          <h4>FGTS</h4>
+        </div>
+        <div class="card-action">
+		     <a href="{{url('dpfin/payment_title')}}" class="btn btn-sm btn-outline-primary">Adicionar</a>
+      </div>
+    </div>
+ </div>
+
+</div>
+
+@painel_footer()

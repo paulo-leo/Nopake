@@ -1,0 +1,27 @@
+@include('@Dpfin/Views/header')
+
+{!painel_title('Tomadores', [
+   '#np-btn-pdf'=>'Exportar em PDF',
+   '#np-btn-xls'=>'Exportar em XLS'
+])!}
+
+<div class="np-scroll bg-default container-fluid p-3 col-md-12 col-sm-12">
+   
+   <div class="card small-round mb-4 mx-2">       
+      <table class="table mb-1">
+         {!painel_table(['code|!Codigo', 'name|!Nome', 'status|!Situação', 'cpf_cnpj|!CNPJ'],$list,
+         ['edit'=>true,
+         'view'=>true,
+         'delete'=>true],
+         ['status'=>function($data){
+            $status = $data['status'];
+
+            return $status == 1 ? '<strong class="text-success">Ativo</strong>':'<strong class="text-danger">Inativo</strong>';
+         }])!}
+      </table>
+      {!format_next($list)!}
+   </div>
+
+</div>
+
+@painel_footer()

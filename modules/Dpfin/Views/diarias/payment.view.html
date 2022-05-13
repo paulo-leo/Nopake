@@ -1,0 +1,105 @@
+@include('@Dpfin/Views/header')
+
+{!painel_title('Gerar composição de pagamento de diárias')!}
+
+<div class="np-scroll bg-default container-fluid p-3 col-md-12 col-sm-12">
+  
+<div class="card py-2">
+<form class="row g-3" id="form-payment" action="{{url('dpfin/diaria/payment')}}" method="POST">
+  {{csrf_field()}}
+  
+  <div class="col-auto">
+  
+  </div>
+
+  <div class="col-3">
+    {{form.select(['name'=>'branche_id', 'id'=>'unidade'],$branche_class->brancheOptions())}}
+  </div>
+  
+  <div class="col-3">
+  {{form.select2('fin/providers/search', ['name'=>'taker','args'=>[
+'taker_status'=>1
+]])}}  
+</div>
+
+  <div class="col-auto">
+    <label for="date1" class="visually-hidden">Data inicial</label>
+    <input type="date" name="date1" value="{{date('Y-m-d', strtotime('-7 days'))}}" class="form-control" id="date1">
+  </div>
+  <div class="col-auto">
+    <label for="date2" class="visually-hidden">Data final</label>
+    <input type="date" name="date2" value="{{date('Y-m-d', strtotime('+1 days'))}}" class="form-control" id="date2">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">Listar diárias aprovadas
+    </button>
+  </div>
+</form></div>
+
+<form id='diarias-form-server' class="row m-4">
+{{form.token()}}
+{{form.hidden('type',1)}}
+
+	 
+	  @grid('col-md-12 mb-3')
+          {{form.label(['text'=>'Descrição', 'id'=>'description'])}}
+          {{form.textarea(['name'=>'description', 'id'=>'description'])}}
+      @endgrid
+
+<div id="render"></div>
+<div id="render2"></div>
+
+<input class='col-4 btn btn-sm btn-primary m-2' type='submit' value='Gerar folha de pagamento de diárias'>
+</form>
+
+
+
+</div>
+<script>
+$(function(){
+
+$("#form-payment").submit(function(){
+	  $.ajax({
+	    data:$(this).serialize(),
+        url:"{{url('dpfin/diaria/payment')}}",
+        method:"POST",
+        success: function(data)
+		{
+		  $("#render").html(data);
+		}		
+	  });
+	  
+	  return false;
+});
+
+ $('#diarias-form-server').submit(function(){ 
+
+	let branche_id = $('select[name="branche_id"]').val();
+	let taker_id = $('select[name="taker"]').val();
+	
+    $.ajax({  
+	    data:$(this).serialize()+"&_token={{csrf_token()}}&branche_id="+branche_id+"&taker_id="+taker_id,
+        url:"{{url('dpfin/diaria/payment-insert')}}",
+        method:"POST",
+        success: function(data)
+		{
+		    var data = JSON.parse(data);
+            data.type = data.type == 'success' ? 'alert alert-success' : 'alert alert-danger';
+		    $("#render2").html('<div class="'+data.type+'">'+data.msg+'</div>');
+			
+			$("#render").html("");
+		}		
+	  });
+  
+  
+   return false;
+ });
+   
+
+});
+
+</script>
+
+
+
+@painel_footer()

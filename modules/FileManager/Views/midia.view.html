@@ -1,3 +1,45 @@
+@template(fs_file_btn)
+
+$text = isset($text) ? $text : 'Arquivo vinculado';
+$class = isset($class) ? $class : 'btn btn-sm btn-outline-primary';
+
+return "<!-- Button trigger modal -->
+<button type='button' class='{$class}' data-bs-toggle='modal' data-bs-target='#fs_file_modal'>{$text}</button>";
+
+@endtemplate
+
+@template(fs_file_modal)
+
+$id = isset($id) ? $id : 0;
+$title = isset($title) ? $title : 'Arquivo vinculado ao registro';
+
+$url = url("file?id={$id}");
+
+$html = "<!-- Modal -->
+<div class='modal fade' id='fs_file_modal' tabindex='-1' aria-labelledby='exampleModalLabel' aria-hidden='true'>
+  <div class='modal-dialog modal-xl'>
+    <div class='modal-content'>
+      <div class='modal-header'>
+        <h5 class='modal-title' id='exampleModalLabel'>{$title}</h5>
+        <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+      </div>
+      <div class='modal-body'>
+       
+	   
+	     <iframe width='100%' height='900px' src='{$url}' frameborder='none'></iframe>
+	   
+	   
+      </div>
+    </div>
+  </div>
+</div>";
+
+return $html;
+
+@endtemplate
+
+
+
 <!--Componete para importação e inserção de mídia-->
 @template(fs_midia)
 

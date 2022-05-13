@@ -1,0 +1,13 @@
+@include('@Dpfin/Views/header')
+
+{!painel_title('Listagem de diárias para o código '.$code, [
+   '#np-btn-pdf'=>'Exportar em PDF',
+   '#np-btn-xls'=>'Exportar em XLS',
+   '#x'=>'Exportar TXT para o Nasajon Persona'
+])!}
+ 
+   <table class="table"> 
+	  {!$table!}
+</table>
+
+@painel_footer()

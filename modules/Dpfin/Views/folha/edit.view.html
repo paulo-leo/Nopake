@@ -1,0 +1,32 @@
+@include('@Dpfin/Views/header')
+
+{{form.header(['title'=>'Editar composição', 'method'=>'PUT','url'=>'dpfin/folha'])}}
+  <div class="container-fluid container py-4">
+  {{form.hidden('id',$find->id)}}
+  {{form.hidden('file_id',$find->file_id)}}
+  {{form.token()}}
+  
+  <div class="row">
+   <div class="col-2">
+      <h1>{{format_money($find->valor_total)}}</h1>
+  </div>
+  
+  <div class="col-10">
+    {{form.label(['text'=>'Descrição da folha', 'id'=>'descricao'])}}
+    {{form.text(['name'=>'descricao','value'=>$find->descricao, 'required'=>true])}}
+  </div>
+   {{form.close()}}
+     <div class="col-12">
+				    @component('fs_midia',[
+					'one'=>'file_id',
+					'btn_class'=>'btn btn-outline-danger',
+					'table_name'=>'fin_titles',
+					'table_id'=>$find->id,
+					'btn_class'=>'btn btn-sm btn-primary',
+					'btn_text'=>'Vincular documento'])
+				</div><br><br><br>
+  </div>
+
+
+
+@painel_footer()

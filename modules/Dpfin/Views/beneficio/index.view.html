@@ -1,0 +1,46 @@
+@include('@Dpfin/Views/header')
+@component('p_title',[
+'title'=>'Ordens compostas de pagamentos de benefícios'
+]) 
+
+@php
+
+function statusBeneficios($e)
+{
+     $a = [
+	 1=>'Pendente',
+	 2=>'Aprovado',
+	 3=>'Recusado',
+	 4=>'Cancelado',
+	 5=>'Fechado',
+	 6=>'Concluído'];
+
+     return $a[$e];
+}
+
+function createdBeneficios($e)
+{
+     return format($e,'datetime');
+}
+
+function tipoBeneficios($e)
+{
+     return $e == 1 ? 'VT' : 'VR';
+}
+
+@endphp
+<div class="container-fluid np-scroll">
+@component('p_paginate',[
+ 'headers'=>['id|!ID','type|!Tipo','filial|!Empresa','tomador|!Tomador/Cliente','status','created_at|!Criado em'],
+ 'rows'=>$list,
+ 'options'=>[
+  'view'=>true
+ ],
+ 'replace'=>[
+  'status'=>'statusBeneficios',
+  'created_at'=>'createdBeneficios',
+  'type'=>'tipoBeneficios'
+ ]
+]) 
+</div>
+@painel_footer()

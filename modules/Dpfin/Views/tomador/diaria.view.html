@@ -1,0 +1,33 @@
+@painel_header()
+
+{{form.header(['title'=>'Adicionar Diária', 'url'=>'dpfin/funcionario'])}}
+  {{form.token()}}
+  {{form.hidden('created_by', user_id())}}
+    @grid('container-fluid np-scroll')
+        @grid('row m-auto mt-2 p-4_5')             
+            @grid('col-md-6 mb-3')
+                {{form.label(['text'=>'Funcionario', 'id'=>'id_provedor'])}}
+                {{form.select2('fin/providers/search', ['name'=>'id_provedor', 'required'=>true, 'args'=>['type'=>'3']])}}                                 
+            @endgrid                        
+
+            @grid('col-3 mb-3')
+                {{form.label(['text'=>'Qtd. de diárias', 'id'=>'descricao'])}}
+                {{form.number(['name'=>'descricao', 'id'=>'descricao'])}}
+            @endgrid
+
+            @grid('col-3 mb-3')
+                {{form.label(['text'=>'Valor da diária', 'id'=>'descricao'])}}
+                {{form.number(['name'=>'descricao', 'id'=>'descricao'])}}
+            @endgrid
+
+            @grid('col-md-6 mb-3')
+                {{form.label(['text'=>'Clientes', 'id'=>'id_cliente'])}}
+                {{form.select2('fin/providers/search', ['name'=>'id_cliente', 'required'=>true, 'args'=>['type'=>'2']])}}                                 
+            @endgrid
+                        
+        @endgrid    
+    @endgrid
+
+{{form.close()}}
+
+@painel_footer()

@@ -1,0 +1,127 @@
+@include('@Dpfin/Views/header')
+
+<div class="sticky-header container mt-2 ">
+  <div class="d-flex align-items-center">
+      <button class="btn-back" onclick="history.go(-1);"><i class="material-icons">chevron_left</i></button>
+      <h2 class="sticky-title">Importar funcionários</h2>
+  </div>
+</div>
+
+<form enctype="multipart/form-data" action="{{url('dpfin/funcionario/import')}}" method="post">
+  <div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
+  {{form.token()}}
+  @grid('container-fluid np-scroll')
+    @grid('row m-auto p-4_5')
+
+      @grid('col-md-6 mt-1 mb-3')
+  <input class="form-control" accept=".text,.txt" name="userfile" required type="file" id="formFile">
+      @endgrid
+	  
+	  @grid('col-md-6 mt-1 mb-3')
+        <select class="form-select" name="type">
+            <option value="1">Conta corrente</option>
+            <option value="2">Conta poupança</option>
+             <option value="3">Conta salário</option>
+      </select>
+      @endgrid
+
+      <p class="alert alert-danger">
+	    <b>Ajuda para importação</b><br>
+        Para fazer a importação de funcionários do Nasajon Persona. Abra o Persona, depois vá até a opção: funcionários >> cadastro >> completo >> listar >> funcionários por banco. Depois marque a opção “Modelo configurável” e selecione o código: <b>"ERP02"</b>. Por último, clique em visualizar e depois imprimir para arquivo. Selecione a opção <b>arquivo de texto</b>.		
+      </p>
+
+    @endgrid
+  @endgrid
+  <div class="submit-position">
+    <button id="create-title" class="btn btn-submit btn-sticky btn-outline-primary btn-form-submit">Importar</button>
+    <button class="btn btn-primary btn-form-loading" style="display:none" type="button" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      Processando funcionários...
+    </button>
+</div>
+</form>
+
+@painel_footer()
+
+<style scoped>
+  .submit-position{
+    position: absolute;
+    top: 1.9%;
+    right: 2%;
+    z-index: 1024;    
+  }
+
+  .sticky-header{
+    padding: .4rem 1.85rem;
+  }
+
+  .scroll-alert{
+    overflow-y: scroll;
+    max-height: 65vh;
+    z-index: 99;
+  }
+
+  .lh-alert{
+    line-height: 1.65rem;
+  }
+</style>
+
+<script>
+  $('form').submit(function(){
+    let formData = new FormData(this);
+   
+    $.ajax({
+      url: '{{url("dpfin/funcionario/import")}}',
+      type: 'POST',
+      data: formData,
+      cache: false,      
+      processData: false,
+      contentType: false,
+	  beforeSend:function(){
+	    $('.btn-submit').hide();
+		$('.btn-form-loading').show();
+	  },
+      xhr: function() { // Custom XMLHttpRequest
+        let myXhr = $.ajaxSettings.xhr();
+        if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+          myXhr.upload.addEventListener('progress', function() {
+            /* faz alguma coisa durante o progresso do upload */
+            
+          }, false);
+        }
+
+        return myXhr;
+      }
+    }).done(function(data){
+	   	
+		
+		$('.btn-submit').show();
+		$('.btn-form-loading').hide();
+	
+		let json;
+		
+        try {
+           json = JSON.parse(data);
+		   
+		     $("#form-local").append(
+            `<div class="alert border-success alert-${json.type == "error" ? "danger" : "info"} scroll-alert alert-dismissible" role="alert">
+                ${json.msg}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+            </div>`
+        );
+		   
+        } catch(e) {
+          
+		   $("#form-local").append(
+            `<div class="alert border-top border-danger alert-danger scroll-alert alert-dismissible" role="alert"><b>Ops!</b> Tivemos um problema interno ou esse arquivo não atende aos parâmetros do layout de importação.<br>Por favor, entrar em contato com o suporte de TI para mais informações. 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+            </div>` );
+		  
+       }
+		
+		
+    });
+
+    return false;
+  });
+</script>

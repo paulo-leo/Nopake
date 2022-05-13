@@ -1,0 +1,194 @@
+@include('@Dpfin/Views/header')
+
+@php
+$beneficio->type = $beneficio->type == 1 ? 'VT' : 'VR';
+function statusBeneficios($e)
+{
+     $a = [
+	 1=>'Pendente',
+	 2=>'Aprovado',
+	 3=>'Recusado',
+	 4=>'Cancelado',
+	 5=>'Fechado',
+	 6=>'Concluído'];
+
+     return $a[$e];
+}
+
+
+$btns = array(
+ 'xx'=>'Editar'
+);
+
+
+
+$modal  = null;
+
+if($beneficio->status == 1)
+{
+   $modal = "<a class='btn btn-sm btn-success btn-update-status-ok'>Aprovar benefícios</a>";
+}
+
+if($beneficio->status == 2)
+{
+   $modal = "<a class='btn btn-sm btn-primary btn-update-status-close'>Fechar folhar de benefícios</a>";
+}
+
+
+@endphp
+
+@component('p_title',[
+'title'=>$beneficio->id.' - Benefícios do tipo '.$beneficio->type.' ['.$beneficio->name.'] - '.statusBeneficios($beneficio->status)]) 
+
+
+ <div class="row">
+    <div class="col-6">
+	@component('fs_file_btn') 
+	
+	@if($beneficio->status == 1) 
+	@component('fs_midia',[
+	'one'=>'file_id',
+	'table_name'=>'fin_titles',
+	'table_id'=>$beneficio->file_id,
+	'btn_class'=>'btn btn-sm btn-outline-secondary col-6',
+	'btn_text'=>'Vincular documento'])
+	
+	
+	 <form id="form-update">
+  {{form.token()}}
+  {{form.hidden('file_id',$beneficio->file_id)}}
+  <button type="submit" class="btn btn-sm btn-outline-primary col-6">Atualizar folha de benefícios</button>
+  </form>
+	</div>
+	@endif 
+	
+	@if($beneficio->status == 1 || $beneficio->status == 2)
+	<div class="col-6 p-2">
+	   {!$modal!}
+	</div>
+	@endif
+	
+   </div>
+   
+   
+   
+<div class="container-fluid np-scroll">
+
+@component('fs_file_modal',['id'=>$beneficio->file_id])  
+
+
+<table class="table table-striped">
+
+<tr>
+    <td>Linha</td>
+    <td>Código</td>
+    <td>Nome</td>
+	<td>CPF</td>
+	<td>Tipo</td>
+	<td>Valor</td>
+</tr>
+
+@php
+
+$total = 0;
+$line = 1;
+@endphp
+
+
+
+@in($items)
+    
+	@php
+	   $total += $valor;
+	@endphp
+
+    <tr>
+	<td>{{$line}}</td>
+	<td>{{$code}}</td>
+	<td>{{$name}}</td>
+	<td>{{format_cnpj_cpf($cpf)}}</td>
+	<td>{!$tipo == 1 ? '<b class="badge bg-success">Conta bancária</b>' : '<b class="badge bg-primary">Boleto</b>'!}</td>
+    <td>{{format_money($valor)}}</td>
+    </tr>
+	
+	@php
+	  $line++;
+	@endphp
+	
+@endin
+
+    <tr>
+      <td class="bg-success text-white">{{format_money($total)}}</td>
+    </tr>
+</table>
+</div>
+
+
+<script>
+$(function(){
+
+
+  $('#form-update').submit(function(){
+               $.ajax({
+                url:'{{url("dpfin/beneficios/update")}}',
+                method:'post',
+                data:$(this).serialize(),
+                success:function(json){
+				
+				    json = JSON.parse(json);
+					
+                    swal({
+					  text:json.msg,
+					  icon:json.type
+					});
+					
+                 }
+               });
+			   
+  return false;
+  });
+
+  $(".btn-update-status-ok").click(function(){
+  
+     let ok = confirm('Você tem certeza que deseja aprovar essa folha de benefícios? Após a sua aprovação à folha poderá ser fechada e convertida em pagamento para aprovações do responsável financeiro.');
+  
+     if(ok){
+     $.ajax({
+	  url:"{{url('dpfin/beneficios/update-status-ok')}}",
+	  data:{id:{{$beneficio->id}},'_token':'{{csrf_token()}}'},
+	  method:"POST",
+	  success:function(data){
+	   
+	   alert(data);
+	   document.location.reload(true);
+	  
+	  }
+	 });
+     }
+  });
+  
+  
+   $(".btn-update-status-close").click(function(){
+  
+     let ok = confirm('Você tem certeza que deseja fechar essa folha?');
+      if(ok){
+     $.ajax({
+	  url:"{{url('dpfin/beneficios/update-status-close')}}",
+	  data:{id:{{$beneficio->id}},'_token':'{{csrf_token()}}'},
+	  method:"POST",
+	  success:function(data){
+	  
+	   alert(data);
+	   document.location.reload(true);
+	  
+	  }
+	 });
+    }
+  });
+
+});
+</script>
+
+
+
+@painel_footer()

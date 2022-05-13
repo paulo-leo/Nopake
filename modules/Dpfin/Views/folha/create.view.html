@@ -1,0 +1,26 @@
+@include('@Dpfin/Views/header')
+
+{{form.header(['title'=>'Importar arquivo.txt para composição de pagamentos', 'url'=>'dpfin/folha'])}}
+  {{form.token()}}
+  @grid('container-fluid np-scroll')
+    @grid('row m-auto mt-2 p-4_5')
+      @grid('col-md-6 mb-3')
+          {{form.label(['text'=>'Tomador', 'id'=>'id_taker'])}}
+          {{form.select2('dpfin/tomadores/search', ['name'=>'id_taker', 'id'=>'id_taker'])}}
+      @endgrid
+
+      @grid('col-md-6 mb-3')
+        {{form.label(['text'=>'Tipo da folha', 'id'=>'type'])}}
+        {{form.select(['name'=>'type','value'=>5], [1=>'Diaria', 2=>'Salario', 3=>'Vale transporte', 4=>'Vale alimentação', 5=>'Vale refeição', 6=>'rescisão', 7=>'férias', 8=>'FGTS'])}}
+      @endgrid
+    
+      @grid('col-md-12 mb-3')
+          {{form.label(['text'=>'Descrição', 'id'=>'description'])}}
+          {{form.textarea(['name'=>'description', 'id'=>'description'])}}
+      @endgrid
+    @endgrid
+  @endgrid
+
+{{form.close()}}
+
+@painel_footer()

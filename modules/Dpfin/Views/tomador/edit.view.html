@@ -1,0 +1,116 @@
+@painel_header()
+
+@php
+    
+
+@endphp
+
+{{form.header(['title'=>'Atualizar Tomador', 'method'=>'PUT' ,'url'=>'dpfin/tomadores'])}}
+  {{form.token()}}
+  {{form.hidden('id', $find->id)}}
+  {{form.hidden('updated_by', user_id())}}
+  @grid('container-fluid np-scroll')
+	@grid('row m-auto mt-2 p-3')
+		
+        @grid('col-md-3 col-sm-6 mb-3')
+            {{form.label(['text'=>'Código', 'id'=>'code'])}}
+			{{form.text(['name'=>'codigo', 'readonly'=>true, 'value'=>$find->codigo ,'id'=>'code'])}}
+		@endgrid
+
+        @grid('col-md-6 col-sm-12 mb-3')
+            {{form.label(['text'=>'Nome ', 'id'=>'name'])}}
+            {{form.text(['name'=>'nome', 'value'=>$find->nome ,'id'=>'name'])}}
+        @endgrid
+
+        @grid('col-md-3 col-sm-6 mb-3')
+            {{form.label(['text'=>'CNPJ', 'id'=>'cnpj'])}}
+            {{form.text(['name'=>'cnpj', 'required'=>true, 'value'=>$find->cnpj ,'id'=>'cnpj'])}}
+        @endgrid
+
+        @grid('col-md-4 col-sm-6 mb-3')
+            {{form.label(['text'=>'Valor mensal', 'id'=>'valor_mensal'])}}
+            {{form.number(['name'=>'valor_mensal', 'value'=>$find->valor_mensal ,'id'=>'valor_mensal', 'min'=>'0', 'others'=>['step'=>'any', 'inputmode'=>'decimal'] ])}}
+        @endgrid
+
+        @grid('col-md-4 col-sm-6 mb-3')
+            {{form.label(['text'=>'Limite de funcionários', 'id'=>'limite_funcionarios'])}}
+            {{form.number(['name'=>'limite_funcionarios', 'value'=>$find->limite_funcionarios, 'id'=>'limite_funcionarios', 'min'=>'0', 'others'=>['step'=>'any', 'inputmode'=>'decimal'] ])}}
+        @endgrid
+
+        @grid('col-md-4 col-sm-6 mb-3')
+            {{form.label(['text'=>'Expiração do serviço', 'id'=>'valido_ate'])}}
+            {{form.date(['name'=>'valido_ate', 'value'=>$find->valido_ate, 'id'=>'valido_ate', 'value'=>NP_DATE, 'required'=>true])}}
+        @endgrid        
+        
+        @grid('col-md-4 mb-3')            
+            {{form.label(['id'=>'status', 'text'=>'Estatus do tomador'])}}
+            {{form.select(['name'=>'status', 'value'=>$find->status ,'id'=>'status'], ['1'=>'Ativo', '2'=>'Inativo'])}}
+        @endgrid
+
+        @grid('col-8 mt-1 mb-3')
+            {{form.label(['text'=>'Descrição do tomador', 'id'=>'descricao'])}}
+            {{form.textarea(['name'=>'descricao', 'value'=>$find->descricao, 'id'=>'descricao'])}}
+        @endgrid
+
+        @grid('col-12 mt-3 mb-3')
+            <h5 class="text-black-50">Beneficios do tomador:</h5>
+            
+            @grid('col-12 d-flex justify-content-evenly flex-wrap mt-3 px-2')
+                @grid('d-block')
+
+                    @grid('py-2')                    
+                        {{form.switch('salario_status', $find->salario_status, 'Salário')}}
+                    @endgrid
+                    
+                    @grid('py-2')
+                        {{form.switch('vt_status', $find->vt_status, 'Vale Transporte')}}
+                    @endgrid                                        
+
+                @endgrid
+
+                @grid('d-block')
+
+                    @grid('py-2')
+                        {{form.switch('va_status', $find->va_status, 'Vale Alimentação')}}
+                    @endgrid
+
+                    @grid('py-2')
+                        {{form.switch('vr_status', $find->vr_status, 'Vale Refeição')}}
+                    @endgrid
+                
+                @endgrid
+
+                @grid('d-block')
+                    @grid('py-2')                    
+                        {{form.switch('rescisao_status', $find->rescisao_status, 'Rescisão')}}
+                    @endgrid
+                    
+                    @grid('py-2')
+                        {{form.switch('ferias_status', $find->ferias_status, 'Férias')}}
+                    @endgrid                    
+                @endgrid
+
+                @grid('d-block')
+                    @grid('py-2')
+                        {{form.switch('fgts_status', $find->fgts_status, 'FGTS')}}
+                    @endgrid
+
+                    @grid('py-2')
+                        {{form.switch('diaria_status', $find->diaria_status, 'Diaria')}}
+                    @endgrid
+                @endgrid
+                
+            @endgrid
+        @endgrid
+
+        @grid('col-4 mt-3')
+        {{form.label(['text'=>'Departamentos:'])}}
+        {{form.select2('dpfin/departamento/search', ['name'=>'department_id|'.$department->d_id.'|'.$department->d_nome])}}
+        @endgrid
+
+	@endgrid
+  @endgrid
+
+{{form.close()}}
+
+@painel_footer()

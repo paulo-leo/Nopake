@@ -1,0 +1,98 @@
+@php
+$sidebar = array(
+      "text=Página inicial|link=dpfin|icon=widgets");
+	  
+	  if(access(['dp_fin_pagamento']))
+	  {
+	    $sidebar["icon=home|text=Pagamentos|icon=payment"] = [
+	    "link=dpfin/payment_title|text=Individual",
+	    "text=Folha em lote|link=dpfin/pagamento/create?type:1",
+	    "link=dpfin/pagamento/create?type:3|text=Benefícios em lote"]; 
+	  }
+	  
+	 if(access(['dp_fin_funcionario'])){
+	 	   $sidebar["icon=home|text=Funcionários|icon=badge|path=funcionario"] = 
+	 [
+	   "text=Funcionários|link=dpfin/funcionario",
+	   "text=Importar funcionários|link=dpfin/funcionario/import",
+	 ]; }
+	 
+	 if(access(['dp_fin_tomador']))
+	 {
+	   $sidebar[] = "text=Tomadores|link=dpfin/tomadores|icon=location_city";
+	 }
+	 
+	 
+	 if(access(['dp_fin_departamento']))
+	 {
+	  $sidebar["icon=home|text=Departamentos|icon=apartment"] = 
+	  [
+		"text=Listar departamentos|link=dpfin/departamentos",
+		"text=Adicionar departamento|link=dpfin/departamentos/create"
+	  ]; 
+	 }
+	 
+	 if(access(['dp_fin_beneficio'])){
+	 $sidebar["icon=link|text=Beneficios|icon=apartment"] = 
+	  [
+	    "text=Listar|link=dpfin/beneficios",
+		"text=Importar|link=dpfin/beneficios/import/form"
+	  ];
+	 }
+	 
+	 if(access(['dp_fin_folha'])){
+	 $sidebar["icon=home|text=Composições de pagamentos|icon=price_change"] =
+	 [
+		"text=Listar ordens de pagamentos|link=dpfin/folha",
+		"text=Importar folha de pagamentos|link=dpfin/folha/import?type=2"
+	 ];
+	 }
+	 
+	 if(access(['dp_fin_diaria']))
+	 {
+	   $sidebar["icon=home|text=Diárias|icon=calendar_view_day"] =  
+	   [
+		"text=Lista Diárias|link=dpfin/diaria|icon=",
+		"text=Criar Diária|link=dpfin/diaria/create|icon="
+	  ];
+	  
+	  if(access(['dp_fin_diaria_exportar']))
+	  {
+	      $sidebar["icon=home|text=Diárias|icon=calendar_view_day"][] = "text=Exportações|link=dpfin/diaria/listar-txt|icon=";
+	  }
+	  
+	  if(access(['dp_fin_diaria_folha']))
+	  {
+	      $sidebar["icon=home|text=Diárias|icon=calendar_view_day"][] = "text=Gerar composição|link=dpfin/diaria/payment|icon=";
+	  }
+	  
+	 }
+	 
+@endphp
+@include('@Painel/Views/template/header',['sidebar'=>$sidebar,'color_top'=>'danger','title_app'=>'Departamento pessoal'])
+
+
+@if(access('dp_fin_diaria_notification'))
+<script>
+
+if(typeof(EventSource) !== "undefined") {
+    var source = new EventSource("{{url('dpfin/diaria/notifications')}}");
+    source.onmessage = function(event) {
+	var msg = event.data;
+	if(msg.length > 5) swal({
+	  icon:'info',
+	  title:msg,
+	  text:'Aperte F5 na página de listagem de diárias para consultar as novas diárias pendentes.' 
+	});
+  };
+} else {
+  document.getElementById("result").innerHTML = "Sorry, your browser does not support server-sent events...";
+}
+</script>
+@endif
+
+
+
+
+
+

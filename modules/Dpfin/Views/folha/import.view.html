@@ -1,0 +1,145 @@
+@include('@Dpfin/Views/header')
+
+<div class="sticky-header container mt-2 ">
+  <div class="d-flex align-items-center">
+      <button class="btn-back" onclick="history.go(-1);"><i class="material-icons">chevron_left</i></button>
+      <h2 class="sticky-title">Importar {{$type_name}}</h2>
+  </div>
+</div>
+
+<form enctype="multipart/form-data" action="{{url()}}dpfin/folha/store-import" method="post">
+  <div id="form-local" class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div>
+  {{form.token()}}
+  @grid('container-fluid np-scroll')
+    @grid('row m-auto p-4_5')
+	
+	@grid('col-4 mb-3')
+      {{form.label(['text'=>'Unidade', 'id'=>'unidade'])}}
+      {{form.select(['name'=>'branche_id', 'id'=>'unidade'],$branche_class->brancheOptions())}}
+    @endgrid	
+	
+	  
+	  
+	 @grid('col-md-4 col-sm-12 mb-3')
+                    {{form.label(['text'=>'Tomador', 'id'=>'taker_id'])}}
+                    {{form.select2('fin/providers/search', ['name'=>'taker_id','args'=>[
+					 'taker_status'=>1
+					]])}}                    
+     @endgrid
+	  
+	  
+
+      @grid('col-md-4 mb-3')
+        {{form.label(['text'=>'Tipo de composição de pagamento', 'id'=>'type'])}}
+        {{form.text(['value'=>$type_name,'disabled'=>true])}}
+        {{form.hidden('type',$type)}}
+      @endgrid
+    
+      @grid('col-md-12 mb-3')
+          {{form.label(['text'=>'Descrição', 'id'=>'description'])}}
+          {{form.textarea(['name'=>'description', 'id'=>'description'])}}
+      @endgrid
+
+      @grid('col-md-6 mt-1 mb-3')
+	  
+	     <div class="mb-3">
+  <label for="formFile" class="form-label">Selecione um arquivo de importação da folha. O arquivo de importação deverá ser gerado no Nasajon Persona.</label>
+  <input class="form-control" accept=".text,.txt" name="userfile" required type="file" id="formFile">
+</div>
+	  
+      @endgrid
+
+    @endgrid
+  @endgrid
+  <div class="submit-position">
+    <button id="create-title" class="btn btn-submit btn-sticky btn-outline-primary btn-form-submit">Importar</button>
+    <button class="btn btn-primary btn-form-loading" style="display:none" type="button" disabled>
+    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+       Processando arquivo...
+    </button>
+</div>
+</form>
+
+@painel_footer()
+
+<style scoped>
+  .submit-position{
+    position: absolute;
+    top: 1.9%;
+    right: 2%;
+    z-index: 1024;    
+  }
+
+  .sticky-header{
+    padding: .4rem 1.85rem;
+  }
+
+  .scroll-alert{
+    overflow-y: scroll;
+    max-height: 65vh;
+    z-index: 99;
+  }
+
+  .lh-alert{
+    line-height: 1.65rem;
+  }
+</style>
+
+<script>
+  $('form').submit(function(){
+    let formData = new FormData(this);
+   
+    $.ajax({
+      url: '{{url("dpfin/folha/store-import")}}',
+      type: 'POST',
+      data: formData,
+      cache: false,      
+      processData: false,
+      contentType: false,
+	  beforeSend:function(){
+	    $('.btn-submit').hide();
+		$('.btn-form-loading').show();
+	  },
+      xhr: function() { // Custom XMLHttpRequest
+        let myXhr = $.ajaxSettings.xhr();
+        if (myXhr.upload) { // Avalia se tem suporte a propriedade upload
+          myXhr.upload.addEventListener('progress', function() {
+            /* faz alguma coisa durante o progresso do upload */
+            
+          }, false);
+        }
+
+        return myXhr;
+      }
+    }).done(function(data){
+	   	
+		
+		
+		$('.btn-submit').show();
+		$('.btn-form-loading').hide();
+	
+		let json;
+		
+        try {
+           json = JSON.parse(data);
+		   
+		     $("#form-local").append(
+            `<div class="alert border-success alert-${json.type == "error" ? "danger" : "info"} scroll-alert alert-dismissible" role="alert">
+                ${json.msg}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+            </div>`
+        );
+		   
+        } catch(e) {
+          
+		   $("#form-local").append(
+            `<div class="alert border-top border-danger alert-danger scroll-alert alert-dismissible" role="alert"><b>Ops!</b> Tivemos um problema interno ou esse arquivo não atende aos parâmetros do layout de importação.<br>Por favor, entrar em contato com o suporte de TI para mais informações. 
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+            </div>` );
+		  
+       }
+    });
+
+    return false;
+  });
+</script>

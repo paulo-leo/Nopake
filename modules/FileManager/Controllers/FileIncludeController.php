@@ -43,7 +43,7 @@ class FileIncludeController extends Controller
 		$request = new Request;
 		$id = $request->get('id');
 		
-		$msg_error = "<h2>Nenhum arquivo foi vinculado ou localizado.</h2>";
+		$msg_error = "<div style='border-radius:5px;border:1px solid #FF7373; text-align:center;font-family:arial;color:#FF7373'><h1>404</h1><p>Nenhum arquivo foi vinculado ou localizado para este registro.</p></div>";
 
 		if(is_numeric($id)){
 			$file = new UploadModel;
@@ -55,8 +55,10 @@ class FileIncludeController extends Controller
 				
 				 $uri = new URI();
 	             $file = $uri->local($file);
-				//return $file;
-				return "<embed src='{$file}' width='100%' height='100%'>";
+
+                 $this->headerFile($file);
+				 return file_get_contents($file);
+
 			}else{
 				return $msg_error;
 			}
@@ -65,6 +67,23 @@ class FileIncludeController extends Controller
 		}
 		
 	}
+
+	/*Leitura de arquivo privado*/
+    private function headerFile($file)
+	{
+		$ext = strtolower(substr($file,-4,4));
+
+        switch($ext)
+		{
+            case '.pdf' : header("Content-type:application/pdf"); break;
+			case '.png' : header("Content-type:image/png"); break;
+			case '.jpg' : header("Content-type:image/jpg"); break;
+			case 'jpeg' : header("Content-type:image/jpeg"); break;
+			case '.gif' : header("Content-type:image/gif"); break;
+			case '.xls' :header("Content-Type: application/vnd.ms-excel; charset=utf-8"); break;
+		}
+	}
+
 	
     public function getFiles()
     {  

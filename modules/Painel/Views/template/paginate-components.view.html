@@ -277,10 +277,16 @@
 		  swal({
           title: "Deseja Excluir?",
           icon: "warning",
-          buttons: [
-            "Cancelar",
-            "Excluir"
-          ],
+          buttons: {
+            close:{
+                text:"Cancelar",
+                className: "btn btn-sm btn-outline-danger",
+                value:false},
+			confirm:{
+                text:"Apagar",
+                className: "btn btn-sm btn-outline-primary",
+                value:true}
+          },
           dangerMode: true,
         }).then(function(isConfirm) {
           if (isConfirm) {

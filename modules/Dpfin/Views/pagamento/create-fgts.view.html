@@ -1,0 +1,112 @@
+@include('@Dpfin/Views/header')
+
+ {{form.header(['title'=>'Adicionar folha FGTS ',
+				'url'=>'fin/titles/lotes',
+				'text_btn'=>'Enviar para aprovação'])}}
+				  
+      @grid('row')
+      
+          @grid('col-sm-12 mt-3')
+
+                {{form.token()}}
+                {{form.hidden('type', 1)}}
+                {{form.hidden('status', '1')}}
+                @grid('row p-3')
+
+                  {{form.hidden('doc_type','3')}}
+				  
+				  
+				         @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'Filial', 'id'=>'branche_id'])}}
+                    {{form.select(['name'=>'branche_id', 'required'=>true, 'id'=>'branche_id',], $branches)}}
+                  @endgrid
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'Emissão', 'id'=>'emission_date'])}}
+                    {{form.date(['name'=>'emission_date', 'id'=>'emission_date', 'value'=>NP_DATE, 'readonly'=>true])}}
+                  @endgrid
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'Vencimento', 'id'=>'due_date'])}}
+                    {{form.date(['name'=>'due_date', 'id'=>'due_date', 'value'=>NP_DATE, 'required'=>true])}}
+                  @endgrid
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'Competência', 'id'=>'competence_date'])}}
+                    {{form.select(['name'=>'competence_date', 'id'=>'competence_date', 'value'=>date('m'), 'required'=>true],[
+					'01'=>'Janeiro',
+					'02'=>'Fevereiro',
+					'03'=>'Março',
+					'04'=>'Abril',
+					'05'=>'Maio',
+					'06'=>'Junho',
+					'07'=>'Julho',
+					'08'=>'Agosto',
+					'09'=>'Setembro',
+					'10'=>'Outubro',
+					'11'=>'Novembro',
+					'12'=>'Dezembro'
+					])}}
+                  @endgrid
+
+                   @grid('col-12') @endgrid
+
+               
+
+                  @grid('col-md-4 col-sm-12 mb-3')
+                    {{form.label(['text'=>'Conta', 'id'=>'account_id'])}}
+                    {{form.select2('fin/accounts/search', ['name'=>'account_id', 'required'=>true , 'args'=>['id'=>'account_id']])}}                    
+                  @endgrid
+				
+
+                    @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'Classificação', 'id'=>'classification'])}}
+                        {{form.select2('fin/groups/search',[                  
+                          'name'=>'cf',
+                          'required'=>true,
+                          'args'=>[                                
+                            'type'=>2,
+                            'output'=>2
+                          ]                           
+                        ])}}
+                      @endgrid                      
+
+               @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'Centro de custo', 'id'=>'cost-center'])}}
+                        {{form.select2('fin/groups/search', [
+                          'name'=>'cc',
+                          'args'=>[
+                            'type'=>3
+                          ]                          
+                        ])}}
+                @endgrid
+
+                @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'Projeto', 'id'=>'projects'])}}
+                        {{form.select2('fin/groups/search',[
+                          'name'=>'pr',
+                          'args'=>[
+                            'type'=>1
+                          ]                          
+                        ])}}
+                  @endgrid
+
+                   @grid('col-md-8 col-sm-12 mb-3')
+                      {{form.label(['text'=>'Selecionar arquivo', 'id'=>'file'])}}
+                      {{form.file(['name'=>'due_date', 'id'=>'file', 'value'=>NP_DATE, 'required'=>true])}}
+                    @endgrid
+					
+				     	  @grid('col-md-12 col-sm-12 mb-3')
+                    <label class="form-label" for="textarea2">#description#</label>
+                    {{form.textarea(['name'=>'description', 'id'=>'textarea2', 'others'=>['data-length'=>'5000'] ])}}
+                  @endgrid
+
+
+                  <p class="col-12">A conversão de folha nada mais é que transformar cada funcionário listado na folha em um título de pagamento. Ou seja, cada item listado em folha irá gerar um documento de pagamento para o sistema financeiro de forma independe.  Em resumo a folha possibilita o envio de ordem de pagamentos em lote para o sistema financeiro. </p>
+				
+              @endgrid
+    @endgrid
+	
+   {{form.close()}}
+      
+@painel_footer()

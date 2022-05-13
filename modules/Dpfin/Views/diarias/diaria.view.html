@@ -1,0 +1,264 @@
+@include('@Dpfin/Views/header')
+
+{!painel_title('Composição de diárias de funcionários')!}
+
+{{form.open(['title'=>'Composição de documento de solicitação de diárias para o cartão '.$code, 'url'=>'addItem','id'=>'form-add-item'])}}
+  {{form.token()}}
+  {{form.hidden('created_by', user_id())}}
+    @grid('container-fluid np-scroll')
+        @grid('row m-auto mt-2 p-4_5') 	
+
+            @grid('col-2 mb-3')
+                {{form.label(['text'=>'Motivo', 'id'=>'motivo'])}}
+                {{form.select(['name'=>'motivo', 'id'=>'motivo'],[
+				 1=>'Nova',
+				 2=>'Hunter',
+         3=>'Falta',
+         4=>'Atestado'
+				])}}
+            @endgrid
+			
+			
+			@grid('col-2 mb-3')
+                {{form.label(['text'=>'Número do contrato', 'id'=>'qtd'])}}
+                {{form.number(['name'=>'contrato', 'id'=>'qtd','min'=>1])}}
+            @endgrid
+			
+		
+            @grid('col-4')
+                {{form.label(['text'=>'Funcionário', 'id'=>'id_provedor'])}}
+                {{form.select2('fin/providers/search', ['name'=>'id_provedor', 'required'=>true, 'args'=>['type'=>'3']])}}                                 
+            @endgrid 
+			
+			@grid('col-4 provedor2')
+                {{form.label(['text'=>'Funcionário que será substituído', 'id'=>'id_provedor_replace'])}}
+                {{form.select2('fin/providers/search', ['name'=>'id_provedor_replace','args'=>['type'=>'3']])}}                                 
+            @endgrid 
+
+
+            @grid('col-md-4 col-sm-12 mb-3')
+            {{form.label(['text'=>'Tomador/Cliente', 'id'=>'id_cliente'])}}
+            {{form.select2('fin/providers/search', ['name'=>'id_cliente','required'=>true,'args'=>[
+             'taker_status'=>1
+           ]])}}  
+           @endgrid  
+
+			
+			 @grid('col-2 mb-3')
+                {{form.label(['text'=>'Competência', 'id'=>'data_inicial'])}}
+                {{form.date(['name'=>'data_inicial','value'=>date('Y-m-d'),'id'=>'data_inicial','required'=>true])}}
+            @endgrid
+		
+			
+            @grid('col-3 mb-3')
+                {{form.label(['text'=>'Unidade', 'id'=>'unidade'])}}
+                {{form.select(['name'=>'branche_id', 'id'=>'unidade'],$branche_class->brancheOptions())}}
+            @endgrid	
+
+           			
+
+            @grid('col-1 mb-3')
+                {{form.label(['text'=>'QTD', 'id'=>'qtd'])}}
+                {{form.number(['name'=>'qtd', 'id'=>'qtd','min'=>1,'value'=>1])}}
+            @endgrid
+
+            @grid('col-2 mb-3')
+                {{form.label(['text'=>'Valor da diária','id'=>'valor1'])}}
+                {{form.select(['name'=>'valor', 'id'=>'valor1','required'=>true],[
+				 45=>'45',
+				 60=>'60',
+				 60=>'50',
+				 90=>'90',
+				 120=>'120'
+				])}}
+            @endgrid
+			
+            @grid('col-2 mb-3')
+                {{form.label(['text'=>'VT', 'id'=>'valor2'])}}
+                {{form.select(['name'=>'valor_vt', 'id'=>'valor2','value'=>15,'required'=>true],[
+				 0=>0,
+				 15=>15
+				])}}
+            @endgrid
+
+            @grid('col-2 mb-3')
+                {{form.label(['text'=>'VR', 'id'=>'valor3'])}}
+                {{form.select(['name'=>'valor_vr', 'id'=>'valor3','value'=>15,'required'=>true],[
+				 0=>0,
+				 15=>15
+				])}}
+            @endgrid
+
+        <div class="col-12 p-4">
+
+          <div class="form-check form-switch">
+            <input class="form-check-input" name="calc_one" value="1" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+            <label class="form-check-label" for="flexSwitchCheckDefault">Calcular beneficio somente uma vez.</label>
+          </div>
+
+        </div>
+			
+			@grid('col-12')
+     
+
+                {{form.hidden('code',$code)}}
+                <div class="text-left">
+				
+				<button type="submit" class="btn btn-outline-primary btn-diaria-submit">Adicionar diária</button>
+				
+				<button style="display:none" class="btn btn-primary btn-diaria-loading" type="button" disabled>
+                   <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>Adicionando diária... 
+               </button>
+				
+				</div>
+            @endgrid 
+ 			
+        {{form.close()}}                
+        @endgrid  
+
+      <table class="table">
+	    <tr>
+		  <th>Motivo</th>
+		  <th>Funcionário</th>
+      <th>Substituto de</th>
+		  <th>Função</th>
+		  <th>Tomador/Cliente</th>
+		  <th>Competência</th>
+		  <th>VT</th>
+		  <th>VR</th>
+		  <th>Total</th>
+		  <th>QTD</th>
+		  <th>Líquido</th>
+		</tr> 
+	    <tbody id="np-add-itens"></tbody>
+	 </table>
+	
+	  		<div class="d-flex justify-content-center">
+      <div style="display:none" class="spinner-border diaria-loading-div-local" role="status">
+      <span class="visually-hidden">Loading...</span>
+      </div>
+</div>
+	
+	
+    @endgrid
+
+{{form.close()}}
+
+
+<script>
+$(function(){
+
+
+  $(".provedor2").hide();
+  $("select[name='motivo']").change(function(){
+  
+     let motivo = $(this).val();
+	 if(motivo > 2)
+	 {
+	    $(".provedor2").show("slow");
+		
+		
+	 }else{
+	    $(".provedor2").hide("slow");
+	 }
+  
+  });
+
+
+  let formAddItem = $('#form-add-item');
+  
+  function listItens(){
+    let code = $("input[name='code']").val();
+  	$.ajax({
+	  url:'{{url("dpfin/diaria/list")}}',
+	  data:{code:code},
+	  method:'get',
+	  beforeSend:function(){
+	    $('.diaria-loading-div-local').show();
+	  },
+	  success:function(data)
+	  {
+	    $('#np-add-itens').html(data);
+		$('.diaria-loading-div-local').hide();
+	  }
+	});
+   }
+   
+   
+   $('#np-add-itens').on('click','tr > td > .btn-add-diaria-remove',function(){
+      let id = $(this).attr('id');
+     
+	 let ok = confirm('Você certeza que deseja remover essa diária?');
+	 
+	 if(ok)
+	 {
+	    let token = $("input[name='_token']").val();
+	    $.ajax({
+	    url:'{{url("dpfin/diaria/remove/item")}}',
+	    method:'post',
+	    data:{_token:token,id:id},
+	    success:function()
+	    {
+	      listItens();
+	    }
+	  });
+	 
+	 }
+	 
+	 
+   });
+  
+  let btnPublicarDiaria = $('#btn-publicar');
+  
+  btnPublicarDiaria.click(function(){
+  
+    let code = $("input[name='code']").val();
+	let token = $("input[name='_token']").val();
+	
+    let confirmar = confirm('A diária será publicada com o seguinte código de segurança: {{$code}}. Este é um código único gerado no momento da inserção de uma nova diária no formulário. A diária também será direcionada automaticamente para a filial da Russel especifica.');
+	if(confirmar){
+      $.ajax({
+	    url:'{{url("dpfin/diaria/publicar")}}',
+	    method:'post',
+	    data:{_token:token,code:code},
+	    success:function(data)
+	    {
+	     swal(data);
+	    }
+	  });
+	}
+  });
+ 
+  listItens();
+  formAddItem.submit(function(){
+    
+	$.ajax({
+	  url:'{{url("dpfin/diaria")}}',
+	  data:$(this).serialize(),
+	  method:'post',
+	  beforeSend: function(){
+		
+		 $('.btn-diaria-submit').hide();
+		 $('.btn-diaria-loading').show();
+		
+		},
+	  success:function(data)
+	  {
+	    var json = JSON.parse(data);
+	    swal({text:json.msg,icon:json.type});
+		
+		if(json.type == 'success')
+		{
+		  listItens();
+		}
+		
+		$('.btn-diaria-submit').show();
+		$('.btn-diaria-loading').hide();
+	  }
+	});
+    return false;
+  });
+});
+</script>   
+
+@painel_footer()

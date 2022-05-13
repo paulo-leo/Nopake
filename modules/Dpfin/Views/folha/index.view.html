@@ -1,0 +1,116 @@
+@include('@Dpfin/Views/header')
+
+{!painel_title('Ordens compostas de pagamentos de folhas ou diárias', [
+   '#np-btn-pdf'=>'Exportar em PDF',
+   '#np-btn-xls'=>'Exportar em XLS',
+   'dpfin/pagamento/create?type=1'=>'Converter folha em pagamentos'
+])!}
+
+<div class="np-scroll bg-default container-fluid p-3 col-md-12 col-sm-12">
+   
+   <div class="card small-round mb-4 mx-2">       
+      <table class="table mb-1">
+         {!painel_table(
+            [
+               'id|!N° da folha',
+			   'valor_total',
+			   'b_name|!Filial',
+               'nome|!Tomador',
+               'tipo|!Tipo',
+               'status|!Situação',
+			   'created_in|!Criada em'
+            ],
+            $list,
+            [
+                'view'=>true,
+                'delete'=>true
+            ],
+            [
+               'tipo'=>function($data){
+                  $tipo = $data['tipo'];
+
+                  switch($tipo)
+                  {
+                      case 1:
+                          $converted_type = "Diária";
+                      break;
+          
+                      case 2:
+                          $converted_type = "Salário";
+                      break;
+          
+                      case 3:
+                          $converted_type = "Vale transporte";
+                      break;
+          
+                      case 4:
+                          $converted_type = "Vale alimentação";
+                      break;
+          
+                      case 5:
+                          $converted_type = "Vale refeição";
+                      break;
+          
+                      case 6:
+                          $converted_type = "Recisão";
+                      break;
+          
+                      case 7:
+                          $converted_type = "Férias";
+                      break;
+          
+                      case 8:
+                          $converted_type = "FGTS";
+                      break;
+          
+                      default:
+                          $converted_type = null;
+                      break;
+                  }
+          
+                  return $converted_type;                 
+               },
+               'status'=>function($data){
+                  $status = $data['status'];
+
+                  switch($status)
+                  {
+                      case 1:
+                        $status = "Aberta";
+                      break;
+
+                      case 2:
+                        $status = "<span class='text-warning'>Fechada</span>";                    
+                      break;
+
+                      case 3:
+                        $status = "<b class='text-success'>Convertida</b>";
+                      break;
+
+                      case 4:
+                        $status = "Cancelada";
+                      break;
+
+                      case 5:
+                        $status = "Quitada";
+                      break;
+
+                      case 6:
+                        $status = "Lixeira";
+                      break;
+
+                      default:
+                        $status = "Indefinido";
+                      break;                    
+                  }
+
+                  return $status;
+               }
+         ])!}
+      </table>
+      {!format_next($list)!}
+   </div>
+
+</div>
+
+@painel_footer()

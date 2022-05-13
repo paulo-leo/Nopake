@@ -1,0 +1,12 @@
+{
+        "name": "Departamento Pessoal",
+        "description": "Aplicativo de departamento pessoal integrado ao Sistema Financeiro para composição de folhas de pagamentos de funcionários e envio de diárias.",
+        "version": "0.1",
+		"author": "Paulo Leonardo da Silva Cassimiro",
+        "license": "MIT",
+        "require": ["php7"],
+        "url": "www.russelservicos.com.br",
+		"icon": "engineering",
+		"color":"danger",
+		"route":"dpfin"
+}

@@ -1,0 +1,156 @@
+@include('@Dpfin/Views/header')
+
+  @php
+    $bar_code = false;
+    if($type == 1){
+	   $url_type = 'fin/titles/lotes';
+	   
+	   $classifications = array(
+	   '11772'=>'Diária',
+	   '11771'=>'Salário'
+	   );
+	   
+	}elseif($type == 3){
+	   $url_type = 'fin/titles/lotes/beneficios';
+	   $bar_code = true;
+	   $classifications = array(
+	   '11803'=>'Vale transporte', 
+	   '11802'=>'Vale alimentação',
+	   '12030'=>'Vale refeição'
+	   );
+	   
+	}else{
+	   $url_type = null;
+	   $classifications = array();
+	}
+  
+  @endphp
+
+ {{form.header(['title'=>'Conversão de composição para título(s) de pagamento(s)',
+				'url'=>$url_type,
+				'text_btn'=>'Gerar pagamentos'])}}
+
+<!---<form action="{{url($url_type)}}" method="post">
+      <input type="submit">-->
+				  
+      @grid('row')
+      
+          @grid('col-sm-12 mt-3')
+            
+       
+
+                {{form.token()}}
+                {{form.hidden('type', $type)}}
+                {{form.hidden('status', '1')}}
+                @grid('row p-3')
+
+                  {{form.hidden('doc_type','3')}}
+				  
+				  
+			
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'*Emissão', 'id'=>'emission_date'])}}
+                    {{form.date(['name'=>'emission_date', 'id'=>'emission_date', 'value'=>NP_DATE, 'readonly'=>true])}}
+                  @endgrid
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'*Vencimento', 'id'=>'due_date'])}}
+                    {{form.date(['name'=>'due_date', 'id'=>'due_date', 'value'=>NP_DATE, 'required'=>true])}}
+                  @endgrid
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'*Competência', 'id'=>'competence_date'])}}
+                    {{form.select(['name'=>'competence_date', 'id'=>'competence_date', 'value'=>date('m'), 'required'=>true],[
+					'01'=>'Janeiro',
+					'02'=>'Fevereiro',
+					'03'=>'Março',
+					'04'=>'Abril',
+					'05'=>'Maio',
+					'06'=>'Junho',
+					'07'=>'Julho',
+					'08'=>'Agosto',
+					'09'=>'Setembro',
+					'10'=>'Outubro',
+					'11'=>'Novembro',
+					'12'=>'Dezembro'
+					])}}
+                  @endgrid
+
+              
+
+               
+
+                  @grid('col-md-3 col-sm-12 mb-3')
+                    {{form.label(['text'=>'*Conta', 'id'=>'account_id'])}}
+                    {{form.select2('fin/accounts/search', ['name'=>'account_id', 'required'=>true , 'args'=>['id'=>'account_id']])}}                    
+                  @endgrid
+				  
+
+                  @if($type == 1)
+                     @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'*Folha composta de funcionários', 'id'=>'xx'])}}
+                        {{form.select2('dpfin/folha/search',[                  
+                          'name'=>'folha_id',
+                          'required'=>true                           
+                        ])}}
+                     @endgrid 
+                  @endif
+  				
+				 @if($type == 3)
+                     @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'*Ordem de pagamento de benefícios', 'id'=>'xx'])}}
+                        {{form.select2('dpfin/beneficios/search',[                  
+                          'name'=>'beneficio_id',
+                          'required'=>true                           
+                        ])}}
+                     @endgrid 
+                  @endif
+					 
+					 
+
+                    @grid('col-md-4 col-sm-12 mb-3')
+                         @component('p_select', ['text'=>'*Classificação financeira','name'=>'cf','select'=>$classifications,'required'=>true])
+                      @endgrid                      
+
+                      @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'Centro de custo', 'id'=>'cost-center'])}}
+                        {{form.select2('fin/groups/search', [
+                          'name'=>'cc',
+                          'args'=>[
+                            'type'=>3
+                          ]                          
+                        ])}}
+                      @endgrid
+
+                      @grid('col-md-4 col-sm-12 mb-3')
+                        {{form.label(['text'=>'Projeto', 'id'=>'projects'])}}
+                        {{form.select2('fin/groups/search',[
+                          'name'=>'pr',
+                          'args'=>[
+                            'type'=>1
+                          ]                          
+                        ])}}
+                      @endgrid
+					
+				     	@grid('col-8')
+                    <label class="form-label" for="textarea2">#description#</label>
+                    {{form.textarea(['name'=>'description', 'id'=>'textarea2', 'others'=>['data-length'=>'5000'] ])}}
+                  @endgrid
+				  
+				  
+				  <div class="col-12">
+				      @if($bar_code)
+				          @component('p_input',['name'=>'bar_code','text'=>'Código de barras'])
+				      @endif
+				  </div>
+
+
+                  <p class="col-12 text-danger">A conversão de uma composição nada mais é que transformar os registros de uma composição em títulos. Ou seja, cada item listado na composição que foi importada para dentro do sistema de um software de terceiros (Nasajon Persona, TOTVs e etc) irá gerar um documento de pagamento para o sistema financeiro de forma independente. Em resumo, uma composição possibilita o envio de uma ordem de pagamentos em lote para o sistema financeiro.</p>
+				
+              @endgrid
+    @endgrid
+	
+   {{form.close()}}
+      
+@painel_footer()

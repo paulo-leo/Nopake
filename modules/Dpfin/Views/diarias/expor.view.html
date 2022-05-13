@@ -1,0 +1,41 @@
+@include('@Dpfin/Views/header')
+
+{!painel_title('Exportações de diárias para arquivo do Excel')!}
+
+<div class="np-scroll bg-default container-fluid p-3 col-md-12 col-sm-12">
+  
+
+<form class="row g-3" action="{{url('dpfin/diaria/export')}}" method="post">
+  {{csrf_field()}}
+
+  <div class="col-auto">
+    <label for="date1" class="visually-hidden">Situação </label>
+    <select class="form-select" name="status" aria-label="Default select example">
+         <option value="0">Todas as situações</option>
+         <option value="1">Pendente</option>
+         <option value="2">Aprovado</option>
+         <option value="3">Recusado</option>
+         <option value="4">Lançado</option>
+         <option value="5">Processado</option>
+        </select>
+</select>
+  </div>
+  
+  <div class="col-auto">
+    <label for="date1" class="visually-hidden">Data inicial </label>
+    <input type="date" name="date1" value="{{date('Y-m-d', strtotime('-7 days'))}}" class="form-control" id="date1">
+  </div>
+  <div class="col-auto">
+    <label for="date2" class="visually-hidden">Data final </label>
+    <input type="date" name="date2" value="{{date('Y-m-d', strtotime('+1 days'))}}" class="form-control" id="date2">
+  </div>
+  <div class="col-auto">
+    <button type="submit" class="btn btn-primary mb-3">Exportar</button>
+  </div>
+</form>
+
+
+
+</div>
+
+@painel_footer()

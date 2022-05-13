@@ -1,0 +1,228 @@
+@include('@Dpfin/Views/header')
+
+@php
+
+if(access('dp_fin_diaria_aprovar')){
+$btn_diarias = [
+   '#btn-status-negado'=>'Negar',
+   '#btn-status-aprovado'=>'Aprovar',
+   '#btn-status-lancado'=>'Lançar diária',
+   'dpfin/diaria/create'=>'Lançar uma nova diária',
+   '#np-btn-update'=>'Atualização página'
+];
+}else{
+
+$btn_diarias = [
+   'dpfin/diaria/create'=>'Lançar uma nova diária',
+   '#np-btn-update'=>'Atualização página'
+];
+}
+
+@endphp
+
+
+{!painel_title('Diárias',$btn_diarias,painel_search('dpfin/diaria',
+[
+    'code'=>'Código/Lote',
+	'valor:number'=>'Valor da diária'
+],
+[
+'branche_id:Filial'=>$branches,
+'status:Situação'=>[
+1=>'Pendente',
+2=>'Aprovado',
+3=>'Negado',
+4=>'Lançado',
+5=>'Processado'
+],
+'order_by:Ordenar por'=>
+[
+'created_at'=>'Data de registro',
+'data_inicial'=>'Data inicial',
+'data_final'=>'Data final',
+'valor'=>'Valor da diária'],
+'to_rank:Classificar por'=>
+[
+'asc'=>'Ascendente',
+'desc'=>'Decrescente'],
+'page_qtd:Quantidade total de registros por página'=>
+[
+5=>'5 registros por página',
+10=>'10 registros por página',
+25=>'25 registros por página',
+50=>'50 registros por página',
+100=>'100 registros por página',
+150=>'150 registros por página',
+250=>'250 registros por página',
+500=>'500 registros por página'
+]],
+['branche_id'=>$branche_id,
+'status'=>$status,
+'to_rank'=>$to_rank,
+'order_by'=>$order_by,
+'page_qtd'=>$page_qtd]
+)
+)!}
+
+<div class="container-fluid bg-default np-scroll p-3 pb-0 ">
+
+	<!-- @php
+		var_dump($list);
+	@endphp -->
+
+   @php
+
+   function diariaStatus($status){
+	$array = array(
+	  '0'=>'Indefinido',
+	  '1'=>'<span class="badge bg-warning">Pendente</span>',
+	  '2'=>'<span class="badge bg-success">Aprovado</span>',
+	  '3'=>'<span class="badge bg-danger">Recusado</span>',
+	  '4'=>'<span class="badge bg-primary">Lançado</span>',
+	  '5'=>'<span class="badge bg-primary">Processado</span>'
+	);
+  return array_key_exists($status,$array) ? $array[$status] : $array['0'];
+ }
+
+  function diariaMoney($money)
+  {
+      return format_money($money);
+  }
+
+  function diariaDatetime($e)
+  {
+      return format($e,'datetime');
+  }
+
+  function diariaMotivo($motivo)
+  {
+	$motivos = array(
+		1=>'Nova',
+		2=>'Hunter',
+		3=>'Falta',
+		4=>'Atestado'
+	);
+	return $motivos[$motivo];
+  }
+
+   @endphp
+
+
+   <div class="card small-round mb-4 mx-2">
+      <table class="table table-striped mb-1">
+		@component('p_paginate',[ 'header'=>['id|!ID','matricula|!Matricula','funcionario_name|!Funcionário','substituido|!Substituído','motivo|!Motivo','filial|!Filial','client_name|!Tomador/Cliente','data_inicial|!Competência', 'created_at|!Criação','valor_vt|!VT','valor_vr|!VR','valor|!Valor', 'total','status'],
+		'rows'=>$list,
+		'options'=>[
+		 'checkbox'=>true,
+		 'view'=>false,
+		 'edit'=>false,
+		 'delete'=>false
+		],'replace'=>[
+		'status'=>'diariaStatus',
+		'valor_vt'=>'diariaMoney',
+		'valor_vr'=>'diariaMoney',
+		'valor'=>'diariaMoney',
+		'total'=>'diariaMoney',
+		'motivo'=>'diariaMotivo',
+		'created_at'=>'diariaDatetime'
+	   ]]) 
+
+   </div>       
+
+</div>
+
+@painel_footer()
+
+<script>
+     function getIDS()
+	 {
+	    let string = '';
+		let checked = $('.np-table-select:checked');
+		
+		for(i=0; i < checked.length; i++)
+		{
+	       if(i == 0){
+			  string += checked.eq(i).attr('id');
+			}else{
+				string += `,${checked.eq(i).attr('id')}`;
+			}
+		}
+	   string = string.trim();
+	   return string.length >= 1 ? string : false;
+	 }
+	 
+	 let msgError = 'Você deve selecionar pelo menos uma diária para alteração.';
+    
+	$('#np-btn-update').click(function(){
+	
+	    location.reload();
+	
+	});
+
+	$('#btn-status-negado').click(function(){
+		 if(getIDS())
+		 {
+			$.ajax({
+		      url:'{{url("dpfin/diaria/negar")}}',
+			  method:'post',
+			  data:{ids:getIDS(),_token:'{{csrf_token()}}'},
+			  success:function(data){
+			      location.reload();
+			  }
+			});
+		 }else{
+		    swal('Atenção',msgError,'error');
+		 }
+	});
+	
+	$('#btn-status-aprovado').click(function(){
+		 if(getIDS())
+		 {
+			$.ajax({
+		      url:'{{url("dpfin/diaria/aprovar")}}',
+			  method:'post',
+			  data:{ids:getIDS(),_token:'{{csrf_token()}}'},
+			  success:function(data){
+			     location.reload();
+			  }
+			});
+		 }else{
+		    swal('Atenção',msgError,'error');
+		 }
+	});
+	
+	$('#btn-status-lancado').click(function(){
+		 if(getIDS())
+		 {
+			$.ajax({
+		      url:'{{url("dpfin/diaria/lancar")}}',
+			  method:'post',
+			  data:{ids:getIDS(),_token:'{{csrf_token()}}'},
+			  success:function(data){
+			     location.reload();
+			  }
+			});
+		 }else{
+		    swal('Atenção',msgError,'error');
+		 }
+	});
+
+	$('#btn-btn-txt').click(function(){
+		 if(getIDS())
+		 {
+			$.ajax({
+		      url:'{{url("dpfin/diaria/txt")}}',
+			  method:'get',
+			  data:{ids:getIDS(),_token:'{{csrf_token()}}'},
+			  success:function(data){
+			     location.reload();
+			  }
+			});
+		 }else{
+		    swal('Atenção',msgError,'error');
+		 }
+	});
+	
+	//#np-btn-ext-nasa
+
+</script>

@@ -1,0 +1,194 @@
+@include('@Dpfin/Views/header')
+
+@php
+
+    $converted_type = null;    
+    $converted_status = null;
+
+    switch($find->status)
+    {
+        case 1:
+            $converted_status = "Aberta";
+        break;
+
+        case 2:
+            $converted_status = "Fechada";                    
+        break;
+
+        case 3:
+            $converted_status = "Convertida";
+        break;
+
+        case 4:
+            $converted_status = "Cancelado";
+        break;
+
+        case 5:
+            $converted_status = "Quitado";
+        break;
+
+        case 6:
+            $converted_status = "Lixeira";
+        break;
+
+        default:
+            $converted_status = "Indefinido";
+        break;                    
+    }
+
+    switch($find->tipo)
+    {
+        case 1:
+            $converted_type = "de diaria";
+        break;
+
+        case 2:
+            $converted_type = "de salario";
+        break;
+
+        case 3:
+            $converted_type = "de vale transporte";
+        break;
+
+        case 4:
+            $converted_type = "de vale alimentação";
+        break;
+
+        case 5:
+            $converted_type = "de vale refeição";
+        break;
+
+        case 6:
+            $converted_type = "de rescisão";
+        break;
+
+        case 7:
+            $converted_type = "de férias";
+        break;
+
+        case 8:
+            $converted_type = "de FGTS";
+        break;
+
+        default:
+            $converted_type = null;
+        break;        
+    }
+
+@endphp
+
+
+
+{!painel_title('Folha '.$converted_type.' - '.$find->t_nome.' <span class="font-size-very-small">(Criado em '. $find->created_in.')</span>', [   
+   '#np-btn-pdf'=>'Exportar em PDF',
+   '#np-btn-xls'=>'Exportar em XLS',
+   '#move-to-trash'=>'Mover para lixeira',
+   'dpfin/folha/'.$find->id.'/edit'=>'Editar',
+   '#move-to-close'=>'Fechar'
+])!}
+
+@grid('container-fluid np-scroll')
+    @grid('row m-auto mt-2 p-4_5 content')
+    
+        @grid('col-md-12 mb-4')
+            {!painel_view([
+                'Descrição'=>$find->descricao,
+                'Situação'=>$converted_status,                      
+            ])!}
+        @endgrid
+
+        @grid('col-md-12')
+            <table class="table m-0 text-center">
+                <thead>
+                    <tr class="">
+                        <th>Funcionário</th>
+                        <th>CPF</th>
+                        <th>Banco</th>
+                        <th>Agência</th>
+                        <th>Conta</th>
+                        <th>Liquido</th>
+                    </tr>
+                </thead>
+
+                <tbody id="form-table" class="remove-last-element-border">
+                   
+                    <?php foreach($info as $key=>$value){ ?>
+
+                    <tr>
+                        <td>{{$value->p_name}}</td>
+                        <td>{{$value->p_cpf_cnpj}}</td>
+                        <td>{{$value->p_bank_code}}</td>
+                        <td>{{$value->p_agency_number}}</td>
+                        <td>{{$value->p_account_number}}</td>
+                        <td>{{$value->f_valor_liquido}}</td>
+                    </tr>
+                    
+                    <?php } ?>
+
+                    <tr>
+                        <td><strong>Total:</strong></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{$find->valor_total}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        @endgrid
+
+    @endgrid
+@endgrid
+@painel_footer()
+
+<script>
+    $(document).ready(function(){
+
+        let id = "{{$find->id}}";
+        let status = "{{$find->status}}";
+
+        $('#move-to-trash').click(function(){
+
+           if(status != '3' && status != '2')
+           {
+             
+            $.ajax({
+                url:'{{url("dpfin/folha/toTrash")}}',
+                method:'post',
+                data:{"id":id,_token:"{{csrf_token()}}"},
+                success:function(data){
+                    swal(data);
+                }
+             });
+
+           }else{
+            
+            swal('Folha com situação diferente de convertida e fechada não poderá ser movida para lixeira.');
+            
+           }
+        });
+		
+		
+		 $('#move-to-close').click(function(){
+
+           if(status != '3' && status != '2')
+           {
+             
+            $.ajax({
+                url:'{{url("dpfin/folha/close")}}',
+                method:'post',
+                data:{"id":id,_token:"{{csrf_token()}}"},
+                success:function(data){
+                    swal(data);
+                }
+             });
+
+           }else{
+            
+            swal('Folha com situação diferente de convertida e fechada não poderá ser movida para lixeira.');
+            
+           }
+        });
+		
+    });
+</script>
