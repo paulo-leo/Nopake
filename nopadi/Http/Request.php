@@ -51,6 +51,18 @@ class Request
 	  }
 	}
 
+    public function getArray($name)
+	{
+		$array = array();
+		if(isset($this->all()[$name]))
+		{
+			if(is_array($this->all()[$name])){
+				$array = $this->all()[$name];
+			}
+		}
+		return $array;
+	}
+
    /*Retorna um array com a listagem de todos os valores passados via checkbox*/
     public function getList($name,$min=0)
 	{ 

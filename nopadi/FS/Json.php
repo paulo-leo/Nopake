@@ -69,10 +69,36 @@ class Json
 	  }
   }
   
+  /*Faz a reveversão de UTF8 no loop*/
+  private function revert($value)
+  {
+	  if(is_array($value))
+	  {
+		$array = array();
+		foreach($value as $key=>$val)
+		{
+		  if(is_array($val))
+			   $array[$key] = $this->revert($val);	
+		  else
+			  $array[$key] = $this->revert_utf8($val,true);	  
+		}
+        return $array;
+	  }else{
+           return $this->revert_utf8($value,true);
+	  }
+  }
+  
   /*Retona todos os valores*/
   public function gets()
   {
-	return $this->arr;  
+	$arr = array();
+
+    foreach($this->arr as $key=>$val)
+	{
+		$arr[$key] = $this->revert($val);
+	}
+
+    return $arr;
   }
   
   public function val($key,$index=null,$default=null)

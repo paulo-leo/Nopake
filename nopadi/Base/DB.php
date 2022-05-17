@@ -866,22 +866,34 @@ class DB extends Connection
 		$table = $this->table;
 		//Sepera os indices pela chave e valor
 		foreach ($values as $key => $val) {
+			
+			if(strtolower(substr($key,0,5)) == 'json:'){
+				
+				$k[] = substr($key,5);
+				$v[] = "'" . $val . "'";
+				
+			}else{
+				
 			$k[] = htmlspecialchars($key, ENT_QUOTES);
 			$val = str_ireplace('\\','\\\\',$val);
 			$val = is_string($val) ? "'" . htmlspecialchars($val, ENT_QUOTES) . "'" : $val;
 			if (is_null($val)) $val = "'" . $val . "'";
-			$v[] = $val;
+			$v[] = $val;  }
+			
 		}
 		$k = implode(", ", $k);
 		$v = implode(", ", $v);
 		//Monta a query
 		$sql = "INSERT INTO {$table} ({$k}) VALUES ({$v})";
 		
+	
+		
 		//Retornar V ou F 
+		
 		if ($this->execute($sql)) {
 			if ($id) return $this->max($this->primary);
 			else return true;
-		} else return false;
+		} else return false; 
 	}
     /*Método para inserir vários ao mesmo tempo*/
     public function insertMultiple($multiples)

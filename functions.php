@@ -78,8 +78,6 @@ function access($permissions=null)
 	  $access = $access->get($role,false);
 	  
 	  
-	  
-	  
 	   if($access)
 	   {
 		 if(is_null($permissions) && isset($GLOBALS['np_permissions']))
@@ -1401,7 +1399,7 @@ function style($only = null)
 }
 
 /*Função para saída do tipo json. Essa função também declara um cabeçalho/header para o browser*/
-function json($value = null)
+function json($value = null) 
 {
 	if (is_numeric($value) || is_string($value)) {
 		$value = array($value);
@@ -1410,6 +1408,16 @@ function json($value = null)
 	}
 	header('Content-Type: application/json;charset=utf-8');
 	echo json_encode($value);
+}
+
+function ijson($value = null)
+{
+	if (is_numeric($value) || is_string($value)) {
+		$value = array($value);
+	} elseif (is_object($value)) {
+		$value = get_object_vars($value);
+	}
+	return json_encode($value);
 }
 
 /*Carrega os arquivos de js da aplicação que estão configurados no diretório config/app/hello.json*/
