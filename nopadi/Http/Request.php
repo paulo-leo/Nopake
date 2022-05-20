@@ -162,6 +162,18 @@ class Request
 		}
 		
 	}
+	
+	public function iMessages($type=true)
+	{
+		$arr = array();
+		foreach($this->errors() as $key=>$val)
+		{
+			if($type){ $arr[$key] = $val; }
+			else{ $arr[] = $val; }
+			
+		}
+		return $arr;
+	}
     
 	/*Checa se todas as validações estão certas*/
 	public function checkMessages()

@@ -100,9 +100,9 @@ class JWT
     final public function checkToken($token)
     {
             $part = explode(".", $token);
-            $header = $part[0];
-            $payload = $part[1];
-            $signature = $part[2];
+            $header = isset($part[0]) ? $part[0] : null;
+            $payload = isset($part[1]) ? $part[1] : null;
+            $signature = isset($part[2]) ? $part[2] : null;
 
             $valid = hash_hmac('sha256', "$header.$payload", $this->key, true);
             $valid = base64_encode($valid);

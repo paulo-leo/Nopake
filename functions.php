@@ -18,6 +18,7 @@ use Nopadi\Base\DB;
 $GLOBALS['np_instance_of_view'] = new View;
 $GLOBALS['np_instance_of_uri'] = new URI;
 $GLOBALS['np_instance_of_json'] = new Json('config/app/hello.json');
+$GLOBALS['np_instance_of_permissions'] = new Json('config/access/permissions.json');
 $GLOBALS['np_instance_of_json_mods'] = new Json('config/app/modules.json');
 $GLOBALS['np_instance_of_request'] = new Request;
 $GLOBALS['np_instance_of_translater'] = new Translation;
@@ -100,10 +101,70 @@ function access($permissions=null)
 		  $check = $qtd > 0 ? true : false;
 	   }
 	}
-	
 	return $check;
 }
 
+/*
+Cria ou atualiza permissões de função de usuários
+*/
+function create_permission($permissions,$update=false)
+{
+	$instance = $GLOBALS['np_instance_of_permissions'];
+	$total = 0;
+	foreach($permissions as $key=>$val)
+	{
+		$key = strtolower($key);
+		if($update)
+		{
+			$instance->del($key);
+			$instance->set($key,$val);
+			$total++;
+		}else{
+		
+		  if(!$instance->exists_key($key))
+	      {
+			$instance->set($key,$val);
+			$total++;
+		  }
+		}
+	}
+	
+	$instance->save();
+	return $total;
+}
+
+/*
+Retorna um array com todas as funções que contenha uma determinada permissão
+*/
+function get_roles_permission($value)
+{
+	 $file = 'config/access/access.php';
+	 $access = new ReadArray($file);
+	 $access = $access->gets();
+	  
+	 $contents = array();
+	 foreach($access as $role=>$permissions)
+	 {
+		 foreach($permissions as $permission)
+		 {
+			if($value==$permission){
+				if(!in_array($role,$contents)){
+				  $contents[] = $role;	
+				}
+			} 
+		 }
+	 }
+	return $contents;  
+}
+/*
+Retorna um array com todas as permissões que contenha uma determinada função
+*/
+function get_permissions_role($role=null)
+{
+	 $file = 'config/access/access.php';
+	 $access = new ReadArray($file);
+	 return $role ? $access->get($role) : $access->gets();
+}
 
 /*Renderiza um componente dentro de um template*/
 function component($component,$scope=null)
