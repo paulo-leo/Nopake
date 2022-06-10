@@ -119,6 +119,9 @@ class Painel extends Module
 	   Route::controllers($password,'@Painel/Controllers/ForgotPasswordController');
 	   
 	   Route::controllers($login,'@Painel/Controllers/LoginController');
+	   
+	   
+	   Route::post('api/jwt/password/update','@Painel/Controllers/LoginJWTController@updatePasswordJWT',['middleware'=>['AJWT']]);
 	   Route::controllers($login_jwt,'@Painel/Controllers/LoginJWTController');
 	   
 	   Route::controllers($profile,'@Painel/Controllers/ProfileController');

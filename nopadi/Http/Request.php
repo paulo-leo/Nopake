@@ -62,6 +62,22 @@ class Request
 		}
 		return $array;
 	}
+	
+	/*Faz a reversão da base 64*/
+	public function base64ToArray($name)
+	{
+		$json = $this->get($name);
+		$array = array();
+		$json = base64_decode($json);
+		if($json)
+		{
+			$json = json_decode($json);
+			if(is_array($json) || is_object($json)){
+				$array = (array) $json;
+			}
+		}
+	   return $array;
+	}
 
    /*Retorna um array com a listagem de todos os valores passados via checkbox*/
     public function getList($name,$min=0)
@@ -168,7 +184,10 @@ class Request
 		$arr = array();
 		foreach($this->errors() as $key=>$val)
 		{
-			if($type){ $arr[$key] = $val; }
+			if($type)
+			{ 
+			   $arr[] = ucfirst(trim(substr($val,strpos($val,' '))));
+			}
 			else{ $arr[] = $val; }
 			
 		}
@@ -437,7 +456,7 @@ class Request
 			  return $var;
 			}
 		}else{
-			$this->setError($x,"não pode ser vazio!");
+			$this->setError($x,"[$x] não pode ser vazio!");
 		}
 	}
     /*Valida um valor inteiro*/

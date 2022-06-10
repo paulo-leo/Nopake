@@ -12,6 +12,61 @@ use Nopadi\MVC\Controller;
 
 class LoginJWTController extends Controller
 {
+   /*Altera a senha do usuário via JWT*/
+   public function updatePasswordJWT()
+   {
+	       $jwt = new JWT;
+	       $request = new Request();
+	       $user_id = $GLOBALS['ajwt']['id'];
+		   $pass = $request->get('password');
+		   $pass1 = $request->get('password-1');
+		   $pass2 = $request->get('password-2');
+		   $password = true;
+
+           if(NP_STRONG_PASSWORD == 'on')
+		   {
+			 $password = preg_match('/^.*(?=.{8,})(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).*$/',$pass1) ? true : false;
+		   }
+
+           if($password){
+		   if(Auth::checkPassword($pass,$user_id)){
+			 if($pass1 == $pass2 && strlen($pass1) > 5){
+			  if($pass1 != $pass){
+			    if(Auth::passwordUpdateManual($pass1,$user_id)){ 
+				
+				  $jwt->setCode(201);
+			      $jwt->setMessage(':password_update_success');	
+				  
+				}else{
+					
+                  $jwt->setCode(422);
+			      $jwt->setMessage(':password_update_error');
+				  
+				} 
+			  }else{ 
+			  
+			      $jwt->setCode(422);
+			      $jwt->setMessage(':equal_password');
+			  }  
+		     }else{ 
+			 
+			 $jwt->setCode(422);
+			 $jwt->setMessage(':passwords_do_not_match');	
+			 
+			 }
+		  }else{ 
+		          $jwt->setCode(422);
+			      $jwt->setMessage(':invalid_password');	
+		   }
+		   }else{
+			   
+			   $jwt->setCode(422);
+			   $jwt->setMessage(':invalid_password_strong');	
+		   }	   
+       
+      return $jwt->response(null,true);	
+   }
+    
   
    /*Realiza o cadastro de um novo usuário*/
    public function register($callback=null)

@@ -77,8 +77,15 @@ $required = isset($required) && is_bool($required) && $required == true ? 'requi
 $disabled = isset($disabled) && is_bool($disabled) && $disabled == true ? 'disabled' : null;
 $placeholder = isset($placeholder) ? $placeholder : null;
 
+
+if($type == 'textarea' || $type == 'text_area')
+{
+$html = "<label for='id-{$name}' class='form-label'>$text</label>
+<textarea name='{$name}' class='form-control' id='id-{$name}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required} {$disabled}>{$value}</textarea>";
+}else{
 $html = "<label for='id-{$name}' class='form-label'>$text</label>
 <input type='{$type}' name='{$name}' class='form-control' id='id-{$name}' aria-describedby='help-{$name}' min='{$min}' max='{$max}' value='{$value}' placeholder='{$placeholder}' {$required} {$disabled}>";
+}
 
 
 if($help) $html .= "<div id='help-{$name}' class='form-text'>$help</div>";
@@ -428,7 +435,7 @@ return $select;
     $title = isset($title) ? $title : 'Formulário sem título';	
 	$method = isset($method) ? $method : 'POST';
 	$route = isset($route) ? $route : null;
-	$loading_text = isset($loading_text) ? $loading_text : 'Enviando...';
+	$loading_text = isset($loading_text) ? $loading_text : 'Processando...';
 	
 	if(isset($url)){ $route = $url; }
 		

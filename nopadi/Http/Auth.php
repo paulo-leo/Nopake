@@ -440,10 +440,10 @@ class Auth
 	}
 
 	/*gera um token para recuperação de senha*/
-	public static function createTokenByEmail()
+	public static function createTokenByEmail($email,$param=false)
 	{
 
-		$email = filter_input(INPUT_POST, 'email');
+		$email =  !$param ? filter_input(INPUT_POST, 'email') : $email;
 		$email = filter_var($email, FILTER_VALIDATE_EMAIL);
 
 		$user = UserModel::model()->find('email', $email);
